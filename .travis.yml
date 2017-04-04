@@ -8,15 +8,14 @@ script: ./gradlew clean build
 deploy:
   provider: releases
   api_key:
-    secure: xUPJboaSjxs3lKCqXu5zYzdV75S+lu5EZ6RD+RigmQ5MSjeuFBhoBKYaJUz+ejaoFLfF8WSUbmlgTeRMK7QI4MtCqjy08uREext8sm0behMREz4mmPEb9eTLu+WfIXFbnOPG4pKzkAtHA3x+hNQN3EWga1Xa2WXGYdOuK1B7vnrYOPo9D2zI12JCaoXt0KUQ70LwE07uwBIuDn+0EbVsAftFatJh7jZXeMsE8GmdcwsM/DObKjtTLBH3bpE8pPPJ8H0ssuIsQk2jHg91cTgrlB0q0K1a5TjeKKMGPMY6S6UR9cB7l7FqCVEsOd7T/ExdKp1TflMRyuuKG9ACBXTaegfBt7pP7KYEpYtidC5p/b1J4cYvazVTIfo6m93wnOJAdcD1XeMqNIQZVSxNuflmgM8xZz+UuqPBF4dk3Z5Eoh4sTH+t6WmZY6YoIt6tRMQ8xRyvkTfzsfYUtsV4csyeB2oy5s/GJmYGtR5GjjK6T+mh8RmI/DVWW50ubdFaAYYdz+LSgfpGhBXEBkYPghMSjYiPDsJStXsOwRSQbR9LmRO7jk08PxxT33pLr8Ct0HoQPpSP8Fom4q1ntrZBDjeHL8/2cQtRKqUg3X9G0sU7aW5i0G4U7BE42Xkcc/VVJhFrVbRj5+xQq70uMyUmHi2Wh+mBQSY+ZlBrvr6FRcKj42E=
+    secure: D6rL4yyVytC9AxqWxgVJTJCVyUkhMK5260lbVeQ6kcHwfBXkNgF/e7dNE9pa2R7gCv+EGKGhug45NdL/nIXspN0frpIQChQfzqb/IY2fx1PgJt5H/wn34D3qdbUMDW492YCjJDyrlfFrR0obRw2hVNqILAZDu3KlFBiXD+8+vJRhqrVe2DRly/DOoIh4ggMkYV+EjryPdfhruskcyo0MP32X4W0NAYRC5bAQ/rqwxsp1ELtObZL/5d0Y0vXnp3MwrjxUPxpOBxXRWoscv3gCsUg8KBYPQsWtK3zwdzqd3uBDY9Bfkzx4gzkItsDIygkR36UKnlEKfCEYfliVQEYzZ7GXnTthJ23B/OpAV138PC8t4Mtpo7U96XZIy5x2M7nYVS4CiJXYnLiThtgon6u/PjTtDH+TUh6Tg5fsf0gMRzQZEAcCUCS3cFniQYpBowqhM/7ECq9JQX8rmOGmzPVz6FsCuWaMgcuB16h9kfaEtT8oVbfqwxdEJ8ZRIZ0fFh8KuHzvnObAj1uWe+DgwqB52nUGg+FIEQ60DmwUPaVy6ZwBbvsqsWpmGtyUFC2stjqIFT9tDxuZNY0e6WqFghvoSEPAuY+h9lYECCtjJiYzwx6PSgBVCOP57P/rP3gi9kvf55OLmgsrkObwJuzOQsqmUTDqAlHuQiIkQcMPMv60VOk=
   file_glob: true
   file: build/libs/stroom-expression*.jar
   skip_cleanup: true
   on:
     tags: true
 
-# Cache dependencies to speed up the build
 cache:
   directories:
-    - .autoconf
-    - $HOME/.m2
+  - .autoconf
+  - $HOME/.m2
