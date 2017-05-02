@@ -6,7 +6,7 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group = 'stroom'
-version = 'v1.0.0-SNAPSHOT.1'
+version = 'v0.1.0'
 
 
 apply plugin: 'java'
