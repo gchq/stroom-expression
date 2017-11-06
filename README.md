@@ -17,6 +17,14 @@ Or reduce the args by successive addition
 add(args...)
 ```
 
+Examples
+```
+34 + 9
+> 43
+add(45, 6, 72)
+> 123
+```
+
 ## Subtract
 ```
 arg1 - arg2
@@ -24,6 +32,14 @@ arg1 - arg2
 Or reduce the args by successive subtraction
 ```
 subtract(args...)
+```
+
+Examples
+```
+29 - 8
+> 21
+subtract(100, 20, 34, 2)
+> 44
 ```
 
 ## Multiply
@@ -36,6 +52,14 @@ Or reduce the args by successive multiplication
 multiply(args...)
 ```
 
+Examples
+```
+4 * 5
+> 20
+multiply(4, 5, 2, 6)
+> 240
+```
+
 ## Divide
 Divides arg1 by arg2
 ```
@@ -44,6 +68,16 @@ arg1 / arg2
 Or reduce the args by successive division
 ```
 divide(args...)
+```
+
+Examples
+```
+42 / 7
+> 6
+divide(1000, 10, 5, 2)
+> 10
+divide(100, 4, 3)
+> 8.33
 ```
 
 ## Power
@@ -56,10 +90,28 @@ Or reduce the args by successive raising to the power
 power(args...)
 ```
 
+Examples
+```
+4 ^ 3
+> 64
+power(2, 4, 3)
+> 4096
+```
+
 ## Negate
 Multiplies arg1 by -1
 ```
 negate(arg1)
+```
+
+Examples
+```
+negate(80)
+> -80
+negate(23.33)
+> -23.33
+negage(-9.5)
+> 9.5
 ```
 
 ## Equals
@@ -69,11 +121,36 @@ arg1 = arg2
 equals(arg1, arg2)
 ```
 
+Examples
+```
+equals(${val1}, ${val2})
+g.setValues("plop", "plip");
+g.eval()
+> false
+
+equals(${val1}, 'blob')
+g.setValues("blob");
+g.eval()
+> true
+```
+
 ## Greater Than
 Evaluates if arg1 is greater than to arg2
 ```
 arg1 > arg2
 greaterThan(arg1, arg2)
+```
+
+Examples
+```
+greaterThan(${val1}, 50)
+g.setValues(70);
+g.eval()
+> true
+
+g.setValues(20);
+g.eval()
+> false
 ```
 
 ## Less Than
@@ -83,11 +160,39 @@ arg1 < arg2
 lessThan(arg1, arg2)
 ```
 
+Examples
+```
+lessThan(${val1}, 30)
+g.setValues(45);
+g.eval()
+> false
+
+g.setValues(15);
+g.eval()
+> true
+```
+
 ## Greater Than or Equal To
 Evaluates if arg1 is greater than or equal to arg2
 ```
 arg1 >= arg2
 greaterThanOrEqualTo(arg1, arg2)
+```
+
+Examples
+```
+greaterThanOrEqualTo(${val1}, 50)
+g.setValues(70);
+g.eval()
+> true
+
+g.setValues(50);
+g.eval()
+> true
+
+g.setValues(49);
+g.eval()
+> false
 ```
 
 ## Less Than or Equal To
@@ -96,10 +201,36 @@ Evaluates if arg1 is less than or equal to arg2
 arg1 <= arg2
 lessThanOrEqualTo(arg1, arg2)
 ```
+
+Examples
+```
+lessThanOrEqualTo(${val1}, 25)
+g.setValues(45);
+g.eval()
+> false
+
+g.setValues(25);
+g.eval()
+> true
+
+g.setValues(24);
+g.eval()
+> true
+```
+
 ## Random
 Generates a random number between 0.0 and 1.0
 ```
 random()
+```
+
+Examples
+```
+random()
+> 0.78
+random()
+> 0.89
+...you get the idea
 ```
 
 # Aggregation Functions
@@ -110,10 +241,32 @@ Determines the maximum value given in the args
 max(args...)
 ```
 
+Examples
+```
+max(100, 30, 45, 109)
+> 109
+
+# They can be nested
+max(max(${val}), 40, 67, 89)
+${val} = [20, 1002]
+> 1002
+```
+
 ## Min
 Determines the minimum value given in the args
 ```
 min(args...)
+```
+
+Examples
+```
+min(100, 30, 45, 109)
+> 30
+
+# They can be nested
+min(max(${val}), 40, 67, 89)
+${val} = [20, 1002]
+> 20
 ```
 
 ## Sum
@@ -122,11 +275,25 @@ Sums all the arguments together
 sum(args...)
 ```
 
+Examples
+```
+sum(89, 12, 3, 45)
+> 149
+```
+
 ## Average
 Takes an average value of the arguments
 ```
 average(args...)
 mean(args...)
+```
+
+Examples
+```
+average(10, 20, 30, 40)
+> 25
+mean(8.9, 24, 1.2, 1008)
+> 260.525
 ```
 
 # Rounding Functions
@@ -140,14 +307,44 @@ If the decimal places are not given it will give you nearest whole number.
 ceiling(value, decimalPlaces<optional>)
 ```
 
+Examples
+```
+ceiling(8.4234)
+> 9
+ceiling(4.56, 1)
+> 4.6
+ceiling(1.22345, 3)
+> 1.223
+```
+
 ## Floor
 ```
 floor(value, decimalPlaces<optional>)
 ```
 
+Examples
+```
+floor(8.4234)
+> 8
+floor(4.56, 1)
+> 4.5
+floor(1.2237, 3)
+> 1.223
+```
+
 ## Round
 ```
 round(value, decimalPlaces<optional>)
+```
+
+Examples
+```
+round(8.4234)
+> 8
+round(4.56, 1)
+> 4.6
+round(1.2237, 3)
+> 1.224
 ```
 
 ## Ceiling Year/Month/Day/Hour/Minute/Second
@@ -160,6 +357,28 @@ ceilingMinute(args...)
 ceilingSecond(args...)
 ```
 
+Examples
+```
+ceilingSecond("2014-02-22T12:12:12.888Z"
+> "2014-02-22T12:12:13.000Z"
+
+ceilingMinute("2014-02-22T12:12:12.888Z"
+> "2014-02-22T12:13:00.000Z"
+
+ceilingHour("2014-02-22T12:12:12.888Z"
+> "2014-02-22T13:00:00.000Z"
+
+ceilingDay("2014-02-22T12:12:12.888Z"
+> "2014-02-23T00:00:00.000Z"
+
+ceilingMonth("2014-02-22T12:12:12.888Z"
+> "2014-03-01T00:00:00.000Z"
+
+ceilingYear("2014-02-22T12:12:12.888Z"
+> "2015-01-01T00:00:00.000Z"
+
+```
+
 ## Floor Year/Month/Day/Hour/Minute/Second
 ```
 floorYear(args...)
@@ -168,6 +387,28 @@ floorDay(args...)
 floorHour(args...)
 floorMinute(args...)
 floorSecond(args...)
+```
+
+Examples
+```
+floorSecond("2014-02-22T12:12:12.888Z"
+> "2014-02-22T12:12:12.000Z"
+
+floorMinute("2014-02-22T12:12:12.888Z"
+> "2014-02-22T12:12:00.000Z"
+
+floorHour("2014-02-22T12:12:12.888Z"
+> 2014-02-22T12:00:00.000Z"
+
+floorDay("2014-02-22T12:12:12.888Z"
+> "2014-02-22T00:00:00.000Z"
+
+floorMonth("2014-02-22T12:12:12.888Z"
+> "2014-02-01T00:00:00.000Z"
+
+floorYear("2014-02-22T12:12:12.888Z"
+> "2014-01-01T00:00:00.000Z"
+
 ```
 
 ## Round Year/Month/Day/Hour/Minute/Second
@@ -180,6 +421,27 @@ roundMinute(args...)
 roundSecond(args...)
 ```
 
+Examples
+```
+roundSecond("2014-02-22T12:12:12.888Z")
+> "2014-02-22T12:12:13.000Z"
+
+roundMinute("2014-02-22T12:12:12.888Z")
+> "2014-02-22T12:12:00.000Z"
+
+roundHour("2014-02-22T12:12:12.888Z"
+> "2014-02-22T12:00:00.000Z"
+
+roundDay("2014-02-22T12:12:12.888Z"
+> "2014-02-23T00:00:00.000Z"
+
+roundMonth("2014-02-22T12:12:12.888Z"
+> "2014-03-01T00:00:00.000Z"
+
+roundYear("2014-02-22T12:12:12.888Z"
+> "2014-01-01T00:00:00.000Z"
+```
+
 # Counting Functions
 These are aggregation functions
 
@@ -188,9 +450,19 @@ These are aggregation functions
 count()
 ```
 
+Examples
+```
+
+```
+
 ## Count Groups
 ```
 countGroups()
+```
+
+Examples
+```
+
 ```
 
 # String Functions
@@ -207,7 +479,7 @@ Example
 ```
 replace('this', 'is', 'at')
 
->> 'that'
+> 'that'
 ```
 
 ## Concatenate
@@ -219,7 +491,7 @@ concat(args...)
 Example
 ```
 concat('this ', 'is ', 'how ', 'it ', 'works')
->> 'this is how it works'
+> 'this is how it works'
 ```
 
 ## String Length
@@ -231,7 +503,7 @@ stringLength(aString)
 Example
 ```
 stringLength('hello')
->> 5
+> 5
 ```
 
 ## Upper Case
@@ -243,7 +515,7 @@ upperCase(aString)
 Example
 ```
 upperCase('Hello DeVeLoPER')
->> HELLO DEVELOPER
+> HELLO DEVELOPER
 ```
 
 ## Lower Case
@@ -255,7 +527,7 @@ lowerCase(aString)
 Example
 ```
 lowerCase('Hello DeVeLoPER')
->> hello developer
+> hello developer
 ```
 
 ## Substring
@@ -267,7 +539,7 @@ substring(aString, startIndex, endIndex)
 Example
 ```
 substring('this', 1, 2)
->> 'h'
+> 'h'
 ```
 
 ## Decode
