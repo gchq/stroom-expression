@@ -20,6 +20,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.text.ParseException;
+import java.util.stream.DoubleStream;
 
 public class TestExpressionParser {
     private final ExpressionParser parser = new ExpressionParser(new FunctionFactory(), new ParamFactory());
@@ -59,6 +60,36 @@ public class TestExpressionParser {
     private void test(final String expression) throws ParseException {
         final Expression exp = createExpression(expression);
         System.out.println(exp.toString());
+    }
+
+    @Test
+    public void testCount() throws ParseException {
+        final Expression exp = createExpression("count()");
+        final Generator generator = exp.createGenerator();
+        final double expectedCount = 5;
+
+        for (double x=0; x<expectedCount; x++) {
+            generator.set(getVal(x));
+        }
+
+        Object out = generator.eval();
+        Assert.assertTrue(out instanceof Double);
+        Assert.assertEquals(expectedCount, out);
+    }
+
+    @Test
+    public void testCountGroup() throws ParseException {
+        final Expression exp = createExpression("countGroups()");
+        final Generator generator = exp.createGenerator();
+        final double expectedCount = 5;
+
+        for (double x=0; x<expectedCount; x++) {
+            generator.addChildKey(getVal(String.format("A String %f", x)));
+        }
+
+        Object out = generator.eval();
+        Assert.assertTrue(out instanceof Double);
+        Assert.assertEquals(expectedCount, out);
     }
 
     @Test
@@ -1012,21 +1043,14 @@ public class TestExpressionParser {
     }
 
     private Expression createExpression(final String expression) throws ParseException {
-        final FieldIndexMap fieldIndexMap = new FieldIndexMap();
-        fieldIndexMap.create("val", true);
-
-        final Expression exp = parser.parse(fieldIndexMap, expression);
+        final Expression exp = parser.parse(FieldIndexMap.forFields("val"), expression);
         final String actual = exp.toString();
         Assert.assertEquals(expression, actual);
         return exp;
     }
 
     private Expression createExpression2(final String expression) throws ParseException {
-        final FieldIndexMap fieldIndexMap = new FieldIndexMap();
-        fieldIndexMap.create("val1", true);
-        fieldIndexMap.create("val2", true);
-
-        final Expression exp = parser.parse(fieldIndexMap, expression);
+        final Expression exp = parser.parse(FieldIndexMap.forFields("val1", "val2"), expression);
         final String actual = exp.toString();
         Assert.assertEquals(expression, actual);
         return exp;

@@ -16,6 +16,7 @@
 
 package stroom.dashboard.expression.v1;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,5 +59,12 @@ public class FieldIndexMap {
 
     public int size() {
         return fieldToPos.size();
+    }
+
+    public static FieldIndexMap forFields(final String... fieldNames) {
+        final FieldIndexMap instance = new FieldIndexMap();
+        Arrays.stream(fieldNames)
+                .forEach(f -> instance.create(f, true));
+        return instance;
     }
 }

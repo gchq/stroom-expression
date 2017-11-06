@@ -6,9 +6,36 @@ This library provides Stroom with the functions for manipulating data on Stroom 
 
 Each function has a name, and some have additional aliases.
 
+In some cases, functions can be nested. The return value for some functions being used
+as the arguments for other functions. Each function documented below will indicate if it can
+contain nested children.
+
+The arguments can either be literal values, or they can refer to fields on the input data using the ${} syntax.
+A function Generator is given arrays of values for each 'row':
+A FieldIndexMap is used to map named fields to indexes of these arrays
+
+Example
+```
+FieldIndexMap fim = FieldIndexMap.forFields("name", "age", "occupation")
+Generator g = parseExpression("concat(${name}, ${age})")
+
+g.addData('JDoe', 45, 'Butcher')
+g.addData('JBloggs', 23, 'Baker')
+g.addData('JSmith', 34, 'Candlestick Maker')
+
+g.eval
+> [
+    'JDoe45',
+    'JBloggs23',
+    'JSmith34'
+]
+```
+
+
 # Math Functions
 
 ## Add
+Allows Nesting: Yes
 ```
 arg1 + arg2
 ```
@@ -26,6 +53,7 @@ add(45, 6, 72)
 ```
 
 ## Subtract
+Allows Nesting: Yes
 ```
 arg1 - arg2
 ```
@@ -43,6 +71,7 @@ subtract(100, 20, 34, 2)
 ```
 
 ## Multiply
+Allows Nesting: Yes
 Multiplies arg1 by arg2
 ```
 arg1 * arg2
@@ -61,6 +90,7 @@ multiply(4, 5, 2, 6)
 ```
 
 ## Divide
+Allows Nesting: Yes
 Divides arg1 by arg2
 ```
 arg1 / arg2
@@ -81,6 +111,7 @@ divide(100, 4, 3)
 ```
 
 ## Power
+Allows Nesting: Yes
 Raises arg1 to the power arg2
 ```
 arg1 ^ arg2
@@ -99,6 +130,7 @@ power(2, 4, 3)
 ```
 
 ## Negate
+Allows Nesting: Yes
 Multiplies arg1 by -1
 ```
 negate(arg1)
@@ -115,6 +147,7 @@ negage(-9.5)
 ```
 
 ## Equals
+Allows Nesting: Yes
 Evaluates if arg1 is equal to arg2
 ```
 arg1 = arg2
@@ -135,6 +168,7 @@ g.eval()
 ```
 
 ## Greater Than
+Allows Nesting: Yes
 Evaluates if arg1 is greater than to arg2
 ```
 arg1 > arg2
@@ -154,6 +188,7 @@ g.eval()
 ```
 
 ## Less Than
+Allows Nesting: Yes
 Evaluates if arg1 is less than to arg2
 ```
 arg1 < arg2
@@ -173,6 +208,7 @@ g.eval()
 ```
 
 ## Greater Than or Equal To
+Allows Nesting: Yes
 Evaluates if arg1 is greater than or equal to arg2
 ```
 arg1 >= arg2
@@ -196,6 +232,7 @@ g.eval()
 ```
 
 ## Less Than or Equal To
+Allows Nesting: Yes
 Evaluates if arg1 is less than or equal to arg2
 ```
 arg1 <= arg2
@@ -219,6 +256,7 @@ g.eval()
 ```
 
 ## Random
+Allows Nesting: No
 Generates a random number between 0.0 and 1.0
 ```
 random()
@@ -236,6 +274,7 @@ random()
 # Aggregation Functions
 
 ## Max
+Allows Nesting: Yes
 Determines the maximum value given in the args
 ```
 max(args...)
@@ -253,6 +292,7 @@ ${val} = [20, 1002]
 ```
 
 ## Min
+Allows Nesting: Yes
 Determines the minimum value given in the args
 ```
 min(args...)
@@ -270,6 +310,7 @@ ${val} = [20, 1002]
 ```
 
 ## Sum
+Allows Nesting: Yes
 Sums all the arguments together
 ```
 sum(args...)
@@ -282,6 +323,7 @@ sum(89, 12, 3, 45)
 ```
 
 ## Average
+Allows Nesting: Yes
 Takes an average value of the arguments
 ```
 average(args...)
@@ -297,6 +339,7 @@ mean(8.9, 24, 1.2, 1008)
 ```
 
 # Rounding Functions
+Allows Nesting: Yes
 
 These functions require a value, and an optional decimal places.
 If the decimal places are not given it will give you nearest whole number.
@@ -446,24 +489,35 @@ roundYear("2014-02-22T12:12:12.888Z"
 These are aggregation functions
 
 ## Count
+Allows Nesting: No
+
+Counts the number of records that are passed through it. Doesn't take any notice of the values of any fields.
+
 ```
 count()
 ```
 
 Examples
 ```
+g = count()
 
+g.setData(...)
+g.setData(...)
+g.setData(...)
+
+g.eval()
+> 3
 ```
 
 ## Count Groups
-```
-countGroups()
-```
+Allows Nesting: No
 
-Examples
-```
+This is used to count the number of unique values where there are multiple group levels.
+For Example, a data set grouped as follows
+1. Group by Name
+2. Group by Type
 
-```
+A groupCount could be used to count the number of distinct values of 'type' for each value of 'name'
 
 # String Functions
 
