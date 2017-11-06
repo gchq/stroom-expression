@@ -385,6 +385,24 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testDecode3() throws ParseException {
+        final Expression exp = createExpression("decode(${val}, 'red', 'rgb(255, 0, 0)', 'green', 'rgb(0, 255, 0)', 'blue', 'rgb(0, 0, 255)', 'rgb(255, 255, 255)')");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("blue"));
+        final Object out1 = generator.eval();
+        Assert.assertEquals("rgb(0, 0, 255)", out1);
+
+        generator.set(getVal("green"));
+        final Object out2 = generator.eval();
+        Assert.assertEquals("rgb(0, 255, 0)", out2);
+
+        generator.set(getVal("maroon"));
+        final Object out5 = generator.eval();
+        Assert.assertEquals("rgb(255, 255, 255)", out5);
+    }
+
+    @Test
     public void testEquals1() throws ParseException {
         final Expression exp = createExpression("equals(${val}, 'plop')");
         final Generator generator = exp.createGenerator();

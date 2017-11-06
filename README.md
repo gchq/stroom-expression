@@ -103,8 +103,9 @@ random()
 ```
 
 # Aggregation Functions
-Determines the maximum value given in the args
+
 ## Max
+Determines the maximum value given in the args
 ```
 max(args...)
 ```
@@ -180,51 +181,135 @@ roundSecond(args...)
 ```
 
 # Counting Functions
+These are aggregation functions
 
 ## Count
 ```
-count(args...)
+count()
 ```
 
 ## Count Groups
 ```
-countGroups(args...)
+countGroups()
 ```
 
 # String Functions
 
 ## Replace
+1. A regex
+2. The string to replace
+3. The replacement string
 ```
-replace(args...)
+replace(input, findThis, replaceWithThis)
+```
+
+Example
+```
+replace('this', 'is', 'at')
+
+>> 'that'
 ```
 
 ## Concatenate
+Appends all the arguments end to end in a single string
 ```
 concat(args...)
 ```
 
-## String Length
+Example
 ```
-stringLength(args...)
+concat('this ', 'is ', 'how ', 'it ', 'works')
+>> 'this is how it works'
+```
+
+## String Length
+Takes the length of a string
+```
+stringLength(aString)
+```
+
+Example
+```
+stringLength('hello')
+>> 5
 ```
 
 ## Upper Case
+Converts the string to upper case
 ```
-upperCase(args...)
+upperCase(aString)
+```
+
+Example
+```
+upperCase('Hello DeVeLoPER')
+>> HELLO DEVELOPER
 ```
 
 ## Lower Case
+Converts the string to lower case
 ```
-lowerCase(args...)
+lowerCase(aString)
+```
+
+Example
+```
+lowerCase('Hello DeVeLoPER')
+>> hello developer
 ```
 
 ## Substring
+Take a substring based on start/end index of letters
 ```
-substring(args...)
+substring(aString, startIndex, endIndex)
+```
+
+Example
+```
+substring('this', 1, 2)
+>> 'h'
 ```
 
 ## Decode
+The arguments are split into 3 parts
+1. The input value to test
+2. Pairs of regex matchers with their respective output value
+3. A default result, if the input doesn't match any of the regexes
+
 ```
-decode(args...)
+decode(input, test1, result1, test2, result2, ... testN, resultN, otherwise)
 ```
 
+It works much like a Java Switch/Case statement
+
+Example
+```
+decode(${val}, 'red', 'rgb(255, 0, 0)', 'green', 'rgb(0, 255, 0)', 'blue', 'rgb(0, 0, 255)', 'rgb(255, 255, 255)')
+${val}='blue'
+> rgb(0, 0, 255)
+${val}='green'
+> rgb(0, 255, 0)
+${val}='brown'
+> rgb(255, 255, 255) // falls back to the 'otherwise' value
+```
+
+in Java, this would be equivalent to
+```java
+
+String decode(value) {
+    switch(value) {
+        case "red":
+            return "rgb(255, 0, 0)"
+        case "green":
+            return "rgb(0, 255, 0)"
+        case "blue":
+            return "rgb(0, 0, 255)"
+        default:
+            return "rgb(255, 255, 255)"
+    }
+}
+
+decode('red')
+> 'rgb(255, 0, 0)'
+
+```
