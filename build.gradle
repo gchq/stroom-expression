@@ -111,6 +111,8 @@ bintray {
     //The maven plugin publications to push to bintray
     publications = ['mavenJava']
 
+    publish = true
+
     pkg {
         repo = 'stroom'
         name = 'stroom-expression'
