@@ -27,7 +27,7 @@ import java.io.Serializable;
  * <p>
  * This class should be more efficient than String because it avoids copying the
  * characters unnecessarily.
- * <p>
+ * </p>
  * The methods in the class don't check their arguments. Incorrect arguments
  * will generally result in exceptions from lower-level classes.
  */
@@ -73,7 +73,6 @@ public final class CharSlice implements CharSequence, Serializable {
     /**
      * Returns the length of this character sequence. The length is the number
      * of 16-bit Unicode characters in the sequence.
-     * </p>
      *
      * @return the number of characters in this sequence
      */
@@ -96,7 +95,6 @@ public final class CharSlice implements CharSequence, Serializable {
      * Returns the character at the specified index. An index ranges from zero
      * to <tt>length() - 1</tt>. The first character of the sequence is at index
      * zero, the next at index one, and so on, as for array indexing.
-     * </p>
      *
      * @param index the index of the character to be returned
      * @return the specified character
@@ -113,7 +111,6 @@ public final class CharSlice implements CharSequence, Serializable {
      * with the character at index <tt>end - 1</tt>. The length of the returned
      * sequence is <tt>end - start</tt>, so if <tt>start == end</tt> then an
      * empty sequence is returned.
-     * </p>
      *
      * @param start the start index, inclusive
      * @param end   the end index, exclusive

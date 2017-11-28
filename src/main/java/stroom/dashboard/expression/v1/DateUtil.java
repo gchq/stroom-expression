@@ -112,6 +112,8 @@ public final class DateUtil {
 
     /**
      * Create a 'normal' type date with the current system time.
+     *
+     * @return The 'normal' string representation of the current date/time
      */
     public static String createNormalDateTimeString() {
         return NORMAL_STROOM_TIME_FORMATTER.format(ZonedDateTime.now(ZoneOffset.UTC));
@@ -119,6 +121,9 @@ public final class DateUtil {
 
     /**
      * Create a 'normal' type date.
+     *
+     * @param ms The date/time to convert to a string, in milliseconds since the epoch
+     * @return The 'normal' string representation of the passed date/time
      */
     public static String createNormalDateTimeString(final Long ms) {
         if (ms == null) {
@@ -139,7 +144,7 @@ public final class DateUtil {
     /**
      * Create a 'file' format date string.
      *
-     * @param ms The date to create the string for.
+     * @param ms The date to create the string for, in milliseconds since the epoch
      * @return string The date as a 'file' format date string.
      */
     public static String createFileDateTimeString(final long ms) {
