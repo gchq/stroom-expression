@@ -8,8 +8,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+### Changed
+
+## [v1.0.1] - 2017-11-28
+
+### Added
+
+* Add bintray deployment to build
+
+* Add generation of javadoc and sources to build
 
 ### Changed
+
+* Fix invalid javadoc
 
 ## [v1.0.0] - 2017-08-11
 
@@ -21,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.0.1...HEAD
+[v1.0.1]: https://github.com/gchq/stroom-expression/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/gchq/stroom-expression/compare/v0.1.0...v1.0.0
 [v0.1.0]: https://github.com/gchq/stroom-expression/releases/tag/v0.1.0
