@@ -2,41 +2,130 @@ task wrapper(type: Wrapper) {
     gradleVersion = '4.1'
 }
 
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-
-// If the project has a value for the passed property (i.e from the cmd line via -PpropName=xxx) use that, else use a default value.
-ext.getPropertyOrDefault = { propName, defaultValue ->
-    return project.hasProperty(propName) ?
-            project.getProperty(propName) :
-            defaultValue
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    }
 }
-
-group = 'stroom'
-version = getPropertyOrDefault('version', 'SNAPSHOT')
 
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+//if the project has a value for the passed property (i.e from the cmd line via -PpropName=xxx)
+//use that, else use a default value
+ext.getPropertyOrDefault = { propName, defaultValue -> 
+    def val;
+    if (project.hasProperty(propName) && project.getProperty(propName) != "unspecified" && project.getProperty(propName) != "") {
+        val = project.getProperty(propName)
+        println "Using property [$propName] with value [$val]"
+    } else {
+        val = defaultValue
+        println "Property [$propName] has no value, using default value [$val]"
+    }
+    return val;
+}
+
+ext.versions = [
+    stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT'),
+    zzDUMMYzz: 'makes sorting this list easier'
+]
+
+group = 'stroom'
+version = versions.stroomExpression
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
     mavenLocal()
-
-    maven { url "http://repo.maven.apache.org/maven2" }
+    jcenter()
+    maven {
+        url  "https://dl.bintray.com/stroom/stroom"
+    }
 }
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.22'
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.0.2-beta'
 }
 
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    scm {
+       url "https://github.com/stroom/stroom-expression"
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', project.name)
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+//configuration for the bintray plugin for uploading maven artefacts to bintray
+//see https://github.com/bintray/gradle-bintray-plugin
+//run task bintrayUpload to push the files, assuming BINTRAY_USER/KEY are set as env vars
+bintray {
+    //Must never write these to log or system out
+    user = System.getenv('BINTRAY_USER') //set in Travis UI
+    key = System.getenv('BINTRAY_KEY') //set in Travis UI
+
+    //The maven plugin publications to push to bintray
+    publications = ['mavenJava']
+
+    pkg {
+        repo = 'stroom'
+        name = 'stroom-expression'
+        userOrg = 'stroom'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/gchq/stroom-expression.git'
+        version {
+            name = "${versions.stroomExpression}"
+            desc = "stroom-expression-${versions.stroomExpression}"
+            released  = new Date()
+            vcsTag = "${versions.stroomExpression}"
+            gpg {
+                //Bintray will self-sign the files
+                sign = true //Determines whether to GPG sign the files. The default is false
+            }
         }
     }
 }
