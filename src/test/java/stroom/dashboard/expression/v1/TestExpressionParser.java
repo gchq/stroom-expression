@@ -20,7 +20,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.text.ParseException;
-import java.util.stream.DoubleStream;
 
 public class TestExpressionParser {
     private final ExpressionParser parser = new ExpressionParser(new FunctionFactory(), new ParamFactory());
@@ -55,41 +54,12 @@ public class TestExpressionParser {
         test("lessThanOrEqualTo(1, 0)");
         test("1=0");
         test("decode('fred', 'fr.+', 'freda', 'freddy')");
+        test("extractHostFromUri('http://www.somecompany.com:1234/this/is/a/path')");
     }
 
     private void test(final String expression) throws ParseException {
         final Expression exp = createExpression(expression);
         System.out.println(exp.toString());
-    }
-
-    @Test
-    public void testCount() throws ParseException {
-        final Expression exp = createExpression("count()");
-        final Generator generator = exp.createGenerator();
-        final double expectedCount = 5;
-
-        for (double x=0; x<expectedCount; x++) {
-            generator.set(getVal(x));
-        }
-
-        Object out = generator.eval();
-        Assert.assertTrue(out instanceof Double);
-        Assert.assertEquals(expectedCount, out);
-    }
-
-    @Test
-    public void testCountGroup() throws ParseException {
-        final Expression exp = createExpression("countGroups()");
-        final Generator generator = exp.createGenerator();
-        final double expectedCount = 5;
-
-        for (double x=0; x<expectedCount; x++) {
-            generator.addChildKey(getVal(String.format("A String %f", x)));
-        }
-
-        Object out = generator.eval();
-        Assert.assertTrue(out instanceof Double);
-        Assert.assertEquals(expectedCount, out);
     }
 
     @Test
@@ -413,24 +383,6 @@ public class TestExpressionParser {
 
         final Object out = generator.eval();
         Assert.assertEquals("hello", out);
-    }
-
-    @Test
-    public void testDecode3() throws ParseException {
-        final Expression exp = createExpression("decode(${val}, 'red', 'rgb(255, 0, 0)', 'green', 'rgb(0, 255, 0)', 'blue', 'rgb(0, 0, 255)', 'rgb(255, 255, 255)')");
-        final Generator generator = exp.createGenerator();
-
-        generator.set(getVal("blue"));
-        final Object out1 = generator.eval();
-        Assert.assertEquals("rgb(0, 0, 255)", out1);
-
-        generator.set(getVal("green"));
-        final Object out2 = generator.eval();
-        Assert.assertEquals("rgb(0, 255, 0)", out2);
-
-        generator.set(getVal("maroon"));
-        final Object out5 = generator.eval();
-        Assert.assertEquals("rgb(255, 255, 255)", out5);
     }
 
     @Test
@@ -1042,15 +994,102 @@ public class TestExpressionParser {
         Assert.assertEquals(12D, out);
     }
 
+    @Test
+    public void testExtractAuthorityFromUri() throws ParseException {
+        final Expression exp = createExpression("extractAuthorityFromUri(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        Object out = generator.eval();
+        Assert.assertEquals("www.somecompany.com:1234", out);
+    }
+
+    @Test
+    public void testExtractFragmentFromUri() throws ParseException {
+        final Expression exp = createExpression("extractFragmentFromUri(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        Object out = generator.eval();
+        Assert.assertNull(out);
+    }
+
+    @Test
+    public void testExtractHostFromUri() throws ParseException {
+        final Expression exp = createExpression("extractHostFromUri(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        Object out = generator.eval();
+        Assert.assertEquals("www.somecompany.com", out);
+    }
+
+    @Test
+    public void testExtractPathFromUri() throws ParseException {
+        final Expression exp = createExpression("extractPathFromUri(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        Object out = generator.eval();
+        Assert.assertEquals("/this/is/a/path", out);
+    }
+
+    @Test
+    public void testExtractPortFromUri() throws ParseException {
+        final Expression exp = createExpression("extractPortFromUri(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        Object out = generator.eval();
+        Assert.assertEquals("1234", out);
+    }
+
+    @Test
+    public void testExtractSchemeFromUri() throws ParseException {
+        final Expression exp = createExpression("extractSchemeFromUri(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        Object out = generator.eval();
+        Assert.assertEquals("http", out);
+    }
+
+    @Test
+    public void testExtractSchemeSpecificPortFromUri() throws ParseException {
+        final Expression exp = createExpression("extractSchemeSpecificPortFromUri(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        Object out = generator.eval();
+        Assert.assertEquals("//www.somecompany.com:1234/this/is/a/path", out);
+    }
+
+    @Test
+    public void testExtractUserInfoFromUri() throws ParseException {
+        final Expression exp = createExpression("extractUserInfoFromUri(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        Object out = generator.eval();
+        Assert.assertNull(out);
+    }
+
     private Expression createExpression(final String expression) throws ParseException {
-        final Expression exp = parser.parse(FieldIndexMap.forFields("val"), expression);
+        final FieldIndexMap fieldIndexMap = new FieldIndexMap();
+        fieldIndexMap.create("val", true);
+
+        final Expression exp = parser.parse(fieldIndexMap, expression);
         final String actual = exp.toString();
         Assert.assertEquals(expression, actual);
         return exp;
     }
 
     private Expression createExpression2(final String expression) throws ParseException {
-        final Expression exp = parser.parse(FieldIndexMap.forFields("val1", "val2"), expression);
+        final FieldIndexMap fieldIndexMap = new FieldIndexMap();
+        fieldIndexMap.create("val1", true);
+        fieldIndexMap.create("val2", true);
+
+        final Expression exp = parser.parse(fieldIndexMap, expression);
         final String actual = exp.toString();
         Assert.assertEquals(expression, actual);
         return exp;
