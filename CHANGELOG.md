@@ -8,7 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-## [v1.0.2] - 2018-01-28
+## [v1.0.3] - 2018-01-26
+
+* Issue **#2** : The expression function `extractSchemeSpecificPortFromUri` has now been corrected to be called `extractSchemeSpecificPartFromUri`.
+
+* Issue **#2** : The missing expression function `extractQueryFromUri` has been added.
+
+## [v1.0.2] - 2018-01-14
 
 * Issue **#2** : Added expression functions to extract various URI components.
 
