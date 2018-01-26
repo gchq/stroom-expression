@@ -639,3 +639,122 @@ decode('red')
 > 'rgb(255, 0, 0)'
 
 ```
+
+# URI Functions
+
+## ExtractAuthorityFromUri
+1. A URI
+```
+extractAuthorityFromUri(uri)
+```
+
+Example
+```
+extractAuthorityFromUri('http://www.example.com:1234/this/is/a/path')
+
+> 'www.example.com:1234'
+```
+
+## ExtractFragmentFromUri
+1. A URI
+```
+extractFragmentFromUri(uri)
+```
+
+Example
+```
+extractFragmentFromUri('http://www.example.com:1234/this/is/a/path#frag')
+
+> 'frag'
+```
+
+## ExtractHostFromUri
+1. A URI
+```
+extractHostFromUri(uri)
+```
+
+Example
+```
+extractHostFromUri('http://www.example.com:1234/this/is/a/path')
+
+> 'www.example.com'
+```
+
+## ExtractPathFromUri
+1. A URI
+```
+extractPathFromUri(uri)
+```
+
+Example
+```
+extractPathFromUri('http://www.example.com:1234/this/is/a/path')
+
+> '/this/is/a/path'
+```
+
+## ExtractPortFromUri
+1. A URI
+```
+extractPortFromUri(uri)
+```
+
+Example
+```
+extractPortFromUri('http://www.example.com:1234/this/is/a/path')
+
+> '1234'
+```
+
+## ExtractQueryFromUri
+1. A URI
+```
+extractQueryFromUri(uri)
+```
+
+Example
+```
+extractQueryFromUri('http://www.example.com:1234/this/is/a/path?this=that&foo=bar')
+
+> 'this=that&foo=bar'
+```
+
+## ExtractSchemeFromUri
+1. A URI
+```
+extractSchemeFromUri(uri)
+```
+
+Example
+```
+extractSchemeFromUri('http://www.example.com:1234/this/is/a/path')
+
+> 'http'
+```
+
+## ExtractSchemeSpecificPartFromUri
+1. A URI
+```
+extractSchemeSpecificPartFromUri(uri)
+```
+
+Example
+```
+extractSchemeSpecificPartFromUri('http://www.example.com:1234/this/is/a/path')
+
+> '//www.example.com:1234/this/is/a/path'
+```
+
+## ExtractUserInfoFromUri
+1. A URI
+```
+extractUserInfoFromUri(uri)
+```
+
+Example
+```
+extractUserInfoFromUri('http://john:doe@example.com:81/')
+
+> 'john:doe'
+```
