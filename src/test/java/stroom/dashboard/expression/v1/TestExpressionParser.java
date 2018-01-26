@@ -54,7 +54,7 @@ public class TestExpressionParser {
         test("lessThanOrEqualTo(1, 0)");
         test("1=0");
         test("decode('fred', 'fr.+', 'freda', 'freddy')");
-        test("extractHostFromUri('http://www.somecompany.com:1234/this/is/a/path')");
+        test("extractHostFromUri('http://www.example.com:1234/this/is/a/path')");
     }
 
     private void test(final String expression) throws ParseException {
@@ -999,9 +999,9 @@ public class TestExpressionParser {
         final Expression exp = createExpression("extractAuthorityFromUri(${val})");
         final Generator generator = exp.createGenerator();
 
-        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        generator.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Object out = generator.eval();
-        Assert.assertEquals("www.somecompany.com:1234", out);
+        Assert.assertEquals("www.example.com:1234", out);
     }
 
     @Test
@@ -1009,9 +1009,9 @@ public class TestExpressionParser {
         final Expression exp = createExpression("extractFragmentFromUri(${val})");
         final Generator generator = exp.createGenerator();
 
-        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        generator.set(getVal("http://www.example.com:1234/this/is/a/path#frag"));
         Object out = generator.eval();
-        Assert.assertNull(out);
+        Assert.assertEquals("frag", out);
     }
 
     @Test
@@ -1019,9 +1019,9 @@ public class TestExpressionParser {
         final Expression exp = createExpression("extractHostFromUri(${val})");
         final Generator generator = exp.createGenerator();
 
-        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        generator.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Object out = generator.eval();
-        Assert.assertEquals("www.somecompany.com", out);
+        Assert.assertEquals("www.example.com", out);
     }
 
     @Test
@@ -1029,7 +1029,7 @@ public class TestExpressionParser {
         final Expression exp = createExpression("extractPathFromUri(${val})");
         final Generator generator = exp.createGenerator();
 
-        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        generator.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Object out = generator.eval();
         Assert.assertEquals("/this/is/a/path", out);
     }
@@ -1039,9 +1039,19 @@ public class TestExpressionParser {
         final Expression exp = createExpression("extractPortFromUri(${val})");
         final Generator generator = exp.createGenerator();
 
-        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        generator.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Object out = generator.eval();
         Assert.assertEquals("1234", out);
+    }
+
+    @Test
+    public void testExtractQueryFromUri() throws ParseException {
+        final Expression exp = createExpression("extractQueryFromUri(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("http://www.example.com:1234/this/is/a/path?this=that&foo=bar"));
+        Object out = generator.eval();
+        Assert.assertEquals("this=that&foo=bar", out);
     }
 
     @Test
@@ -1049,19 +1059,19 @@ public class TestExpressionParser {
         final Expression exp = createExpression("extractSchemeFromUri(${val})");
         final Generator generator = exp.createGenerator();
 
-        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        generator.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Object out = generator.eval();
         Assert.assertEquals("http", out);
     }
 
     @Test
-    public void testExtractSchemeSpecificPortFromUri() throws ParseException {
-        final Expression exp = createExpression("extractSchemeSpecificPortFromUri(${val})");
+    public void testExtractSchemeSpecificPartFromUri() throws ParseException {
+        final Expression exp = createExpression("extractSchemeSpecificPartFromUri(${val})");
         final Generator generator = exp.createGenerator();
 
-        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        generator.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Object out = generator.eval();
-        Assert.assertEquals("//www.somecompany.com:1234/this/is/a/path", out);
+        Assert.assertEquals("//www.example.com:1234/this/is/a/path", out);
     }
 
     @Test
@@ -1069,9 +1079,9 @@ public class TestExpressionParser {
         final Expression exp = createExpression("extractUserInfoFromUri(${val})");
         final Generator generator = exp.createGenerator();
 
-        generator.set(getVal("http://www.somecompany.com:1234/this/is/a/path"));
+        generator.set(getVal("http://john:doe@example.com:81/"));
         Object out = generator.eval();
-        Assert.assertNull(out);
+        Assert.assertEquals("john:doe", out);
     }
 
     private Expression createExpression(final String expression) throws ParseException {
