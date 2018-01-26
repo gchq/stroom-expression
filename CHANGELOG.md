@@ -8,9 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-* Issue **#2** : Added expression functions to extract various URI components.
+## [v1.0.2] - 2018-01-28
 
-### Changed
+* Issue **#2** : Added expression functions to extract various URI components.
 
 ## [v1.0.1] - 2017-11-28
 
