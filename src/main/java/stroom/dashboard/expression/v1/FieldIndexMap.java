@@ -17,7 +17,9 @@
 package stroom.dashboard.expression.v1;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class FieldIndexMap {
@@ -66,5 +68,12 @@ public class FieldIndexMap {
         Arrays.stream(fieldNames)
                 .forEach(f -> instance.create(f, true));
         return instance;
+    }
+
+    /**
+     * @return An unmodifiable copy of the underlying field to position map
+     */
+    public Map<String, Integer> getMap() {
+        return Collections.unmodifiableMap(new LinkedHashMap<>(fieldToPos));
     }
 }
