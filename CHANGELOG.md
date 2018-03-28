@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+* Add FieldIndexMap.getMap()
+
 ### Added
 
 ## [v1.0.3] - 2018-01-26
