@@ -70,11 +70,16 @@ public class FunctionFactory {
         add(StringLength.class, StringLength.NAME);
         add(UpperCase.class, UpperCase.NAME);
         add(LowerCase.class, LowerCase.NAME);
+        add(IndexOf.class, IndexOf.NAME);
+        add(LastIndexOf.class, LastIndexOf.NAME);
         add(Substring.class, Substring.NAME);
+        add(SubstringBefore.class, SubstringBefore.NAME);
+        add(SubstringAfter.class, SubstringAfter.NAME);
         add(Decode.class, Decode.NAME);
 
         add(Count.class, Count.NAME);
         add(CountGroups.class, CountGroups.NAME);
+        add(CountUnique.class, CountUnique.NAME);
 
         add(Power.class, Power.NAME, Power.ALIAS);
         add(Divide.class, Divide.NAME, Divide.ALIAS);
