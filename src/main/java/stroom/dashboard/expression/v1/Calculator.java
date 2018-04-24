@@ -21,15 +21,16 @@ import java.io.Serializable;
 public abstract class Calculator implements Serializable {
     private static final long serialVersionUID = 7429374303179048909L;
 
-    public Double calc(final Double current, final Object value) {
-        final Double val = TypeConverter.getDouble(value);
+    public Var calc(final Var current, final Var value) {
+        final Double cur = current.toDouble();
+        final Double val = value.toDouble();
         if (val == null) {
             return current;
         }
-        if (current == null) {
-            return val;
+        if (cur == null) {
+            return value;
         }
-        return op(current, val);
+        return new VarDouble(op(cur, val));
     }
 
     protected abstract double op(final double cur, final double val);

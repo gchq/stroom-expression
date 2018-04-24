@@ -309,7 +309,7 @@ public class ExpressionTokeniser {
         return output;
     }
 
-    public static class Token {
+    public static class Token implements Param {
         static Type[] SIMPLE_TOKENS = new Type[]{
                 Type.COMMA,
                 Type.ORDER,

@@ -35,52 +35,50 @@ public class SubstringAfter extends AbstractFunction implements Serializable {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
         afterFunction = parseParam(params[1], "second");
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
 
         } else {
-            final String value = param.toString();
-            function = new StaticValueFunction(value);
+            function = new StaticValueFunction((Var) param);
             hasAggregate = false;
 
             // Optimise replacement of static input in case user does something stupid.
             if (afterFunction instanceof StaticValueFunction) {
-                final String after = TypeConverter.getString(afterFunction.createGenerator().eval());
+                final String after = afterFunction.createGenerator().eval().toString();
                 if (after != null) {
+                    final String value = param.toString();
                     final int index = value.indexOf(after);
 
                     if (index < 0) {
-                        gen = new StaticValueFunction("").createGenerator();
+                        gen = new StaticValueFunction(VarString.EMPTY).createGenerator();
                     } else {
-                        gen = new StaticValueFunction(value.substring(index + after.length())).createGenerator();
+                        gen = new StaticValueFunction(new VarString(value.substring(index + after.length()))).createGenerator();
                     }
                 } else {
-                    gen = new StaticValueFunction("").createGenerator();
+                    gen = new StaticValueFunction(VarString.EMPTY).createGenerator();
                 }
             }
         }
     }
 
-    private Function parseParam(final Object param, final String paramPos) throws ParseException {
+    private Function parseParam(final Param param, final String paramPos) throws ParseException {
         Function function;
         if (param instanceof Function) {
             function = (Function) param;
             if (function.hasAggregate()) {
                 throw new ParseException("Non aggregate function expected as " + paramPos + " argument of '" + name + "' function", 0);
             }
+        } else if (!(param instanceof VarString)) {
+            throw new ParseException("String or function expected as " + paramPos + " argument of '" + name + "' function", 0);
         } else {
-            final String string = TypeConverter.getString(param);
-            if (string == null) {
-                throw new ParseException("String expected as " + paramPos + " argument of '" + name + "' function", 0);
-            }
-            function = new StaticValueFunction(string);
+            function = new StaticValueFunction((Var) param);
         }
         return function;
     }
@@ -111,29 +109,29 @@ public class SubstringAfter extends AbstractFunction implements Serializable {
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             childGenerator.set(values);
             afterGenerator.set(values);
         }
 
         @Override
-        public Object eval() {
-            final String value = TypeConverter.getString(childGenerator.eval());
+        public Var eval() {
+            final String value = childGenerator.eval().toString();
             if (value != null) {
-                final String after = TypeConverter.getString(afterGenerator.eval());
+                final String after = afterGenerator.eval().toString();
                 if (after == null) {
-                    return "";
+                    return VarString.EMPTY;
                 }
 
                 final int index = value.indexOf(after);
                 if (index < 0) {
-                    return "";
+                    return VarString.EMPTY;
                 }
 
-                return value.substring(index + after.length());
+                return new VarString(value.substring(index + after.length()));
             }
 
-            return null;
+            return VarNull.INSTANCE;
         }
     }
 }

@@ -26,7 +26,7 @@ public abstract class AbstractManyChildGenerator extends AbstractGenerator {
     }
 
     @Override
-    public void addChildKey(final Object key) {
+    public void addChildKey(final Var key) {
         if (childGenerators != null) {
             for (final Generator gen : childGenerators) {
                 gen.addChildKey(key);
@@ -35,10 +35,10 @@ public abstract class AbstractManyChildGenerator extends AbstractGenerator {
     }
 
     @Override
-    public abstract void set(String[] values);
+    public abstract void set(Var[] values);
 
     @Override
-    public abstract Object eval();
+    public abstract Var eval();
 
     @Override
     public void merge(final Generator generator) {

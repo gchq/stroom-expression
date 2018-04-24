@@ -29,17 +29,17 @@ public abstract class ExtractionFunction extends AbstractFunction implements Ser
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
         } else {
             // Optimise replacement of static input in case user does something stupid.
             final String string = param.toString();
-            gen = new StaticValueFunction(getExtractor().extract(string)).createGenerator();
+            gen = new StaticValueFunction(new VarString(getExtractor().extract(string))).createGenerator();
             hasAggregate = false;
         }
     }

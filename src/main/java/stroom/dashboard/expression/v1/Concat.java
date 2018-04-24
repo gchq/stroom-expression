@@ -36,22 +36,22 @@ public class Concat extends AbstractManyChildFunction {
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Object eval() {
+        public Var eval() {
             final StringBuilder sb = new StringBuilder();
             for (final Generator gen : childGenerators) {
-                final Object value = gen.eval();
+                final String value = gen.eval().toString();
                 if (value != null) {
-                    sb.append(TypeConverter.getString(value));
+                    sb.append(value);
                 }
             }
-            return sb.toString();
+            return new VarString(sb.toString());
         }
     }
 }

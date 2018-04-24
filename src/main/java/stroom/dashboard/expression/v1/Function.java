@@ -16,9 +16,10 @@
 
 package stroom.dashboard.expression.v1;
 
+import java.io.Serializable;
 import java.text.ParseException;
 
-public interface Function {
+public interface Function extends Param, Serializable {
     /**
      * Set the parameters that this function will use.
      *
@@ -26,7 +27,7 @@ public interface Function {
      * @throws ParseException If any parameters are illegal/unexpected then throw an
      *                        exception.
      */
-    void setParams(Object[] params) throws ParseException;
+    void setParams(Param[] params) throws ParseException;
 
     /**
      * Create a generator to generate a value for a cell based on the function

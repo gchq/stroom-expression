@@ -26,14 +26,14 @@ public class Brackets extends AbstractFunction {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
         } else {
-            function = new StaticValueFunction(param);
+            function = new StaticValueFunction((Var) param);
         }
     }
 

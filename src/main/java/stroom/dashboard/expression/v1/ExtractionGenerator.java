@@ -27,16 +27,16 @@ public class ExtractionGenerator extends AbstractSingleChildGenerator {
     }
 
     @Override
-    public void set(final String[] values) {
+    public void set(final Var[] values) {
         childGenerator.set(values);
     }
 
     @Override
-    public Object eval() {
-        final String string = TypeConverter.getString(childGenerator.eval());
+    public Var eval() {
+        final String string = childGenerator.eval().toString();
         if (string != null) {
-            return extractor.extract(string);
+            return new VarString(extractor.extract(string));
         }
-        return null;
+        return VarNull.INSTANCE;
     }
 }

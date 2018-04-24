@@ -29,14 +29,14 @@ public abstract class RoundDate extends AbstractFunction {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
         } else {
-            function = new StaticValueFunction(param);
+            function = new StaticValueFunction((Var) param);
         }
     }
 
@@ -57,10 +57,15 @@ public abstract class RoundDate extends AbstractFunction {
         private static final long serialVersionUID = 1099553839843710283L;
 
         @Override
-        public Double calc(final Double value) {
-            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(value.longValue()), ZoneOffset.UTC);
+        public Var calc(final Var value) {
+            final Long val = value.toLong();
+            if (val == null) {
+                return VarNull.INSTANCE;
+            }
+
+            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(val), ZoneOffset.UTC);
             dateTime = adjust(dateTime);
-            return (double) dateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
+            return new VarLong(dateTime.toInstant(ZoneOffset.UTC).toEpochMilli());
         }
 
         protected abstract LocalDateTime adjust(LocalDateTime dateTime);

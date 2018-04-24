@@ -27,15 +27,14 @@ public abstract class AbstractRoundingFunction extends AbstractFunction {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
         if (params.length == 2) {
-            if (params[1] instanceof Double) {
-                final Double precision = (Double) params[1];
-                if (precision > 0) {
-                    final Double decimalPlaces = Double.valueOf(precision.intValue());
-                    calculator = createCalculator(decimalPlaces);
+            if (params[1] instanceof Var) {
+                final Integer precision = ((Var) params[1]).toInteger();
+                if (precision != null && precision > 0) {
+                    calculator = createCalculator((double) precision);
                 } else {
                     throw new ParseException(
                             "Precision argument of '" + name + "' must be positive number if specified", 0);
@@ -48,11 +47,11 @@ public abstract class AbstractRoundingFunction extends AbstractFunction {
             calculator = createCalculator(null);
         }
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
         } else {
-            function = new StaticValueFunction(param);
+            function = new StaticValueFunction((Var) param);
         }
     }
 

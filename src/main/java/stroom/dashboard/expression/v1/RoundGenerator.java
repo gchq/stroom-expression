@@ -27,16 +27,12 @@ public class RoundGenerator extends AbstractSingleChildGenerator {
     }
 
     @Override
-    public void set(final String[] values) {
+    public void set(final Var[] values) {
         childGenerator.set(values);
     }
 
     @Override
-    public Object eval() {
-        final Double dbl = TypeConverter.getDouble(childGenerator.eval());
-        if (dbl != null) {
-            return calculator.calc(dbl);
-        }
-        return null;
+    public Var eval() {
+        return calculator.calc(childGenerator.eval());
     }
 }

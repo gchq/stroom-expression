@@ -18,15 +18,13 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 
-public abstract class AbstractGenerator implements Generator, Serializable, Comparable<Object> {
+public abstract class AbstractGenerator implements Generator, Serializable, Comparable<Generator> {
     private static final long serialVersionUID = 513621715143449935L;
 
     @Override
-    public int compareTo(final Object o) {
-        final Generator gen = (Generator) o;
-        final Object o1 = eval();
-        final Object o2 = gen.eval();
-
+    public int compareTo(final Generator gen) {
+        final Var o1 = eval();
+        final Var o2 = gen.eval();
         return ObjectCompareUtil.compare(o1, o2);
     }
 }

@@ -26,7 +26,7 @@ public class Random extends AbstractFunction {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
     }
 
@@ -43,15 +43,15 @@ public class Random extends AbstractFunction {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = -7551073465232523106L;
 
-        private Object value;
+        private Var value;
 
         @Override
-        public void set(final String[] values) {
-            value = Math.random();
+        public void set(final Var[] values) {
+            value = new VarDouble(Math.random());
         }
 
         @Override
-        public Object eval() {
+        public Var eval() {
             return value;
         }
     }

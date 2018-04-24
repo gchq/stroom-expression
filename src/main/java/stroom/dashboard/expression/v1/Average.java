@@ -52,7 +52,7 @@ public class Average extends AbstractManyChildFunction implements AggregateFunct
 
         private final Calculator calculator;
 
-        private Double current;
+        private Var current = VarNull.INSTANCE;
         private int count;
 
         public AggregateGen(final Generator childGenerator, final Calculator calculator) {
@@ -61,18 +61,18 @@ public class Average extends AbstractManyChildFunction implements AggregateFunct
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             childGenerator.set(values);
             current = calculator.calc(current, childGenerator.eval());
             count++;
         }
 
         @Override
-        public Object eval() {
-            if (current == null || count == 0) {
-                return null;
+        public Var eval() {
+            if (!current.hasValue() || count == 0) {
+                return VarNull.INSTANCE;
             }
-            return current / count;
+            return new VarDouble(current.toDouble() / count);
         }
 
         @Override
@@ -96,25 +96,22 @@ public class Average extends AbstractManyChildFunction implements AggregateFunct
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             for (final Generator gen : childGenerators) {
                 gen.set(values);
             }
         }
 
         @Override
-        public Object eval() {
-            Double value = null;
+        public Var eval() {
+            Var value = VarNull.INSTANCE;
             for (final Generator gen : childGenerators) {
                 value = calculator.calc(value, gen.eval());
             }
-
-            final Double cur = TypeConverter.getDouble(value);
-            if (cur == null) {
-                return null;
+            if (!value.hasValue()) {
+                return value;
             }
-
-            return cur / childGenerators.length;
+            return new VarDouble(value.toDouble() / childGenerators.length);
         }
     }
 }

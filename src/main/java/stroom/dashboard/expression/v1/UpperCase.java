@@ -31,16 +31,16 @@ public class UpperCase extends AbstractFunction implements Serializable {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
         } else {
             // Optimise replacement of static input in case user does something stupid.
-            gen = new StaticValueFunction(param.toString().toUpperCase()).createGenerator();
+            gen = new StaticValueFunction(new VarString(param.toString().toUpperCase())).createGenerator();
             hasAggregate = false;
         }
     }
@@ -70,18 +70,18 @@ public class UpperCase extends AbstractFunction implements Serializable {
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Object eval() {
-            final Object val = childGenerator.eval();
-            if (val != null) {
-                return TypeConverter.getString(val).toUpperCase();
+        public Var eval() {
+            final Var val = childGenerator.eval();
+            final String string = val.toString();
+            if (string != null) {
+                return new VarString(string.toUpperCase());
             }
-
-            return null;
+            return VarNull.INSTANCE;
         }
     }
 }

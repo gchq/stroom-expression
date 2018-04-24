@@ -35,18 +35,18 @@ public class IndexOf extends AbstractFunction implements Serializable {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
         stringFunction = parseParam(params[1], "second");
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
 
         } else {
-            function = new StaticValueFunction(param.toString());
+            function = new StaticValueFunction((Var) param);
             hasAggregate = false;
 
             // Optimise replacement of static input in case user does something stupid.
@@ -56,30 +56,28 @@ public class IndexOf extends AbstractFunction implements Serializable {
                     final String value = param.toString();
                     final int index = value.indexOf(string);
                     if (index < 0) {
-                        gen = new StaticValueFunction(null).createGenerator();
+                        gen = new StaticValueFunction(VarNull.INSTANCE).createGenerator();
                     } else {
-                        gen = new StaticValueFunction(index).createGenerator();
+                        gen = new StaticValueFunction(new VarInteger(index)).createGenerator();
                     }
                 } else {
-                    gen = new StaticValueFunction(null).createGenerator();
+                    gen = new StaticValueFunction(VarNull.INSTANCE).createGenerator();
                 }
             }
         }
     }
 
-    private Function parseParam(final Object param, final String paramPos) throws ParseException {
+    private Function parseParam(final Param param, final String paramPos) throws ParseException {
         Function function;
         if (param instanceof Function) {
             function = (Function) param;
             if (function.hasAggregate()) {
                 throw new ParseException("Non aggregate function expected as " + paramPos + " argument of '" + name + "' function", 0);
             }
+        } else if (!(param instanceof VarString)) {
+            throw new ParseException("String or function expected as " + paramPos + " argument of '" + name + "' function", 0);
         } else {
-            final String string = TypeConverter.getString(param);
-            if (string == null) {
-                throw new ParseException("String expected as " + paramPos + " argument of '" + name + "' function", 0);
-            }
-            function = new StaticValueFunction(string);
+            function = new StaticValueFunction((Var) param);
         }
         return function;
     }
@@ -110,27 +108,27 @@ public class IndexOf extends AbstractFunction implements Serializable {
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             childGenerator.set(values);
             stringGenerator.set(values);
         }
 
         @Override
-        public Object eval() {
-            final Object val = childGenerator.eval();
-            if (val != null) {
-                final String string = TypeConverter.getString(stringGenerator.eval());
+        public Var eval() {
+            final Var val = childGenerator.eval();
+            final String value = val.toString();
+
+            if (value != null) {
+                final String string = stringGenerator.eval().toString();
                 if (string != null) {
-                    final String value = TypeConverter.getString(val);
                     final int index = value.indexOf(string);
-                    if (index < 0) {
-                        return null;
+                    if (index >= 0) {
+                        return new VarInteger(index);
                     }
-                    return index;
                 }
             }
 
-            return null;
+            return VarNull.INSTANCE;
         }
     }
 }

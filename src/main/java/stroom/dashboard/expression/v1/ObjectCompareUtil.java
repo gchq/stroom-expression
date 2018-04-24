@@ -21,12 +21,20 @@ public final class ObjectCompareUtil {
         // Utility class
     }
 
-    public static int compare(final Object o1, final Object o2) {
+    public static int compare(final Var o1, final Var o2) {
         if (o1 != null && o2 != null) {
-            if (o1 instanceof Double && o2 instanceof Double) {
-                return ((Double) o1).compareTo((Double) o2);
+            final Double d1 = o1.toDouble();
+            final Double d2 = o2.toDouble();
+
+            if (d1 != null && d2 != null) {
+                return d1.compareTo(d2);
             }
-            return o1.toString().compareToIgnoreCase(o2.toString());
+
+            final String str1 = o1.toString();
+            final String str2 = o2.toString();
+            if (str1 != null && str2 != null) {
+                return str1.compareToIgnoreCase(str2);
+            }
         }
         if (o1 == null) {
             return -1;

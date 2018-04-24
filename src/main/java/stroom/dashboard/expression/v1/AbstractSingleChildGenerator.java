@@ -26,15 +26,15 @@ public abstract class AbstractSingleChildGenerator extends AbstractGenerator {
     }
 
     @Override
-    public void addChildKey(final Object key) {
+    public void addChildKey(final Var key) {
         childGenerator.addChildKey(key);
     }
 
     @Override
-    public abstract void set(String[] values);
+    public abstract void set(Var[] values);
 
     @Override
-    public abstract Object eval();
+    public abstract Var eval();
 
     @Override
     public void merge(final Generator generator) {

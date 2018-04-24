@@ -46,7 +46,7 @@ public class LessThan extends AbstractManyChildFunction {
         if (usingOperator) {
             if (params != null) {
                 for (int i = 0; i < params.length; i++) {
-                    final Object param = params[i];
+                    final Param param = params[i];
                     appendParam(sb, param);
                     if (i < params.length - 1) {
                         sb.append(name);
@@ -66,32 +66,32 @@ public class LessThan extends AbstractManyChildFunction {
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Object eval() {
-            String retVal = "false";
-            Object a = childGenerators[0].eval();
-            Object b = childGenerators[1].eval();
+        public Var eval() {
+            final Var a = childGenerators[0].eval();
+            final Var b = childGenerators[1].eval();
+            Var retVal = VarBoolean.FALSE;
 
-            if (a == null || b == null) {
-                retVal = null;
-            }
-
-            Double da = TypeConverter.getDouble(a);
-            Double db = TypeConverter.getDouble(b);
-            if (da == null || db == null) {
-                int ret = TypeConverter.getString(a).compareTo(TypeConverter.getString(b));
-                if (ret < 0) {
-                    retVal = "true";
-                }
+            if (!a.hasValue() || !b.hasValue()) {
+                retVal = VarNull.INSTANCE;
             } else {
-                if (da < db) {
-                    retVal = "true";
+                final Double da = a.toDouble();
+                final Double db = b.toDouble();
+                if (da == null || db == null) {
+                    int ret = a.toString().compareTo(b.toString());
+                    if (ret < 0) {
+                        retVal = VarBoolean.TRUE;
+                    }
+                } else {
+                    if (da < db) {
+                        retVal = VarBoolean.TRUE;
+                    }
                 }
             }
 

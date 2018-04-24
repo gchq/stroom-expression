@@ -21,16 +21,16 @@ import stroom.dashboard.expression.v1.ExpressionTokeniser.Token;
 import java.text.ParseException;
 
 public class ParamFactory {
-    public Object create(final FieldIndexMap fieldIndexMap, final Token token) throws ParseException {
+    public Param create(final FieldIndexMap fieldIndexMap, final Token token) throws ParseException {
         final String value = token.toString();
 
         // Token should be string or number or field.
         switch (token.getType()) {
             case STRING:
-                return TypeConverter.unescape(value);
+                return new VarString(TypeConverter.unescape(value));
 
             case NUMBER:
-                return TypeConverter.getDouble(value);
+                return new VarDouble(TypeConverter.getDouble(value));
 
             case FIELD:
                 final String fieldName = value.substring(2, value.length() - 1);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Crown Copyright
+ * Copyright 2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,43 +16,47 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Expression implements Function {
-    private Function function = null;
-    private boolean hasAggregate;
+public class VarNull implements Var {
+    public static final VarNull INSTANCE = new VarNull();
 
     @Override
-    public void setParams(final Param[] params) {
-        final Param param = params[0];
-        if (param instanceof Function) {
-            function = (Function) param;
-        } else {
-            function = new StaticValueFunction((Var) param);
-        }
-
-        this.hasAggregate = function.hasAggregate();
+    public Integer toInteger() {
+        return null;
     }
 
     @Override
-    public Generator createGenerator() {
-        return function.createGenerator();
+    public Long toLong() {
+        return null;
+    }
+
+    @Override
+    public Double toDouble() {
+        return null;
+    }
+
+    @Override
+    public Boolean toBoolean() {
+        return null;
     }
 
     @Override
     public String toString() {
-        if (function == null) {
-            return "";
-        }
-
-        return function.toString();
+        return null;
     }
 
     @Override
-    public boolean isAggregate() {
+    public boolean hasValue() {
         return false;
     }
 
     @Override
-    public boolean hasAggregate() {
-        return hasAggregate;
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
     }
 }

@@ -51,21 +51,21 @@ public abstract class AbstractAggregateFunction extends AbstractManyChildFunctio
 
         private final Calculator calculator;
 
-        private Double current;
+        private Var current = VarNull.INSTANCE;
 
-        public AggregateGen(final Generator childGenerator, final Calculator calculator) {
+        AggregateGen(final Generator childGenerator, final Calculator calculator) {
             super(childGenerator);
             this.calculator = calculator;
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             childGenerator.set(values);
             current = calculator.calc(current, childGenerator.eval());
         }
 
         @Override
-        public Object eval() {
+        public Var eval() {
             return current;
         }
 
@@ -88,19 +88,18 @@ public abstract class AbstractAggregateFunction extends AbstractManyChildFunctio
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             for (final Generator gen : childGenerators) {
                 gen.set(values);
             }
         }
 
         @Override
-        public Object eval() {
-            Double value = null;
+        public Var eval() {
+            Var value = VarNull.INSTANCE;
             for (final Generator gen : childGenerators) {
                 value = calculator.calc(value, gen.eval());
             }
-
             return value;
         }
     }

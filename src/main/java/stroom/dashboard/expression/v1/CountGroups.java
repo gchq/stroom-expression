@@ -44,22 +44,22 @@ public class CountGroups extends AbstractFunction {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = -9130548669643582369L;
 
-        private final Set<Object> childGroups = new HashSet<>();
+        private final Set<Var> childGroups = new HashSet<>();
         private long nonGroupedChildCount;
 
         @Override
-        public Object eval() {
+        public Var eval() {
             final long count = nonGroupedChildCount + childGroups.size();
             if (count == 0) {
-                return null;
+                return VarNull.INSTANCE;
             }
 
-            return Double.valueOf(count);
+            return new VarLong(count);
         }
 
         @Override
-        public void addChildKey(final Object key) {
-            if (key == null) {
+        public void addChildKey(final Var key) {
+            if (!key.hasValue()) {
                 nonGroupedChildCount++;
             } else {
                 childGroups.add(key);

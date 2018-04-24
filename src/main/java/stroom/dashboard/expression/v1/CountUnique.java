@@ -31,10 +31,10 @@ public class CountUnique extends AbstractFunction {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
 
@@ -47,7 +47,7 @@ public class CountUnique extends AbstractFunction {
              * Optimise replacement of static input in case user does something
              * stupid.
              */
-            gen = new StaticValueFunction(1D).createGenerator();
+            gen = new StaticValueFunction(new VarInteger(1)).createGenerator();
         }
     }
 
@@ -74,24 +74,24 @@ public class CountUnique extends AbstractFunction {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = -6770724151493320673L;
 
-        private final Set<Object> uniqueValues = new HashSet<>();
+        private final Set<Var> uniqueValues = new HashSet<>();
 
         public Gen(final Generator childGenerator) {
             super(childGenerator);
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             childGenerator.set(values);
-            final Object value = childGenerator.eval();
-            if (value != null) {
+            final Var value = childGenerator.eval();
+            if (value.hasValue()) {
                 uniqueValues.add(value);
             }
         }
 
         @Override
-        public Object eval() {
-            return (double) uniqueValues.size();
+        public Var eval() {
+            return new VarInteger(uniqueValues.size());
         }
 
         @Override

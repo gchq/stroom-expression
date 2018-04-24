@@ -1,11 +1,11 @@
 /*
- * Copyright 2017 Crown Copyright
+ * Copyright 2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,24 +16,18 @@
 
 package stroom.dashboard.expression.v1;
 
-public abstract class AbstractNoChildGenerator extends AbstractGenerator {
-    private static final long serialVersionUID = 513621715143449935L;
+import java.io.Serializable;
 
-    public AbstractNoChildGenerator() {
-    }
+public interface Var extends Param, Serializable {
+    Integer toInteger();
 
-    @Override
-    public void addChildKey(final Var key) {
-    }
+    Long toLong();
 
-    @Override
-    public void set(final Var[] values) {
-    }
+    Double toDouble();
 
-    @Override
-    public abstract Var eval();
+    Boolean toBoolean();
 
-    @Override
-    public void merge(final Generator generator) {
-    }
+    String toString();
+
+    boolean hasValue();
 }

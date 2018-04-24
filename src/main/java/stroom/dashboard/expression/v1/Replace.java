@@ -35,17 +35,17 @@ public class Replace extends AbstractFunction implements Serializable {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        if (!(params[1] instanceof String)) {
+        if (!(params[1] instanceof VarString)) {
             throw new ParseException("String expected as second argument of '" + name + "' function", 0);
         }
         final String regex = params[1].toString();
         if (regex.length() == 0) {
             throw new ParseException("An empty regex has been defined for second argument of '" + name + "' function", 0);
         }
-        if (!(params[2] instanceof String)) {
+        if (!(params[2] instanceof VarString)) {
             throw new ParseException("String expected as third argument of '" + name + "' function", 0);
         }
         replacement = params[2].toString();
@@ -54,7 +54,7 @@ public class Replace extends AbstractFunction implements Serializable {
         pattern = new SerializablePattern(regex);
         pattern.getOrCreatePattern();
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
@@ -62,7 +62,7 @@ public class Replace extends AbstractFunction implements Serializable {
             // Optimise replacement of static input in case user does something
             // stupid.
             final String newValue = pattern.matcher(param.toString()).replaceAll(replacement);
-            gen = new StaticValueFunction(newValue).createGenerator();
+            gen = new StaticValueFunction(new VarString(newValue)).createGenerator();
             hasAggregate = false;
         }
     }
@@ -95,14 +95,18 @@ public class Replace extends AbstractFunction implements Serializable {
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Object eval() {
-            final Object val = childGenerator.eval();
-            return pattern.matcher(TypeConverter.getString(val)).replaceAll(replacement);
+        public Var eval() {
+            final Var val = childGenerator.eval();
+            if (!val.hasValue()) {
+                return val;
+            }
+
+            return new VarString(pattern.matcher(val.toString()).replaceAll(replacement));
         }
     }
 

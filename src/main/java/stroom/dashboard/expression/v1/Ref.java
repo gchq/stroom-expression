@@ -52,12 +52,12 @@ public class Ref extends AbstractFunction {
         private static final long serialVersionUID = 8153777070911899616L;
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
         }
 
         @Override
-        public Object eval() {
-            return null;
+        public Var eval() {
+            return VarNull.INSTANCE;
         }
     }
 
@@ -65,19 +65,19 @@ public class Ref extends AbstractFunction {
         private static final long serialVersionUID = 8153777070911899616L;
 
         private final int fieldIndex;
-        private String current;
+        private Var current;
 
         public Gen(final int fieldIndex) {
             this.fieldIndex = fieldIndex;
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             current = values[fieldIndex];
         }
 
         @Override
-        public Object eval() {
+        public Var eval() {
             return current;
         }
     }

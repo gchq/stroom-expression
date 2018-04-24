@@ -46,7 +46,7 @@ public class Equals extends AbstractManyChildFunction {
         if (usingOperator) {
             if (params != null) {
                 for (int i = 0; i < params.length; i++) {
-                    final Object param = params[i];
+                    final Param param = params[i];
                     appendParam(sb, param);
                     if (i < params.length - 1) {
                         sb.append(name);
@@ -66,20 +66,24 @@ public class Equals extends AbstractManyChildFunction {
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Object eval() {
-            String retVal = "false";
-            final Object a = childGenerators[0].eval();
-            final Object b = childGenerators[1].eval();
+        public Var eval() {
+            final Var a = childGenerators[0].eval();
+            final Var b = childGenerators[1].eval();
+            Var retVal = VarBoolean.FALSE;
 
-            if (a.toString().equals(b.toString())) {
-                retVal = "true";
+            if (!a.hasValue() || !b.hasValue()) {
+                retVal = VarNull.INSTANCE;
+            } else {
+                if (a.toString().equals(b.toString())) {
+                    retVal = VarBoolean.TRUE;
+                }
             }
 
             return retVal;

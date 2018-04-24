@@ -41,16 +41,16 @@ public class Count extends AbstractFunction {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = 9222017471352363944L;
 
-        private double count;
+        private long count;
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             count++;
         }
 
         @Override
-        public Object eval() {
-            return count;
+        public Var eval() {
+            return new VarLong(count);
         }
 
         @Override

@@ -26,119 +26,168 @@ public class Decode extends AbstractFunction implements Serializable {
 
     private Generator gen;
     private Function function;
-    private boolean hasAggregate;
-
-    private String[] str;
-
-    private SerializablePattern[] test;
-    private String[] result;
-    private String otherwise;
 
     public Decode(final String name) {
         super(name, 4, Integer.MAX_VALUE);
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
         if (params.length % 2 == 1) {
             throw new ParseException("Expected to get an even number of arguments of '" + name + "' function", 0);
         }
-        test = new SerializablePattern[params.length / 2];
-        result = new String[params.length / 2];
-        str = new String[params.length - 1];
-        int j = 0, k = 0;
 
-        for (int i = 1; i < params.length - 1; i++) {
-            if (i % 2 == 1) {
-                final String regex = TypeConverter.getString(params[i]);
-                if (regex.length() == 0) {
-                    throw new ParseException("An empty regex has been defined in '" + name + "' function", 0);
+        for (int i = 0; i < params.length - 1; i++) {
+            final Param param = params[i];
+
+            if (param instanceof Function) {
+                if (((Function) param).hasAggregate()) {
+                    throw new ParseException("Parameter cannot be an aggregating function in '" + name + "' function", 0);
                 }
-                test[j] = new SerializablePattern(regex);
-            } else {
-                result[j] = (String) params[i];
-                j++;
             }
-            str[k++] = (String) params[i];
+
+            if (i % 2 == 1) {
+                if (param instanceof VarString) {
+                    final String regex = param.toString();
+                    if (regex.length() == 0) {
+                        throw new ParseException("An empty regex has been defined in '" + name + "' function", 0);
+                    }
+                }
+            }
         }
-        otherwise = (String) params[params.length - 1];
-        str[str.length - 1] = otherwise;
 
-        final Object param = params[0];
-        String newValue = otherwise;
-
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
-            hasAggregate = function.hasAggregate();
         } else {
-            /*
-			 * Optimise replacement of static input in case user does something
-			 * stupid.
-			 */
-            for (int i = 0; i < test.length; i++) {
-                if (test[i].matcher(TypeConverter.getString(param)).matches()) {
-                    newValue = result[i];
-                    break;
-                }
-            }
-            gen = new StaticValueFunction(newValue).createGenerator();
-            hasAggregate = false;
+            gen = new StaticValueFunction((Var) param).createGenerator();
         }
     }
 
     @Override
     public Generator createGenerator() {
-        if (gen != null) {
-            return gen;
+        final Test[] test = new Test[params.length / 2];
+        final Generator[] result = new Generator[params.length / 2];
+        Generator otherwise;
+
+        int j = 0;
+        for (int i = 1; i < params.length - 1; i++) {
+            final Param param = params[i];
+
+            if (i % 2 == 1) {
+                if (param instanceof Function) {
+                    final Generator generator = ((Function) param).createGenerator();
+                    test[j] = new GeneratorTest(generator);
+
+                } else if (param instanceof VarString) {
+                    final String regex = param.toString();
+                    test[j] = new PatternTest(new SerializablePattern(regex));
+                } else {
+                    final Generator generator = new StaticValueFunction((Var) param).createGenerator();
+                    test[j] = new GeneratorTest(generator);
+                }
+            } else {
+                if (param instanceof Function) {
+                    final Generator generator = ((Function) param).createGenerator();
+                    result[j] = generator;
+                } else {
+                    final Generator generator = new StaticValueFunction((Var) param).createGenerator();
+                    result[j] = generator;
+                }
+                j++;
+            }
         }
 
-        final Generator childGenerator = function.createGenerator();
-        return new Gen(childGenerator, str);
+        final Param lastParam = params[params.length - 1];
+        if (lastParam instanceof Function) {
+            otherwise = ((Function) lastParam).createGenerator();
+        } else {
+            otherwise = new StaticValueFunction((Var) lastParam).createGenerator();
+        }
+
+        Generator childGenerator = gen;
+        if (childGenerator == null) {
+            childGenerator = function.createGenerator();
+        }
+        return new Gen(childGenerator, test, result, otherwise);
     }
 
     @Override
     public boolean hasAggregate() {
-        return hasAggregate;
+        return false;
+    }
+
+    private interface Test extends Serializable {
+        boolean match(String value);
+    }
+
+    private static class PatternTest implements Test {
+        private final SerializablePattern pattern;
+
+        PatternTest(final SerializablePattern pattern) {
+            this.pattern = pattern;
+        }
+
+        @Override
+        public boolean match(final String value) {
+            return pattern.matcher(value).matches();
+        }
+    }
+
+    private static class GeneratorTest implements Test {
+        private final Generator generator;
+
+        GeneratorTest(final Generator generator) {
+            this.generator = generator;
+        }
+
+        @Override
+        public boolean match(final String value) {
+            final String match = generator.eval().toString();
+            if (match == null) {
+                return false;
+            }
+
+            return match.equals(value);
+        }
     }
 
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private final String[] str;
+        private final Test[] test;
+        private final Generator[] result;
+        private final Generator otherwise;
 
-        public Gen(final Generator childGenerator, final String... str) {
+        Gen(final Generator childGenerator,
+            final Test[] test,
+            final Generator[] result,
+            final Generator otherwise) {
             super(childGenerator);
-            this.str = str;
+            this.test = test;
+            this.result = result;
+            this.otherwise = otherwise;
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Var[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Object eval() {
-            final Object val = childGenerator.eval();
-
-            final SerializablePattern[] test = new SerializablePattern[str.length / 2];
-            final String[] result = new String[str.length / 2];
-
-            int j = 0;
-            for (int i = 0; i < str.length - 1; i++) {
-                if (i % 2 == 0) {
-                    test[j] = new SerializablePattern(str[i]);
-                } else {
-                    result[j] = str[i];
-                    j++;
-                }
+        public Var eval() {
+            final Var val = childGenerator.eval();
+            final String value = val.toString();
+            if (value == null) {
+                return VarNull.INSTANCE;
             }
 
-            String newValue = str[str.length - 1];
+            Var newValue = otherwise.eval();
             for (int i = 0; i < test.length; i++) {
-                if (test[i].matcher(TypeConverter.getString(val)).matches()) {
-                    newValue = result[i];
+                if (test[i].match(value)) {
+                    newValue = result[i].eval();
                     break;
                 }
             }
