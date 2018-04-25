@@ -19,15 +19,15 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 
 public interface Var extends Param, Serializable {
-    Integer toInteger();
+    Integer asInteger();
 
-    Long toLong();
+    Long asLong();
 
-    Double toDouble();
+    Double asDouble();
 
-    Boolean toBoolean();
+    Boolean asBoolean();
 
-    String toString();
+    String asString();
 
     boolean hasValue();
 }

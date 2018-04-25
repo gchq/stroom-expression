@@ -58,7 +58,7 @@ public abstract class RoundDate extends AbstractFunction {
 
         @Override
         public Var calc(final Var value) {
-            final Long val = value.toLong();
+            final Long val = value.asLong();
             if (val == null) {
                 return VarNull.INSTANCE;
             }

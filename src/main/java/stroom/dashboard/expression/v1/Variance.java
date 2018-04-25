@@ -73,7 +73,7 @@ public class Variance extends AbstractManyChildFunction implements AggregateFunc
         @Override
         public void set(final Var[] values) {
             childGenerator.set(values);
-            final Double d = childGenerator.eval().toDouble();
+            final Double d = childGenerator.eval().asDouble();
             if (d != null) {
                 list.add(d);
             }
@@ -121,7 +121,7 @@ public class Variance extends AbstractManyChildFunction implements AggregateFunc
         public Var eval() {
             final List<Double> list = new ArrayList<>(childGenerators.length);
             for (final Generator gen : childGenerators) {
-                Double value = gen.eval().toDouble();
+                Double value = gen.eval().asDouble();
                 if (value != null) {
                     list.add(value);
                 }

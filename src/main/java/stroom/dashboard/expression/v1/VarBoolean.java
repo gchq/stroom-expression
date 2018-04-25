@@ -36,22 +36,22 @@ public class VarBoolean implements Var {
     }
 
     @Override
-    public Integer toInteger() {
+    public Integer asInteger() {
         return value ? 1 : 0;
     }
 
     @Override
-    public Long toLong() {
+    public Long asLong() {
         return value ? 1L : 0L;
     }
 
     @Override
-    public Double toDouble() {
+    public Double asDouble() {
         return value ? 1D : 0D;
     }
 
     @Override
-    public Boolean toBoolean() {
+    public Boolean asBoolean() {
         return value;
     }
 

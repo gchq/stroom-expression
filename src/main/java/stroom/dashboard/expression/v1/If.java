@@ -45,7 +45,7 @@ public class If extends AbstractManyChildFunction implements Serializable {
         }
 
         if (params[0] instanceof Var) {
-            final Boolean condition = ((Var) params[0]).toBoolean();
+            final Boolean condition = ((Var) params[0]).asBoolean();
             if (condition == null) {
                 throw new ParseException("Expecting a condition for first argument of '" + name + "' function", 0);
             }
@@ -53,7 +53,7 @@ public class If extends AbstractManyChildFunction implements Serializable {
 
         if (simple) {
             // Static computation.
-            final Boolean condition = ((Var) params[0]).toBoolean();
+            final Boolean condition = ((Var) params[0]).asBoolean();
             if (condition) {
                 gen = new StaticValueFunction((Var) params[1]).createGenerator();
             } else {
@@ -105,7 +105,7 @@ public class If extends AbstractManyChildFunction implements Serializable {
             }
 
             try {
-                final Boolean condition = val.toBoolean();
+                final Boolean condition = val.asBoolean();
                 if (condition == null) {
                     return new VarErr("Expecting a condition");
                 }

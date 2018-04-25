@@ -22,8 +22,8 @@ public abstract class Calculator implements Serializable {
     private static final long serialVersionUID = 7429374303179048909L;
 
     public Var calc(final Var current, final Var value) {
-        final Double cur = current.toDouble();
-        final Double val = value.toDouble();
+        final Double cur = current.asDouble();
+        final Double val = value.asDouble();
         if (val == null) {
             return current;
         }

@@ -54,8 +54,8 @@ public class Substring extends AbstractFunction implements Serializable {
             // Optimise replacement of static input in case user does something stupid.
             if (startFunction instanceof StaticValueFunction && endFunction instanceof StaticValueFunction) {
                 final String value = param.toString();
-                final Double startPos = startFunction.createGenerator().eval().toDouble();
-                final Double endPos = endFunction.createGenerator().eval().toDouble();
+                final Double startPos = startFunction.createGenerator().eval().asDouble();
+                final Double endPos = endFunction.createGenerator().eval().asDouble();
 
                 if (value == null || startPos == null || endPos == null) {
                     gen = new StaticValueFunction(VarString.EMPTY).createGenerator();
@@ -87,7 +87,7 @@ public class Substring extends AbstractFunction implements Serializable {
                 throw new ParseException("Non aggregate function expected as " + paramPos + " argument of '" + name + "' function", 0);
             }
         } else {
-            Integer pos = ((Var) param).toInteger();
+            Integer pos = ((Var) param).asInteger();
             if (pos == null) {
                 throw new ParseException("Number expected as " + paramPos + " argument of '" + name + "' function", 0);
             }
@@ -134,8 +134,8 @@ public class Substring extends AbstractFunction implements Serializable {
         public Var eval() {
             final String value = childGenerator.eval().toString();
             if (value != null) {
-                Integer startPos = startPosGenerator.eval().toInteger();
-                Integer endPos = endPosGenerator.eval().toInteger();
+                Integer startPos = startPosGenerator.eval().asInteger();
+                Integer endPos = endPosGenerator.eval().asInteger();
                 if (startPos == null || endPos == null) {
                     return VarString.EMPTY;
                 }

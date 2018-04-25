@@ -32,7 +32,7 @@ public abstract class AbstractRoundingFunction extends AbstractFunction {
 
         if (params.length == 2) {
             if (params[1] instanceof Var) {
-                final Integer precision = ((Var) params[1]).toInteger();
+                final Integer precision = ((Var) params[1]).asInteger();
                 if (precision != null && precision > 0) {
                     calculator = createCalculator((double) precision);
                 } else {

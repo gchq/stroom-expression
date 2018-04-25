@@ -27,22 +27,22 @@ public class VarDouble implements VarNumber {
     }
 
     @Override
-    public Integer toInteger() {
+    public Integer asInteger() {
         return (int) value;
     }
 
     @Override
-    public Long toLong() {
+    public Long asLong() {
         return (long) value;
     }
 
     @Override
-    public Double toDouble() {
+    public Double asDouble() {
         return value;
     }
 
     @Override
-    public Boolean toBoolean() {
+    public Boolean asBoolean() {
         return value != 0;
     }
 

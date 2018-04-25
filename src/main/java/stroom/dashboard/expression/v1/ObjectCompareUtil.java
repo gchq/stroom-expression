@@ -23,8 +23,8 @@ public final class ObjectCompareUtil {
 
     public static int compare(final Var o1, final Var o2) {
         if (o1 != null && o2 != null) {
-            final Double d1 = o1.toDouble();
-            final Double d2 = o2.toDouble();
+            final Double d1 = o1.asDouble();
+            final Double d2 = o2.asDouble();
 
             if (d1 != null && d2 != null) {
                 return d1.compareTo(d2);

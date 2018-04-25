@@ -60,7 +60,7 @@ public class FormatDate extends AbstractFunction implements Serializable {
                 throw new ParseException("Non aggregate function expected as first argument of '" + name + "' function", 0);
             }
         } else {
-            final Long millis = ((Var) param).toLong();
+            final Long millis = ((Var) param).asLong();
             if (millis == null) {
                 throw new ParseException("Unable to convert first argument of '" + name + "' function to long", 0);
             }
@@ -111,7 +111,7 @@ public class FormatDate extends AbstractFunction implements Serializable {
 
         @Override
         public Var eval() {
-            final Long millis = childGenerator.eval().toLong();
+            final Long millis = childGenerator.eval().asLong();
             if (millis == null) {
                 return new VarErr("Unable to convert argument to long");
             }

@@ -26,22 +26,22 @@ public class VarLong implements VarNumber {
     }
 
     @Override
-    public Integer toInteger() {
+    public Integer asInteger() {
         return (int) value;
     }
 
     @Override
-    public Long toLong() {
+    public Long asLong() {
         return value;
     }
 
     @Override
-    public Double toDouble() {
+    public Double asDouble() {
         return (double) value;
     }
 
     @Override
-    public Boolean toBoolean() {
+    public Boolean asBoolean() {
         return value != 0;
     }
 

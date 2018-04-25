@@ -66,7 +66,7 @@ public class ParseDate extends AbstractFunction implements Serializable {
             gen = new StaticValueFunction(new VarLong(millis)).createGenerator();
 
         } else {
-            final Long millis = ((Var) param).toLong();
+            final Long millis = ((Var) param).asLong();
             if (millis == null) {
                 throw new ParseException("Unable to convert first argument of '" + name + "' function to long", 0);
             }

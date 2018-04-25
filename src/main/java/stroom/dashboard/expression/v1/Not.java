@@ -41,7 +41,7 @@ public class Not extends AbstractFunction implements Serializable {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
         } else {
-            final Boolean condition = ((Var) params[0]).toBoolean();
+            final Boolean condition = ((Var) params[0]).asBoolean();
             if (condition == null) {
                 throw new ParseException("Expecting a condition for first argument of '" + name + "' function", 0);
             }
@@ -86,7 +86,7 @@ public class Not extends AbstractFunction implements Serializable {
             }
 
             try {
-                final Boolean condition = val.toBoolean();
+                final Boolean condition = val.asBoolean();
                 if (condition == null) {
                     return new VarErr("Expecting a condition");
                 }
