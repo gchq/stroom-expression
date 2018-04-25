@@ -101,6 +101,8 @@ public class FunctionFactory {
         add(StDev.class, StDev.NAME);
 
         add(Random.class, Random.NAME);
+
+        add(Match.class, Match.NAME);
     }
 
     private void add(final Class<? extends Function> clazz, final String... names) {

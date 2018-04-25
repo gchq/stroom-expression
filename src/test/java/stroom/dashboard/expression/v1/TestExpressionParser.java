@@ -291,6 +291,46 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testMatch1() throws ParseException {
+        final Expression exp = createExpression("match('this', 'this')");
+        final Generator generator = exp.createGenerator();
+
+        final Var out = generator.eval();
+        Assert.assertTrue(out.toBoolean());
+    }
+
+    @Test
+    public void testMatch2() throws ParseException {
+        final Expression exp = createExpression("match('this', 'that')");
+        final Generator generator = exp.createGenerator();
+
+        final Var out = generator.eval();
+        Assert.assertFalse(out.toBoolean());
+    }
+
+    @Test
+    public void testMatch3() throws ParseException {
+        final Expression exp = createExpression("match(${val}, 'this')");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("this"));
+
+        final Var out = generator.eval();
+        Assert.assertTrue(out.toBoolean());
+    }
+
+    @Test
+    public void testMatch4() throws ParseException {
+        final Expression exp = createExpression("match(${val}, 'that')");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("this"));
+
+        final Var out = generator.eval();
+        Assert.assertFalse(out.toBoolean());
+    }
+
+    @Test
     public void testReplace1() throws ParseException {
         final Expression exp = createExpression("replace('this', 'is', 'at')");
         final Generator generator = exp.createGenerator();
