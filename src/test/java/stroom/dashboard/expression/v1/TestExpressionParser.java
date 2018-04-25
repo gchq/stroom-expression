@@ -801,6 +801,40 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testHash1() throws ParseException {
+        final Expression exp = createExpression("hash(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("test"));
+
+        final Var out = generator.eval();
+        Assert.assertEquals("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", out.toString());
+    }
+
+    @Test
+    public void testHash2() throws ParseException {
+        final Expression exp = createExpression("hash(${val}, 'SHA-512')");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("test"));
+
+        final Var out = generator.eval();
+        Assert.assertEquals("ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff", out.toString());
+    }
+
+    @Test
+    public void testHash3() throws ParseException {
+        final Expression exp = createExpression("hash(${val}, 'SHA-512', 'mysalt')");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("test"));
+
+        final Var out = generator.eval();
+        Assert.assertEquals("af2910d4d8acf3fcf9683d3ca4425327cb1b4b48bc690f566e27b0e0144c17af82066cf6af14d3a30312ed9df671e0e24b1c66ed3973d1a7836899d75c4d6bb8", out.toString());
+    }
+
+
+    @Test
     public void testCount() throws ParseException {
         final Expression exp = createExpression("count()");
         final Generator generator = exp.createGenerator();
