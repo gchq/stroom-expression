@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+* Issue **#12** : Added `variance` and `stDev` functions.
+
 * Issue **#8** : Added `hash` function.
 
 * Issue **#10** : Added `formatDate` function.

@@ -1446,6 +1446,54 @@ public class TestExpressionParser {
         Assert.assertEquals("2014 02 23", out.toString());
     }
 
+    @Test
+    public void testVariance1() throws ParseException {
+        final Expression exp = createExpression("variance(600, 470, 170, 430, 300)");
+        final Generator generator = exp.createGenerator();
+
+        Var out = generator.eval();
+        Assert.assertEquals(21704D, out.toDouble(), 0);
+    }
+
+    @Test
+    public void testVariance2() throws ParseException {
+        final Expression exp = createExpression("variance(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal(600));
+        generator.set(getVal(470));
+        generator.set(getVal(170));
+        generator.set(getVal(430));
+        generator.set(getVal(300));
+
+        Var out = generator.eval();
+        Assert.assertEquals(21704D, out.toDouble(), 0);
+    }
+
+    @Test
+    public void testStDev1() throws ParseException {
+        final Expression exp = createExpression("round(stDev(600, 470, 170, 430, 300))");
+        final Generator generator = exp.createGenerator();
+
+        Var out = generator.eval();
+        Assert.assertEquals(147, out.toDouble(), 0);
+    }
+
+    @Test
+    public void testStDev2() throws ParseException {
+        final Expression exp = createExpression("round(stDev(${val}))");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal(600));
+        generator.set(getVal(470));
+        generator.set(getVal(170));
+        generator.set(getVal(430));
+        generator.set(getVal(300));
+
+        Var out = generator.eval();
+        Assert.assertEquals(147, out.toDouble(), 0);
+    }
+
     private Expression createExpression(final String expression) throws ParseException {
         final FieldIndexMap fieldIndexMap = new FieldIndexMap();
         fieldIndexMap.create("val", true);

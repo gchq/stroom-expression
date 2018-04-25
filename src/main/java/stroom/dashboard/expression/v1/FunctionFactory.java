@@ -97,6 +97,9 @@ public class FunctionFactory {
         add(GreaterThanOrEqualTo.class, GreaterThanOrEqualTo.NAME, GreaterThanOrEqualTo.ALIAS);
         add(LessThanOrEqualTo.class, LessThanOrEqualTo.NAME, LessThanOrEqualTo.ALIAS);
 
+        add(Variance.class, Variance.NAME);
+        add(StDev.class, StDev.NAME);
+
         add(Random.class, Random.NAME);
     }
 
