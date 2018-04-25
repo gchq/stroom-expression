@@ -88,7 +88,7 @@ public class ParseDate extends AbstractFunction implements Serializable {
         }
 
         final Generator childGenerator = function.createGenerator();
-        return new Gen(childGenerator, new SerializableDateFormatter(pattern, timeZone));
+        return new Gen(childGenerator, pattern, timeZone);
     }
 
     @Override
@@ -99,11 +99,13 @@ public class ParseDate extends AbstractFunction implements Serializable {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private final SerializableDateFormatter formatter;
+        private final String pattern;
+        private final String timeZone;
 
-        public Gen(final Generator childGenerator, final SerializableDateFormatter formatter) {
+        public Gen(final Generator childGenerator, final String pattern, final String timeZone) {
             super(childGenerator);
-            this.formatter = formatter;
+            this.pattern = pattern;
+            this.timeZone = timeZone;
         }
 
         @Override
@@ -116,9 +118,8 @@ public class ParseDate extends AbstractFunction implements Serializable {
             final String value = childGenerator.eval().toString();
             if (value != null) {
                 try {
-                    final long millis = formatter.parse(value);
-                    return new VarLong(millis);
-                } catch (final ParseException | RuntimeException e) {
+                    return new VarLong(FormatterCache.parse(value, pattern, timeZone));
+                } catch (final RuntimeException e) {
                     return new VarErr(e.getMessage());
                 }
             }

@@ -18,15 +18,15 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 import java.text.ParseException;
+import java.util.regex.Pattern;
 
-public class Replace extends AbstractFunction implements Serializable {
-    public static final String NAME = "replace";
+public class Replace extends AbstractManyChildFunction implements Serializable {
     private static final long serialVersionUID = -305845496003936297L;
-    private String replacement;
-    private SerializablePattern pattern;
+
+    public static final String NAME = "replace";
+
     private Generator gen;
-    private Function function = null;
-    private boolean hasAggregate;
+    private boolean simple;
 
     public Replace(final String name) {
         super(name, 3, 3);
@@ -36,32 +36,38 @@ public class Replace extends AbstractFunction implements Serializable {
     public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        if (!(params[1] instanceof VarString)) {
-            throw new ParseException("String expected as second argument of '" + name + "' function", 0);
+        // See if this is a static computation.
+        simple = true;
+        for (Param param : params) {
+            if (!(param instanceof Var)) {
+                simple = false;
+                break;
+            }
         }
-        final String regex = params[1].toString();
-        if (regex.length() == 0) {
-            throw new ParseException("An empty regex has been defined for second argument of '" + name + "' function", 0);
-        }
-        if (!(params[2] instanceof VarString)) {
-            throw new ParseException("String expected as third argument of '" + name + "' function", 0);
-        }
-        replacement = params[2].toString();
 
-        // Try and create pattern with the supplied regex.
-        pattern = new SerializablePattern(regex);
-        pattern.getOrCreatePattern();
+        if (simple) {
+            // Static computation.
+            final String value = params[0].toString();
+            final String regex = params[1].toString();
+            final String replacement = params[2].toString();
 
-        final Param param = params[0];
-        if (param instanceof Function) {
-            function = (Function) param;
-            hasAggregate = function.hasAggregate();
-        } else {
-            // Optimise replacement of static input in case user does something
-            // stupid.
-            final String newValue = pattern.matcher(param.toString()).replaceAll(replacement);
+            if (regex.length() == 0) {
+                throw new ParseException("An empty regex has been defined for second argument of '" + name + "' function", 0);
+            }
+
+            final Pattern pattern = PatternCache.get(regex);
+            final String newValue = pattern.matcher(value).replaceAll(replacement);
             gen = new StaticValueFunction(new VarString(newValue)).createGenerator();
-            hasAggregate = false;
+
+        } else {
+            if (params[1] instanceof Var) {
+                // Test regex is valid.
+                final String regex = params[1].toString();
+                if (regex.length() == 0) {
+                    throw new ParseException("An empty regex has been defined for second argument of '" + name + "' function", 0);
+                }
+                PatternCache.get(regex);
+            }
         }
     }
 
@@ -70,41 +76,53 @@ public class Replace extends AbstractFunction implements Serializable {
         if (gen != null) {
             return gen;
         }
+        return super.createGenerator();
+    }
 
-        final Generator childGenerator = function.createGenerator();
-        return new Gen(childGenerator, pattern, replacement);
+    @Override
+    protected Generator createGenerator(final Generator[] childGenerators) {
+        return new Gen(childGenerators);
     }
 
     @Override
     public boolean hasAggregate() {
-        return hasAggregate;
+        if (simple) {
+            return false;
+        }
+        return super.hasAggregate();
     }
 
-    private static class Gen extends AbstractSingleChildGenerator {
+    private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private final SerializablePattern pattern;
-        private final String replacement;
-
-        public Gen(final Generator childGenerator, final SerializablePattern pattern, final String replacement) {
-            super(childGenerator);
-            this.pattern = pattern;
-            this.replacement = replacement;
+        public Gen(final Generator[] childGenerators) {
+            super(childGenerators);
         }
 
         @Override
         public void set(final Var[] values) {
-            childGenerator.set(values);
+            for (final Generator generator : childGenerators) {
+                generator.set(values);
+            }
         }
 
         @Override
         public Var eval() {
-            final Var val = childGenerator.eval();
+            final Var val = childGenerators[0].eval();
             if (!val.hasValue()) {
                 return val;
             }
 
-            return new VarString(pattern.matcher(val.toString()).replaceAll(replacement));
+            try {
+                final String value = val.toString();
+                final String regex = childGenerators[1].eval().toString();
+                final String replacement = childGenerators[2].eval().toString();
+                final Pattern pattern = PatternCache.get(regex);
+                return new VarString(pattern.matcher(value).replaceAll(replacement));
+
+            } catch (final RuntimeException e) {
+                return new VarErr(e.getMessage());
+            }
         }
     }
 }
