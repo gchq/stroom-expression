@@ -24,17 +24,17 @@ public class SerializablePattern implements Serializable {
     private static final long serialVersionUID = 3482210112462557773L;
 
     private final String regex;
-    private transient volatile Pattern pattern;
+    private transient Pattern pattern;
 
     public SerializablePattern(final String regex) {
         this.regex = regex;
     }
 
-    public Matcher matcher(final CharSequence input) {
+    Matcher matcher(final CharSequence input) {
         return getOrCreatePattern().matcher(input);
     }
 
-    public Pattern getOrCreatePattern() {
+    Pattern getOrCreatePattern() {
         if (pattern == null) {
             pattern = Pattern.compile(regex);
         }

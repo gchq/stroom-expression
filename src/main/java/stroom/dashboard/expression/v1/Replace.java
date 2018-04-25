@@ -18,8 +18,6 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 import java.text.ParseException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Replace extends AbstractFunction implements Serializable {
     public static final String NAME = "replace";
@@ -107,28 +105,6 @@ public class Replace extends AbstractFunction implements Serializable {
             }
 
             return new VarString(pattern.matcher(val.toString()).replaceAll(replacement));
-        }
-    }
-
-    private static class SerializablePattern implements Serializable {
-        private static final long serialVersionUID = 3482210112462557773L;
-
-        private final String regex;
-        private transient volatile Pattern pattern;
-
-        public SerializablePattern(final String regex) {
-            this.regex = regex;
-        }
-
-        public Matcher matcher(final CharSequence input) {
-            return getOrCreatePattern().matcher(input);
-        }
-
-        public Pattern getOrCreatePattern() {
-            if (pattern == null) {
-                pattern = Pattern.compile(regex);
-            }
-            return pattern;
         }
     }
 }

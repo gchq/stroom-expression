@@ -88,7 +88,7 @@ public class ParseDate extends AbstractFunction implements Serializable {
         }
 
         final Generator childGenerator = function.createGenerator();
-        return new Gen(childGenerator, pattern, timeZone);
+        return new Gen(childGenerator, new SerializableDateFormatter(pattern, timeZone));
     }
 
     @Override
@@ -99,16 +99,11 @@ public class ParseDate extends AbstractFunction implements Serializable {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private final String pattern;
-        private final String timeZone;
+        private final SerializableDateFormatter formatter;
 
-        private transient DateTimeFormatter formatter;
-        private transient ZoneId zoneId;
-
-        public Gen(final Generator childGenerator, final String pattern, final String timeZone) {
+        public Gen(final Generator childGenerator, final SerializableDateFormatter formatter) {
             super(childGenerator);
-            this.pattern = pattern;
-            this.timeZone = timeZone;
+            this.formatter = formatter;
         }
 
         @Override
@@ -121,7 +116,7 @@ public class ParseDate extends AbstractFunction implements Serializable {
             final String value = childGenerator.eval().toString();
             if (value != null) {
                 try {
-                    final long millis = DateUtil.parse(value, getFormatter(), getZoneId());
+                    final long millis = formatter.parse(value);
                     return new VarLong(millis);
                 } catch (final ParseException | RuntimeException e) {
                     return new VarErr(e.getMessage());
@@ -129,28 +124,6 @@ public class ParseDate extends AbstractFunction implements Serializable {
             }
 
             return VarNull.INSTANCE;
-        }
-
-        private DateTimeFormatter getFormatter() {
-            if (formatter == null) {
-                if (pattern == null || DateUtil.DEFAULT_PATTERN.equals(pattern)) {
-                    formatter = DateUtil.DEFAULT_FORMATTER;
-                } else {
-                    formatter = DateTimeFormatter.ofPattern(pattern);
-                }
-            }
-            return formatter;
-        }
-
-        private ZoneId getZoneId() throws ParseException {
-            if (zoneId == null) {
-                if (timeZone == null) {
-                    zoneId = ZoneOffset.UTC;
-                } else {
-                    zoneId = DateUtil.getTimeZone(timeZone);
-                }
-            }
-            return zoneId;
         }
     }
 }
