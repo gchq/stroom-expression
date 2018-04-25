@@ -331,6 +331,42 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testTrue() throws ParseException {
+        final Expression exp = createExpression("true()");
+        final Generator generator = exp.createGenerator();
+
+        final Var out = generator.eval();
+        Assert.assertTrue(out.toBoolean());
+    }
+
+    @Test
+    public void testFalse() throws ParseException {
+        final Expression exp = createExpression("false()");
+        final Generator generator = exp.createGenerator();
+
+        final Var out = generator.eval();
+        Assert.assertFalse(out.toBoolean());
+    }
+
+    @Test
+    public void testNull() throws ParseException {
+        final Expression exp = createExpression("null()");
+        final Generator generator = exp.createGenerator();
+
+        final Var out = generator.eval();
+        Assert.assertTrue(out instanceof VarNull);
+    }
+
+    @Test
+    public void testErr() throws ParseException {
+        final Expression exp = createExpression("err()");
+        final Generator generator = exp.createGenerator();
+
+        final Var out = generator.eval();
+        Assert.assertTrue(out instanceof VarErr);
+    }
+
+    @Test
     public void testReplace1() throws ParseException {
         final Expression exp = createExpression("replace('this', 'is', 'at')");
         final Generator generator = exp.createGenerator();

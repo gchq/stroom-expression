@@ -18,16 +18,41 @@ package stroom.dashboard.expression.v1;
 
 import java.text.ParseException;
 
-public class Random extends AbstractFunction {
-    public static final String NAME = "random";
+public abstract class AbstractStaticFunction implements Function, Appendable {
+    private final String name;
+    private final Generator gen;
 
-    public Random(final String name) {
-        super(name, 0, 0);
+    public AbstractStaticFunction(final String name, final Var value) {
+        this.name = name;
+        this.gen = new Gen(value);
+    }
+
+    @Override
+    public void setParams(final Param[] params) throws ParseException {
+        // Ignore
     }
 
     @Override
     public Generator createGenerator() {
-        return new Gen();
+        return gen;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        appendString(sb);
+        return sb.toString();
+    }
+
+    @Override
+    public void appendString(final StringBuilder sb) {
+        sb.append(name);
+        sb.append("()");
+    }
+
+    @Override
+    public boolean isAggregate() {
+        return false;
     }
 
     @Override
@@ -38,11 +63,10 @@ public class Random extends AbstractFunction {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = -7551073465232523106L;
 
-        private Var value;
+        private final Var value;
 
-        @Override
-        public void set(final Var[] values) {
-            value = new VarDouble(Math.random());
+        public Gen(final Var value) {
+            this.value = value;
         }
 
         @Override
@@ -50,4 +74,5 @@ public class Random extends AbstractFunction {
             return value;
         }
     }
+
 }

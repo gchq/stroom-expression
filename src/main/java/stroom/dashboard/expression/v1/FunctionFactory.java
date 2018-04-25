@@ -103,6 +103,10 @@ public class FunctionFactory {
         add(Random.class, Random.NAME);
 
         add(Match.class, Match.NAME);
+        add(True.class, True.NAME);
+        add(False.class, False.NAME);
+        add(Null.class, Null.NAME);
+        add(Err.class, Err.NAME);
     }
 
     private void add(final Class<? extends Function> clazz, final String... names) {

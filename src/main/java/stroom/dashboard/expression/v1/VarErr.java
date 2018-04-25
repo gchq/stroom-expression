@@ -19,6 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.util.Objects;
 
 public class VarErr implements Var {
+    public static final VarErr INSTANCE = new VarErr("Err");
+
     private final String message;
 
     public VarErr(final String message) {
