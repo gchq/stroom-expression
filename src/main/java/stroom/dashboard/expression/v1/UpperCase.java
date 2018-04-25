@@ -23,7 +23,7 @@ public class UpperCase extends AbstractFunction implements Serializable {
     public static final String NAME = "upperCase";
     private static final long serialVersionUID = -305845496003936297L;
     private Generator gen;
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
 
     public UpperCase(final String name) {
@@ -41,7 +41,6 @@ public class UpperCase extends AbstractFunction implements Serializable {
         } else {
             // Optimise replacement of static input in case user does something stupid.
             gen = new StaticValueFunction(new VarString(param.toString().toUpperCase())).createGenerator();
-            hasAggregate = false;
         }
     }
 
@@ -66,7 +65,6 @@ public class UpperCase extends AbstractFunction implements Serializable {
 
         public Gen(final Generator childGenerator) {
             super(childGenerator);
-
         }
 
         @Override

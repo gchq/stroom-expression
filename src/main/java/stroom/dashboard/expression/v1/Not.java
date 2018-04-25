@@ -19,14 +19,16 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public class StringLength extends AbstractFunction implements Serializable {
-    public static final String NAME = "stringLength";
+public class Not extends AbstractFunction implements Serializable {
     private static final long serialVersionUID = -305845496003936297L;
+
+    public static final String NAME = "not";
+
     private Generator gen;
     private Function function;
     private boolean hasAggregate;
 
-    public StringLength(final String name) {
+    public Not(final String name) {
         super(name, 1, 1);
     }
 
@@ -39,12 +41,12 @@ public class StringLength extends AbstractFunction implements Serializable {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
         } else {
-            /*
-             * Optimise replacement of static input in case user does something
-			 * stupid.
-			 */
-            gen = new StaticValueFunction(new VarInteger(param.toString().length())).createGenerator();
-            hasAggregate = false;
+            final Boolean condition = ((Var) params[0]).toBoolean();
+            if (condition == null) {
+                throw new ParseException("Expecting a condition for first argument of '" + name + "' function", 0);
+            }
+            // Static computation.
+            gen = new StaticValueFunction(VarBoolean.create(!condition)).createGenerator();
         }
     }
 
@@ -69,7 +71,6 @@ public class StringLength extends AbstractFunction implements Serializable {
 
         public Gen(final Generator childGenerator) {
             super(childGenerator);
-
         }
 
         @Override
@@ -79,12 +80,20 @@ public class StringLength extends AbstractFunction implements Serializable {
 
         @Override
         public Var eval() {
-            final String val = childGenerator.eval().toString();
-            if (val != null) {
-                return new VarInteger(val.length());
+            final Var val = childGenerator.eval();
+            if (!val.hasValue()) {
+                return val;
             }
 
-            return VarNull.INSTANCE;
+            try {
+                final Boolean condition = val.toBoolean();
+                if (condition == null) {
+                    return new VarErr("Expecting a condition");
+                }
+                return VarBoolean.create(!condition);
+            } catch (final RuntimeException e) {
+                return new VarErr(e.getMessage());
+            }
         }
     }
 }

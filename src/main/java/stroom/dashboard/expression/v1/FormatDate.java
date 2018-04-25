@@ -28,10 +28,10 @@ public class FormatDate extends AbstractFunction implements Serializable {
     public static final String NAME = "formatDate";
 
     private String pattern = DateUtil.DEFAULT_PATTERN;
-    private String timeZone = null;
+    private String timeZone;
 
     private Generator gen;
-    private Function function = null;
+    private Function function;
 
     public FormatDate(final String name) {
         super(name, 1, 3);

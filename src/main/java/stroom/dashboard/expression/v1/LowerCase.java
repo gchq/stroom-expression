@@ -23,7 +23,7 @@ public class LowerCase extends AbstractFunction implements Serializable {
     public static final String NAME = "lowerCase";
     private static final long serialVersionUID = -305845496003936297L;
     private Generator gen;
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
 
     public LowerCase(final String name) {

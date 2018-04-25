@@ -21,7 +21,7 @@ import java.text.ParseException;
 
 public abstract class ExtractionFunction extends AbstractFunction implements Serializable {
     private Generator gen;
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
 
     public ExtractionFunction(final String name) {

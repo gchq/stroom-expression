@@ -24,7 +24,7 @@ public class CountUnique extends AbstractFunction {
     public static final String NAME = "countUnique";
 
     private Generator gen;
-    private Function function = null;
+    private Function function;
 
     public CountUnique(final String name) {
         super(name, 1, 1);

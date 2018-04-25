@@ -18,18 +18,17 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 import java.text.ParseException;
-import java.util.regex.Pattern;
 
-public class Match extends AbstractManyChildFunction implements Serializable {
+public class If extends AbstractManyChildFunction implements Serializable {
     private static final long serialVersionUID = -305845496003936297L;
 
-    public static final String NAME = "match";
+    public static final String NAME = "if";
 
     private Generator gen;
     private boolean simple;
 
-    public Match(final String name) {
-        super(name, 2, 2);
+    public If(final String name) {
+        super(name, 3, 3);
     }
 
     @Override
@@ -45,27 +44,20 @@ public class Match extends AbstractManyChildFunction implements Serializable {
             }
         }
 
+        if (params[0] instanceof Var) {
+            final Boolean condition = ((Var) params[0]).toBoolean();
+            if (condition == null) {
+                throw new ParseException("Expecting a condition for first argument of '" + name + "' function", 0);
+            }
+        }
+
         if (simple) {
             // Static computation.
-            final String value = params[0].toString();
-            final String regex = params[1].toString();
-
-            if (regex.length() == 0) {
-                throw new ParseException("An empty regex has been defined for second argument of '" + name + "' function", 0);
-            }
-
-            final Pattern pattern = PatternCache.get(regex);
-            final boolean matches = pattern.matcher(value).matches();
-            gen = new StaticValueFunction(VarBoolean.create(matches)).createGenerator();
-
-        } else {
-            if (params[1] instanceof Var) {
-                // Test regex is valid.
-                final String regex = params[1].toString();
-                if (regex.length() == 0) {
-                    throw new ParseException("An empty regex has been defined for second argument of '" + name + "' function", 0);
-                }
-                PatternCache.get(regex);
+            final Boolean condition = ((Var) params[0]).toBoolean();
+            if (condition) {
+                gen = new StaticValueFunction((Var) params[1]).createGenerator();
+            } else {
+                gen = new StaticValueFunction((Var) params[2]).createGenerator();
             }
         }
     }
@@ -113,11 +105,15 @@ public class Match extends AbstractManyChildFunction implements Serializable {
             }
 
             try {
-                final String value = val.toString();
-                final String regex = childGenerators[1].eval().toString();
-                final Pattern pattern = PatternCache.get(regex);
-                return VarBoolean.create(pattern.matcher(value).matches());
-
+                final Boolean condition = val.toBoolean();
+                if (condition == null) {
+                    return new VarErr("Expecting a condition");
+                }
+                if (condition) {
+                    return childGenerators[1].eval();
+                } else {
+                    return childGenerators[2].eval();
+                }
             } catch (final RuntimeException e) {
                 return new VarErr(e.getMessage());
             }

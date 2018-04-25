@@ -27,7 +27,7 @@ public class LastIndexOf extends AbstractFunction implements Serializable {
     private Function stringFunction;
 
     private Generator gen;
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
 
     public LastIndexOf(final String name) {

@@ -20,7 +20,7 @@ import java.text.ParseException;
 
 public abstract class AbstractRoundingFunction extends AbstractFunction {
     private RoundCalculator calculator;
-    private Function function = null;
+    private Function function;
 
     public AbstractRoundingFunction(final String name) {
         super(name, 1, 2);

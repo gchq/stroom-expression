@@ -24,8 +24,15 @@ public class VarBoolean implements Var {
 
     private final boolean value;
 
-    public VarBoolean(final boolean value) {
+    private VarBoolean(final boolean value) {
         this.value = value;
+    }
+
+    public static VarBoolean create(final boolean value) {
+        if (value) {
+            return TRUE;
+        }
+        return FALSE;
     }
 
     @Override

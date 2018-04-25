@@ -17,7 +17,7 @@
 package stroom.dashboard.expression.v1;
 
 public class Expression implements Function {
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
 
     @Override

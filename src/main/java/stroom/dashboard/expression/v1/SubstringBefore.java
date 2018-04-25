@@ -27,7 +27,7 @@ public class SubstringBefore extends AbstractFunction implements Serializable {
     private Function beforeFunction;
 
     private Generator gen;
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
 
     public SubstringBefore(final String name) {

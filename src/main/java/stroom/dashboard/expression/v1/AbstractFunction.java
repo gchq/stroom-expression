@@ -20,8 +20,8 @@ import java.text.ParseException;
 
 public abstract class AbstractFunction implements Function, Appendable {
     final String name;
-    final int minParams;
-    final int maxParams;
+    private final int minParams;
+    private final int maxParams;
 
     Param[] params;
 
@@ -70,7 +70,7 @@ public abstract class AbstractFunction implements Function, Appendable {
         }
     }
 
-    protected void appendParam(final StringBuilder sb, final Param param) {
+    void appendParam(final StringBuilder sb, final Param param) {
         if (param instanceof Appendable) {
             ((Appendable) param).appendString(sb);
         } else {

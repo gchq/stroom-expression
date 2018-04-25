@@ -36,7 +36,7 @@ public class Hash extends AbstractFunction implements Serializable {
     private String salt;
 
     private Generator gen;
-    private Function function = null;
+    private Function function;
 
     public Hash(final String name) {
         super(name, 1, 3);

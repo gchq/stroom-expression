@@ -28,7 +28,7 @@ public class Substring extends AbstractFunction implements Serializable {
     private Function endFunction;
 
     private Generator gen;
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
 
     public Substring(final String name) {

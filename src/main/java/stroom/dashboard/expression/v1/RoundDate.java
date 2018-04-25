@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 public abstract class RoundDate extends AbstractFunction {
-    private Function function = null;
+    private Function function;
 
     public RoundDate(final String name) {
         super(name, 1, 1);
