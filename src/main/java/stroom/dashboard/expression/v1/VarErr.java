@@ -28,22 +28,22 @@ public class VarErr implements Var {
     }
 
     @Override
-    public Integer asInteger() {
+    public Integer toInteger() {
         return null;
     }
 
     @Override
-    public Long asLong() {
+    public Long toLong() {
         return null;
     }
 
     @Override
-    public Double asDouble() {
+    public Double toDouble() {
         return null;
     }
 
     @Override
-    public Boolean asBoolean() {
+    public Boolean toBoolean() {
         return null;
     }
 

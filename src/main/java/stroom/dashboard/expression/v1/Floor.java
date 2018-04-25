@@ -38,7 +38,7 @@ public class Floor extends AbstractRoundingFunction {
 
         @Override
         public Var calc(final Var value) {
-            final Double val = value.asDouble();
+            final Double val = value.toDouble();
             if (val == null) {
                 return VarNull.INSTANCE;
             }
@@ -58,7 +58,7 @@ public class Floor extends AbstractRoundingFunction {
 
         @Override
         public Var calc(final Var value) {
-            final Double val = value.asDouble();
+            final Double val = value.toDouble();
             if (val == null) {
                 return VarNull.INSTANCE;
             }

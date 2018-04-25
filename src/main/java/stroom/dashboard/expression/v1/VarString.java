@@ -29,7 +29,7 @@ public class VarString implements Var, Appendable {
     }
 
     @Override
-    public Integer asInteger() {
+    public Integer toInteger() {
         try {
             return Integer.valueOf(value);
         } catch (final RuntimeException e) {
@@ -39,7 +39,7 @@ public class VarString implements Var, Appendable {
     }
 
     @Override
-    public Long asLong() {
+    public Long toLong() {
         try {
             return Long.valueOf(value);
         } catch (final RuntimeException e) {
@@ -54,7 +54,7 @@ public class VarString implements Var, Appendable {
     }
 
     @Override
-    public Double asDouble() {
+    public Double toDouble() {
         try {
             return new BigDecimal(value).doubleValue();
         } catch (final RuntimeException e) {
@@ -69,7 +69,7 @@ public class VarString implements Var, Appendable {
     }
 
     @Override
-    public Boolean asBoolean() {
+    public Boolean toBoolean() {
         try {
             return Boolean.valueOf(value);
         } catch (final RuntimeException e) {

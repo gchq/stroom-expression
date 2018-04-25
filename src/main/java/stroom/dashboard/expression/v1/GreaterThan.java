@@ -81,8 +81,8 @@ public class GreaterThan extends AbstractManyChildFunction {
             if (!a.hasValue() || !b.hasValue()) {
                 retVal = VarNull.INSTANCE;
             } else {
-                final Double da = a.asDouble();
-                final Double db = b.asDouble();
+                final Double da = a.toDouble();
+                final Double db = b.toDouble();
                 if (da == null || db == null) {
                     int ret = a.toString().compareTo(b.toString());
                     if (ret > 0) {

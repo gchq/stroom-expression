@@ -73,7 +73,7 @@ public class StDev extends AbstractManyChildFunction implements AggregateFunctio
         @Override
         public void set(final Var[] values) {
             childGenerator.set(values);
-            final Double d = childGenerator.eval().asDouble();
+            final Double d = childGenerator.eval().toDouble();
             if (d != null) {
                 list.add(d);
             }
@@ -121,7 +121,7 @@ public class StDev extends AbstractManyChildFunction implements AggregateFunctio
         public Var eval() {
             final List<Double> list = new ArrayList<>(childGenerators.length);
             for (final Generator gen : childGenerators) {
-                Double value = gen.eval().asDouble();
+                Double value = gen.eval().toDouble();
                 if (value != null) {
                     list.add(value);
                 }

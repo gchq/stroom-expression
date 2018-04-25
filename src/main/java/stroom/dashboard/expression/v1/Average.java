@@ -72,7 +72,7 @@ public class Average extends AbstractManyChildFunction implements AggregateFunct
             if (!current.hasValue() || count == 0) {
                 return VarNull.INSTANCE;
             }
-            return new VarDouble(current.asDouble() / count);
+            return new VarDouble(current.toDouble() / count);
         }
 
         @Override
@@ -111,7 +111,7 @@ public class Average extends AbstractManyChildFunction implements AggregateFunct
             if (!value.hasValue()) {
                 return value;
             }
-            return new VarDouble(value.asDouble() / childGenerators.length);
+            return new VarDouble(value.toDouble() / childGenerators.length);
         }
     }
 }
