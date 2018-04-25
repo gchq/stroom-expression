@@ -1352,6 +1352,36 @@ public class TestExpressionParser {
         Assert.assertEquals("john:doe", out.toString());
     }
 
+    @Test
+    public void testParseDate1() throws ParseException {
+        final Expression exp = createExpression("parseDate(${val})");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("2014-02-22T12:12:12.888Z"));
+        Var out = generator.eval();
+        Assert.assertEquals(1393071132888L, out.toLong().longValue());
+    }
+
+    @Test
+    public void testParseDate2() throws ParseException {
+        final Expression exp = createExpression("parseDate(${val}, 'yyyy MM dd')");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("2014 02 22"));
+        Var out = generator.eval();
+        Assert.assertEquals(1393027200000L, out.toLong().longValue());
+    }
+
+    @Test
+    public void testParseDate3() throws ParseException {
+        final Expression exp = createExpression("parseDate(${val}, 'yyyy MM dd', '+0400')");
+        final Generator generator = exp.createGenerator();
+
+        generator.set(getVal("2014 02 22"));
+        Var out = generator.eval();
+        Assert.assertEquals(1393012800000L, out.toLong().longValue());
+    }
+
     private Expression createExpression(final String expression) throws ParseException {
         final FieldIndexMap fieldIndexMap = new FieldIndexMap();
         fieldIndexMap.create("val", true);

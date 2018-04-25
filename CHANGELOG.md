@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+* Issue **#9** : Added `parseDate` function.
 
-### Added
+* Issue **#6** : Made `substring` and `decode` functions capable of accepting functional parameters.
+
+* Issue **#5** : Added `substringBefore`, `substringAfter`, `indexOf` and `lastIndexOf` functions.
+
+* Issue **#7** : Added `countUnique` function.
 
 ## [v1.1.0] - 2018-04-10
 

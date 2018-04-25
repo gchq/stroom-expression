@@ -46,6 +46,8 @@ public class FunctionFactory {
         add(CeilingMinute.class, CeilingMinute.NAME);
         add(CeilingSecond.class, CeilingSecond.NAME);
 
+        add(ParseDate.class, ParseDate.NAME);
+
         add(ExtractAuthorityFromUri.class, ExtractAuthorityFromUri.NAME);
         add(ExtractFragmentFromUri.class, ExtractFragmentFromUri.NAME);
         add(ExtractHostFromUri.class, ExtractHostFromUri.NAME);
