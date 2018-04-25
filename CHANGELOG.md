@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+* Issue **#10** : Added `formatDate` function.
+
 * Issue **#9** : Added `parseDate` function.
 
 * Issue **#6** : Made `substring` and `decode` functions capable of accepting functional parameters.

@@ -22,10 +22,10 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-public class ParseDate extends AbstractFunction implements Serializable {
+public class FormatDate extends AbstractFunction implements Serializable {
     private static final long serialVersionUID = -305845496003936297L;
 
-    public static final String NAME = "parseDate";
+    public static final String NAME = "formatDate";
 
     private String pattern = DateUtil.DEFAULT_PATTERN;
     private String timeZone = null;
@@ -33,7 +33,7 @@ public class ParseDate extends AbstractFunction implements Serializable {
     private Generator gen;
     private Function function = null;
 
-    public ParseDate(final String name) {
+    public FormatDate(final String name) {
         super(name, 1, 3);
     }
 
@@ -59,18 +59,14 @@ public class ParseDate extends AbstractFunction implements Serializable {
             if (function.hasAggregate()) {
                 throw new ParseException("Non aggregate function expected as first argument of '" + name + "' function", 0);
             }
-
-        } else if (param instanceof VarString) {
-            final String string = param.toString();
-            final long millis = DateUtil.parse(string, formatter, zoneId);
-            gen = new StaticValueFunction(new VarLong(millis)).createGenerator();
-
         } else {
             final Long millis = ((Var) param).toLong();
             if (millis == null) {
                 throw new ParseException("Unable to convert first argument of '" + name + "' function to long", 0);
             }
-            gen = new StaticValueFunction(new VarLong(millis)).createGenerator();
+
+            final String string = DateUtil.format(millis, formatter, zoneId);
+            gen = new StaticValueFunction(new VarString(string)).createGenerator();
         }
     }
 
@@ -118,17 +114,17 @@ public class ParseDate extends AbstractFunction implements Serializable {
 
         @Override
         public Var eval() {
-            final String value = childGenerator.eval().toString();
-            if (value != null) {
-                try {
-                    final long millis = DateUtil.parse(value, getFormatter(), getZoneId());
-                    return new VarLong(millis);
-                } catch (final ParseException | RuntimeException e) {
-                    return new VarErr(e.getMessage());
-                }
+            final Long millis = childGenerator.eval().toLong();
+            if (millis == null) {
+                return new VarErr("Unable to convert argument to long");
             }
 
-            return VarNull.INSTANCE;
+            try {
+                final String string = DateUtil.format(millis, getFormatter(), getZoneId());
+                return new VarString(string);
+            } catch (final ParseException | RuntimeException e) {
+                return new VarErr(e.getMessage());
+            }
         }
 
         private DateTimeFormatter getFormatter() {
