@@ -18,7 +18,7 @@ package stroom.dashboard.expression.v1;
 
 import java.util.Objects;
 
-public class VarInteger implements Var {
+public class VarInteger implements VarNumber {
     private final int value;
 
     public VarInteger(final int value) {

@@ -19,7 +19,7 @@ package stroom.dashboard.expression.v1;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class VarDouble implements Var {
+public class VarDouble implements VarNumber {
     private final double value;
 
     public VarDouble(final double value) {

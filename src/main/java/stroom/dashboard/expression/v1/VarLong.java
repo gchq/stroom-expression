@@ -18,7 +18,7 @@ package stroom.dashboard.expression.v1;
 
 import java.util.Objects;
 
-public class VarLong implements Var {
+public class VarLong implements VarNumber {
     private final long value;
 
     public VarLong(final long value) {
