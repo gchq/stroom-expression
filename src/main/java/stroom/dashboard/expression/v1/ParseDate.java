@@ -46,11 +46,11 @@ public class ParseDate extends AbstractFunction implements Serializable {
 
         if (params.length >= 2) {
             pattern = parseStringParam(params[1], "second");
-            formatter = DateTimeFormatter.ofPattern(pattern);
+            formatter = FormatterCache.getFormatter(pattern);
         }
         if (params.length >= 3) {
             timeZone = parseStringParam(params[2], "third");
-            zoneId = DateUtil.getTimeZone(timeZone);
+            zoneId = FormatterCache.getZoneId(timeZone);
         }
 
         final Param param = params[0];

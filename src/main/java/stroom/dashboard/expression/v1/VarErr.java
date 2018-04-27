@@ -57,6 +57,11 @@ public class VarErr implements Var {
     }
 
     @Override
+    public void appendString(final StringBuilder sb) {
+        sb.append("err()");
+    }
+
+    @Override
     public boolean hasValue() {
         return false;
     }

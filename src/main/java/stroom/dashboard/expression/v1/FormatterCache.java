@@ -55,7 +55,7 @@ final class FormatterCache {
         return DateUtil.format(value, getFormatter(pattern), getZoneId(timeZone));
     }
 
-    private static DateTimeFormatter getFormatter(final String pattern) {
+    public static DateTimeFormatter getFormatter(final String pattern) {
         if (pattern == null || pattern.equals(DateUtil.DEFAULT_PATTERN)) {
             return DateUtil.DEFAULT_FORMATTER;
         }
@@ -77,7 +77,7 @@ final class FormatterCache {
         return cachedFormatter.formatter;
     }
 
-    private static ZoneId getZoneId(final String timeZone) {
+    public static ZoneId getZoneId(final String timeZone) {
         if (timeZone == null) {
             return ZoneOffset.UTC;
         }

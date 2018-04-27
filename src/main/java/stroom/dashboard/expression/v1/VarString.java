@@ -19,7 +19,7 @@ package stroom.dashboard.expression.v1;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class VarString implements Var, Appendable {
+public class VarString implements Var {
     public static final VarString EMPTY = new VarString("");
 
     private final String value;
@@ -93,7 +93,7 @@ public class VarString implements Var, Appendable {
 
     @Override
     public void appendString(final StringBuilder sb) {
-        sb.append(TypeConverter.escape(value));
+        sb.append(StringUtil.escape(value));
     }
 
     @Override

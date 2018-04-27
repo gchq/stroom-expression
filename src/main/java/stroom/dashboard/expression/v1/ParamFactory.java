@@ -27,10 +27,10 @@ public class ParamFactory {
         // Token should be string or number or field.
         switch (token.getType()) {
             case STRING:
-                return VarString.create(TypeConverter.unescape(value));
+                return VarString.create(StringUtil.unescape(value));
 
             case NUMBER:
-                return VarDouble.create(TypeConverter.getDouble(value));
+                return VarDouble.create(Double.valueOf(value));
 
             case FIELD:
                 final String fieldName = value.substring(2, value.length() - 1);

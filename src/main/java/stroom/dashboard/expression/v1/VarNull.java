@@ -49,6 +49,11 @@ public class VarNull implements Var {
     }
 
     @Override
+    public void appendString(final StringBuilder sb) {
+        sb.append("null()");
+    }
+
+    @Override
     public boolean hasValue() {
         return false;
     }

@@ -55,6 +55,11 @@ public class VarInteger implements VarNumber {
     }
 
     @Override
+    public void appendString(final StringBuilder sb) {
+        sb.append(toString());
+    }
+
+    @Override
     public boolean hasValue() {
         return true;
     }

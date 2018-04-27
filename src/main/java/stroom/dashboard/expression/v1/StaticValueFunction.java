@@ -44,7 +44,7 @@ public class StaticValueFunction implements Function, Appendable {
 
     @Override
     public void appendString(final StringBuilder sb) {
-        sb.append(TypeConverter.escape(value.toString()));
+        value.appendString(sb);
     }
 
     @Override

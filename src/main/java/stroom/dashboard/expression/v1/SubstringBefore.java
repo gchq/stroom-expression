@@ -51,7 +51,7 @@ public class SubstringBefore extends AbstractFunction implements Serializable {
 
             // Optimise replacement of static input in case user does something stupid.
             if (beforeFunction instanceof StaticValueFunction) {
-                final String before = TypeConverter.getString(beforeFunction.createGenerator().eval());
+                final String before = beforeFunction.createGenerator().eval().toString();
                 if (before != null) {
                     final String value = param.toString();
                     final int index = value.indexOf(before);

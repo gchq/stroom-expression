@@ -51,7 +51,7 @@ public class IndexOf extends AbstractFunction implements Serializable {
 
             // Optimise replacement of static input in case user does something stupid.
             if (stringFunction instanceof StaticValueFunction) {
-                final String string = TypeConverter.getString(stringFunction.createGenerator().eval());
+                final String string = stringFunction.createGenerator().eval().toString();
                 if (string != null) {
                     final String value = param.toString();
                     final int index = value.indexOf(string);

@@ -16,21 +16,21 @@
 
 package stroom.dashboard.expression.v1;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-public class TestTypeConverter {
-    @Test
-    public void testDoubleToString() {
-        test("123456789", 123456789D);
-        test("123456789000000000000", 123456789000000000000D);
-        test("123456789", 123456789.0D);
-        test("123456789.1", 123456789.1D);
-        test("123456789.000231", 123456789.000231D);
+final class StringUtil {
+    private StringUtil() {
+        // Utility class
     }
 
-    private void test(final String expected, final double dbl) {
-        final String actual = VarDouble.create(dbl).toString();
-        Assert.assertEquals(expected, actual);
+    static String escape(final String string) {
+        return "'" + string.replaceAll("'", "''") + "'";
+    }
+
+    static String unescape(final String string) {
+        // Trim off containing quotes if the slice represents a single string.
+        //
+        // In some circumstances a string might contain two single quotes as the
+        // first is used to escape a second. If this is the case then we want to
+        // remove the escaping quote.
+        return string.substring(1, string.length() - 1).replaceAll("''", "'");
     }
 }
