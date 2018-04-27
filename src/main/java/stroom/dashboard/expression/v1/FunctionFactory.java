@@ -111,6 +111,13 @@ public class FunctionFactory {
         add(Null.class, Null.NAME);
         add(Err.class, Err.NAME);
         add(Not.class, Not.NAME);
+
+        // Casting
+        add(ToBoolean.class, ToBoolean.NAME);
+        add(ToDouble.class, ToDouble.NAME);
+        add(ToInteger.class, ToInteger.NAME);
+        add(ToLong.class, ToLong.NAME);
+        add(ToString.class, ToString.NAME);
     }
 
     private void add(final Class<? extends Function> clazz, final String... names) {

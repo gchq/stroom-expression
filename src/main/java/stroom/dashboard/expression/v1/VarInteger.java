@@ -26,6 +26,10 @@ public class VarInteger implements VarNumber {
     }
 
     public static VarInteger create(final int value) {
+        final int offset = 128;
+        if (value >= -128 && value <= 127) { // will cache
+            return VarIntegerCache.cache[value + offset];
+        }
         return new VarInteger(value);
     }
 
@@ -75,5 +79,17 @@ public class VarInteger implements VarNumber {
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    private static class VarIntegerCache {
+        private VarIntegerCache() {
+        }
+
+        static final VarInteger cache[] = new VarInteger[-(-128) + 127 + 1];
+
+        static {
+            for (int i = 0; i < cache.length; i++)
+                cache[i] = new VarInteger(i - 128);
+        }
     }
 }

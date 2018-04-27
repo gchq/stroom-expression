@@ -26,6 +26,10 @@ public class VarLong implements VarNumber {
     }
 
     public static VarLong create(final long value) {
+        final int offset = 128;
+        if (value >= -128 && value <= 127) { // will cache
+            return VarLongCache.cache[(int) value + offset];
+        }
         return new VarLong(value);
     }
 
@@ -75,5 +79,17 @@ public class VarLong implements VarNumber {
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    private static class VarLongCache {
+        private VarLongCache() {
+        }
+
+        static final VarLong cache[] = new VarLong[-(-128) + 127 + 1];
+
+        static {
+            for (int i = 0; i < cache.length; i++)
+                cache[i] = new VarLong(i - 128);
+        }
     }
 }

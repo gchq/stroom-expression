@@ -1583,6 +1583,71 @@ public class TestExpressionParser {
         Assert.assertEquals(147, out.toDouble(), 0);
     }
 
+    @Test
+    public void testToBoolean1() throws ParseException {
+        final Generator gen = createGenerator("toBoolean('true')");
+        Assert.assertEquals(VarBoolean.TRUE, gen.eval());
+    }
+
+    @Test
+    public void testToBoolean2() throws ParseException {
+        final Generator gen = createGenerator("toBoolean(${val})");
+        gen.set(getVal("true"));
+        Assert.assertEquals(VarBoolean.TRUE, gen.eval());
+    }
+
+    @Test
+    public void testToDouble1() throws ParseException {
+        final Generator gen = createGenerator("toDouble('100')");
+        Assert.assertEquals(VarDouble.create(100), gen.eval());
+    }
+
+    @Test
+    public void testToDouble2() throws ParseException {
+        final Generator gen = createGenerator("toDouble(${val})");
+        gen.set(getVal("100"));
+        Assert.assertEquals(VarDouble.create(100), gen.eval());
+    }
+
+    @Test
+    public void testToInteger1() throws ParseException {
+        final Generator gen = createGenerator("toInteger('100')");
+        Assert.assertEquals(VarInteger.create(100), gen.eval());
+    }
+
+    @Test
+    public void testToInteger2() throws ParseException {
+        final Generator gen = createGenerator("toInteger(${val})");
+        gen.set(getVal("100"));
+        Assert.assertEquals(VarInteger.create(100), gen.eval());
+    }
+
+    @Test
+    public void testToLong1() throws ParseException {
+        final Generator gen = createGenerator("toLong('100')");
+        Assert.assertEquals(VarLong.create(100), gen.eval());
+    }
+
+    @Test
+    public void testToLong2() throws ParseException {
+        final Generator gen = createGenerator("toLong(${val})");
+        gen.set(getVal("100"));
+        Assert.assertEquals(VarLong.create(100), gen.eval());
+    }
+
+    @Test
+    public void testToString1() throws ParseException {
+        final Generator gen = createGenerator("toString('100')");
+        Assert.assertEquals(VarString.create("100"), gen.eval());
+    }
+
+    @Test
+    public void testToString2() throws ParseException {
+        final Generator gen = createGenerator("toString(${val})");
+        gen.set(getVal("100"));
+        Assert.assertEquals(VarString.create("100"), gen.eval());
+    }
+
     private Generator createGenerator(final String expression) throws ParseException {
         final Expression exp = createExpression(expression);
         final Generator gen = exp.createGenerator();

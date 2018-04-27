@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+* Issue **#16** : Added cast functions `toBoolean`, `toDouble`, `toInteger`, `toLong` and `toString`.
+
 * Issue **#17** : Added `include` and `exclude` functions.
 
 ## [v1.2.0-beta.1] - 2018-04-25
