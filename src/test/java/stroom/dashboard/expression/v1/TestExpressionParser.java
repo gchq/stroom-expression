@@ -713,6 +713,54 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testInclude1() throws ParseException {
+        final Generator gen = createGenerator("include(${val}, 'this', 'that')");
+        gen.set(getVal("this"));
+        final Var out = gen.eval();
+        Assert.assertEquals("this", out.toString());
+    }
+
+    @Test
+    public void testInclude2() throws ParseException {
+        final Generator gen = createGenerator("include(${val}, 'this', 'that')");
+        gen.set(getVal("that"));
+        final Var out = gen.eval();
+        Assert.assertEquals("that", out.toString());
+    }
+
+    @Test
+    public void testInclude3() throws ParseException {
+        final Generator gen = createGenerator("include(${val}, 'this', 'that')");
+        gen.set(getVal("other"));
+        final Var out = gen.eval();
+        Assert.assertNull(out.toString());
+    }
+
+    @Test
+    public void testExclude1() throws ParseException {
+        final Generator gen = createGenerator("exclude(${val}, 'this', 'that')");
+        gen.set(getVal("this"));
+        final Var out = gen.eval();
+        Assert.assertNull(out.toString());
+    }
+
+    @Test
+    public void testExclude2() throws ParseException {
+        final Generator gen = createGenerator("exclude(${val}, 'this', 'that')");
+        gen.set(getVal("that"));
+        final Var out = gen.eval();
+        Assert.assertNull(out.toString());
+    }
+
+    @Test
+    public void testExclude3() throws ParseException {
+        final Generator gen = createGenerator("exclude(${val}, 'this', 'that')");
+        gen.set(getVal("other"));
+        final Var out = gen.eval();
+        Assert.assertEquals("other", out.toString());
+    }
+
+    @Test
     public void testEquals1() throws ParseException {
         final Generator gen = createGenerator("equals(${val}, 'plop')");
 

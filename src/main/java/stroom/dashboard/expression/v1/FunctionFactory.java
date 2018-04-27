@@ -79,6 +79,8 @@ public class FunctionFactory {
         add(SubstringBefore.class, SubstringBefore.NAME);
         add(SubstringAfter.class, SubstringAfter.NAME);
         add(Decode.class, Decode.NAME);
+        add(Include.class, Include.NAME);
+        add(Exclude.class, Exclude.NAME);
         add(Hash.class, Hash.NAME);
 
         add(Count.class, Count.NAME);
