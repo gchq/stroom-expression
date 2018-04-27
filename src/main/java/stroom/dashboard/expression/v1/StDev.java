@@ -92,7 +92,7 @@ public class StDev extends AbstractManyChildFunction implements AggregateFunctio
             }
 
             // calculate variance
-            return new VarDouble(Statistics.standardDeviation(arr));
+            return VarDouble.create(Statistics.standardDeviation(arr));
         }
 
         @Override
@@ -135,7 +135,7 @@ public class StDev extends AbstractManyChildFunction implements AggregateFunctio
             final Double[] arr = list.toArray(new Double[0]);
 
             // calculate variance
-            return new VarDouble(Statistics.standardDeviation(arr));
+            return VarDouble.create(Statistics.standardDeviation(arr));
         }
     }
 }

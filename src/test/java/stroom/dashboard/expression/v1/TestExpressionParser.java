@@ -93,7 +93,7 @@ public class TestExpressionParser {
     private Var[] getVal(final String... str) {
         final Var[] result = new Var[str.length];
         for (int i = 0; i < result.length; i++) {
-            result[i] = new VarString(str[i]);
+            result[i] = VarString.create(str[i]);
         }
         return result;
     }
@@ -101,7 +101,7 @@ public class TestExpressionParser {
     private Var[] getVal(final double... d) {
         final Var[] result = new Var[d.length];
         for (int i = 0; i < d.length; i++) {
-            result[i] = new VarDouble(d[i]);
+            result[i] = VarDouble.create(d[i]);
         }
         return result;
     }

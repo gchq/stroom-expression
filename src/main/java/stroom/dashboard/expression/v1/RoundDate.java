@@ -65,7 +65,7 @@ public abstract class RoundDate extends AbstractFunction {
 
             LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(val), ZoneOffset.UTC);
             dateTime = adjust(dateTime);
-            return new VarLong(dateTime.toInstant(ZoneOffset.UTC).toEpochMilli());
+            return VarLong.create(dateTime.toInstant(ZoneOffset.UTC).toEpochMilli());
         }
 
         protected abstract LocalDateTime adjust(LocalDateTime dateTime);

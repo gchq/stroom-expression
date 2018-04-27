@@ -59,7 +59,7 @@ public class SubstringAfter extends AbstractFunction implements Serializable {
                     if (index < 0) {
                         gen = new StaticValueFunction(VarString.EMPTY).createGenerator();
                     } else {
-                        gen = new StaticValueFunction(new VarString(value.substring(index + after.length()))).createGenerator();
+                        gen = new StaticValueFunction(VarString.create(value.substring(index + after.length()))).createGenerator();
                     }
                 } else {
                     gen = new StaticValueFunction(VarString.EMPTY).createGenerator();
@@ -128,7 +128,7 @@ public class SubstringAfter extends AbstractFunction implements Serializable {
                     return VarString.EMPTY;
                 }
 
-                return new VarString(value.substring(index + after.length()));
+                return VarString.create(value.substring(index + after.length()));
             }
 
             return VarNull.INSTANCE;

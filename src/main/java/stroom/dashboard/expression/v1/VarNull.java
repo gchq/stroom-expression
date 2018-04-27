@@ -19,6 +19,10 @@ package stroom.dashboard.expression.v1;
 public class VarNull implements Var {
     public static final VarNull INSTANCE = new VarNull();
 
+    private VarNull() {
+        // Use instance only
+    }
+
     @Override
     public Integer toInteger() {
         return null;

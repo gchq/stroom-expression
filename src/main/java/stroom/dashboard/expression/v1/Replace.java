@@ -57,7 +57,7 @@ public class Replace extends AbstractManyChildFunction implements Serializable {
 
             final Pattern pattern = PatternCache.get(regex);
             final String newValue = pattern.matcher(value).replaceAll(replacement);
-            gen = new StaticValueFunction(new VarString(newValue)).createGenerator();
+            gen = new StaticValueFunction(VarString.create(newValue)).createGenerator();
 
         } else {
             if (params[1] instanceof Var) {
@@ -118,10 +118,10 @@ public class Replace extends AbstractManyChildFunction implements Serializable {
                 final String regex = childGenerators[1].eval().toString();
                 final String replacement = childGenerators[2].eval().toString();
                 final Pattern pattern = PatternCache.get(regex);
-                return new VarString(pattern.matcher(value).replaceAll(replacement));
+                return VarString.create(pattern.matcher(value).replaceAll(replacement));
 
             } catch (final RuntimeException e) {
-                return new VarErr(e.getMessage());
+                return VarErr.create(e.getMessage());
             }
         }
     }

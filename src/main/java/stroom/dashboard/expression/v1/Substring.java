@@ -70,9 +70,9 @@ public class Substring extends AbstractFunction implements Serializable {
                     if (end < 0 || end < start || start >= value.length()) {
                         gen = new StaticValueFunction(VarString.EMPTY).createGenerator();
                     } else if (end >= value.length()) {
-                        gen = new StaticValueFunction(new VarString(value.substring(start))).createGenerator();
+                        gen = new StaticValueFunction(VarString.create(value.substring(start))).createGenerator();
                     } else {
-                        gen = new StaticValueFunction(new VarString(value.substring(start, end))).createGenerator();
+                        gen = new StaticValueFunction(VarString.create(value.substring(start, end))).createGenerator();
                     }
                 }
             }
@@ -91,7 +91,7 @@ public class Substring extends AbstractFunction implements Serializable {
             if (pos == null) {
                 throw new ParseException("Number expected as " + paramPos + " argument of '" + name + "' function", 0);
             }
-            function = new StaticValueFunction(new VarInteger(pos));
+            function = new StaticValueFunction(VarInteger.create(pos));
         }
         return function;
     }
@@ -152,9 +152,9 @@ public class Substring extends AbstractFunction implements Serializable {
                 }
 
                 if (end >= value.length()) {
-                    return new VarString(value.substring(start));
+                    return VarString.create(value.substring(start));
                 }
-                return new VarString(value.substring(start, end));
+                return VarString.create(value.substring(start, end));
             }
 
             return VarNull.INSTANCE;

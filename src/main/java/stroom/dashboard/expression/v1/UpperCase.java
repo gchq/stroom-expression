@@ -40,7 +40,7 @@ public class UpperCase extends AbstractFunction implements Serializable {
             hasAggregate = function.hasAggregate();
         } else {
             // Optimise replacement of static input in case user does something stupid.
-            gen = new StaticValueFunction(new VarString(param.toString().toUpperCase())).createGenerator();
+            gen = new StaticValueFunction(VarString.create(param.toString().toUpperCase())).createGenerator();
         }
     }
 
@@ -77,7 +77,7 @@ public class UpperCase extends AbstractFunction implements Serializable {
             final Var val = childGenerator.eval();
             final String string = val.toString();
             if (string != null) {
-                return new VarString(string.toUpperCase());
+                return VarString.create(string.toUpperCase());
             }
             return VarNull.INSTANCE;
         }

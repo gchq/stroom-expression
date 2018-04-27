@@ -35,7 +35,7 @@ public class ExtractionGenerator extends AbstractSingleChildGenerator {
     public Var eval() {
         final String string = childGenerator.eval().toString();
         if (string != null) {
-            return new VarString(extractor.extract(string));
+            return VarString.create(extractor.extract(string));
         }
         return VarNull.INSTANCE;
     }

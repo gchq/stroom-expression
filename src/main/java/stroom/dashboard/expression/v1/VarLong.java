@@ -21,8 +21,12 @@ import java.util.Objects;
 public class VarLong implements VarNumber {
     private final long value;
 
-    public VarLong(final long value) {
+    private VarLong(final long value) {
         this.value = value;
+    }
+
+    public static VarLong create(final long value) {
+        return new VarLong(value);
     }
 
     @Override

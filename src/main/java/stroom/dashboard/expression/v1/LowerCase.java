@@ -40,7 +40,7 @@ public class LowerCase extends AbstractFunction implements Serializable {
             hasAggregate = function.hasAggregate();
         } else {
             // Optimise replacement of static input in case user does something stupid.
-            gen = new StaticValueFunction(new VarString(param.toString().toLowerCase())).createGenerator();
+            gen = new StaticValueFunction(VarString.create(param.toString().toLowerCase())).createGenerator();
             hasAggregate = false;
         }
     }
@@ -79,7 +79,7 @@ public class LowerCase extends AbstractFunction implements Serializable {
             final Var val = childGenerator.eval();
             final String string = val.toString();
             if (string != null) {
-                return new VarString(string.toLowerCase());
+                return VarString.create(string.toLowerCase());
             }
             return VarNull.INSTANCE;
         }

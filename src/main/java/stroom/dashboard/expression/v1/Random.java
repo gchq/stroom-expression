@@ -42,7 +42,7 @@ public class Random extends AbstractFunction {
 
         @Override
         public void set(final Var[] values) {
-            value = new VarDouble(Math.random());
+            value = VarDouble.create(Math.random());
         }
 
         @Override

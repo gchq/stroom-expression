@@ -88,11 +88,11 @@ public class Not extends AbstractFunction implements Serializable {
             try {
                 final Boolean condition = val.toBoolean();
                 if (condition == null) {
-                    return new VarErr("Expecting a condition");
+                    return VarErr.create("Expecting a condition");
                 }
                 return VarBoolean.create(!condition);
             } catch (final RuntimeException e) {
-                return new VarErr(e.getMessage());
+                return VarErr.create(e.getMessage());
             }
         }
     }

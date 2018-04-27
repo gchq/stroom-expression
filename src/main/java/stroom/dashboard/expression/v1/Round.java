@@ -43,7 +43,7 @@ public class Round extends AbstractRoundingFunction {
                 return VarNull.INSTANCE;
             }
 
-            return new VarDouble(Math.round(val));
+            return VarDouble.create(Math.round(val));
         }
     }
 
@@ -63,7 +63,7 @@ public class Round extends AbstractRoundingFunction {
                 return VarNull.INSTANCE;
             }
 
-            return new VarDouble(Math.round(val * multiplier) / multiplier);
+            return VarDouble.create(Math.round(val * multiplier) / multiplier);
         }
     }
 }

@@ -67,7 +67,7 @@ public class Decode extends AbstractManyChildFunction implements Serializable {
                 }
             }
 
-            gen = new StaticValueFunction(new VarString(newValue)).createGenerator();
+            gen = new StaticValueFunction(VarString.create(newValue)).createGenerator();
 
         } else {
             for (int i = 1; i < params.length - 1; i += 2) {
@@ -145,10 +145,10 @@ public class Decode extends AbstractManyChildFunction implements Serializable {
                     return VarNull.INSTANCE;
                 }
 
-                return new VarString(newValue);
+                return VarString.create(newValue);
 
             } catch (final ParseException | RuntimeException e) {
-                return new VarErr(e.getMessage());
+                return VarErr.create(e.getMessage());
             }
         }
     }

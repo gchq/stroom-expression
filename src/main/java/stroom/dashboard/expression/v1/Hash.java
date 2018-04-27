@@ -68,7 +68,7 @@ public class Hash extends AbstractFunction implements Serializable {
                 if (string == null) {
                     throw new ParseException("Unable to convert first argument of '" + name + "' function to string", 0);
                 }
-                gen = new StaticValueFunction(new VarString(hash(string, algorithm, salt))).createGenerator();
+                gen = new StaticValueFunction(VarString.create(hash(string, algorithm, salt))).createGenerator();
             }
         } catch (final NoSuchAlgorithmException e) {
             throw new ParseException(e.getMessage(), 0);
@@ -130,13 +130,13 @@ public class Hash extends AbstractFunction implements Serializable {
         public Var eval() {
             final String string = childGenerator.eval().toString();
             if (string == null) {
-                return new VarErr("Unable to convert argument to string");
+                return VarErr.create("Unable to convert argument to string");
             }
 
             try {
-                return new VarString(hash(string, algorithm, salt));
+                return VarString.create(hash(string, algorithm, salt));
             } catch (final NoSuchAlgorithmException | RuntimeException e) {
-                return new VarErr(e.getMessage());
+                return VarErr.create(e.getMessage());
             }
         }
     }

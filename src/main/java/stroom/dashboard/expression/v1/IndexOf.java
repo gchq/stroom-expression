@@ -58,7 +58,7 @@ public class IndexOf extends AbstractFunction implements Serializable {
                     if (index < 0) {
                         gen = new StaticValueFunction(VarNull.INSTANCE).createGenerator();
                     } else {
-                        gen = new StaticValueFunction(new VarInteger(index)).createGenerator();
+                        gen = new StaticValueFunction(VarInteger.create(index)).createGenerator();
                     }
                 } else {
                     gen = new StaticValueFunction(VarNull.INSTANCE).createGenerator();
@@ -123,7 +123,7 @@ public class IndexOf extends AbstractFunction implements Serializable {
                 if (string != null) {
                     final int index = value.indexOf(string);
                     if (index >= 0) {
-                        return new VarInteger(index);
+                        return VarInteger.create(index);
                     }
                 }
             }

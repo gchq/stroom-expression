@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [v1.2.0-beta.1] - 2018-04-25
 
-* Issue **#15** : Added `not()` function.
+* Issue **#15** : Added `if` and `not()` functions.
 
 * Issue **#13** : Added value functions `true()`, `false()`, `null()` and `err()`.
 

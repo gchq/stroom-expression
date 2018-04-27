@@ -74,6 +74,9 @@ public class Ref extends AbstractFunction {
         @Override
         public void set(final Var[] values) {
             current = values[fieldIndex];
+            if (current == null) {
+                current = VarNull.INSTANCE;
+            }
         }
 
         @Override

@@ -47,7 +47,7 @@ public class CountUnique extends AbstractFunction {
              * Optimise replacement of static input in case user does something
              * stupid.
              */
-            gen = new StaticValueFunction(new VarInteger(1)).createGenerator();
+            gen = new StaticValueFunction(VarInteger.create(1)).createGenerator();
         }
     }
 
@@ -91,7 +91,7 @@ public class CountUnique extends AbstractFunction {
 
         @Override
         public Var eval() {
-            return new VarInteger(uniqueValues.size());
+            return VarInteger.create(uniqueValues.size());
         }
 
         @Override

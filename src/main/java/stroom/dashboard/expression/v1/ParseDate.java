@@ -63,14 +63,14 @@ public class ParseDate extends AbstractFunction implements Serializable {
         } else if (param instanceof VarString) {
             final String string = param.toString();
             final long millis = DateUtil.parse(string, formatter, zoneId);
-            gen = new StaticValueFunction(new VarLong(millis)).createGenerator();
+            gen = new StaticValueFunction(VarLong.create(millis)).createGenerator();
 
         } else {
             final Long millis = ((Var) param).toLong();
             if (millis == null) {
                 throw new ParseException("Unable to convert first argument of '" + name + "' function to long", 0);
             }
-            gen = new StaticValueFunction(new VarLong(millis)).createGenerator();
+            gen = new StaticValueFunction(VarLong.create(millis)).createGenerator();
         }
     }
 
@@ -118,9 +118,9 @@ public class ParseDate extends AbstractFunction implements Serializable {
             final String value = childGenerator.eval().toString();
             if (value != null) {
                 try {
-                    return new VarLong(FormatterCache.parse(value, pattern, timeZone));
+                    return VarLong.create(FormatterCache.parse(value, pattern, timeZone));
                 } catch (final RuntimeException e) {
-                    return new VarErr(e.getMessage());
+                    return VarErr.create(e.getMessage());
                 }
             }
 

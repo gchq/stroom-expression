@@ -92,7 +92,7 @@ public class Variance extends AbstractManyChildFunction implements AggregateFunc
             }
 
             // calculate variance
-            return new VarDouble(Statistics.variance(arr));
+            return VarDouble.create(Statistics.variance(arr));
         }
 
         @Override
@@ -135,7 +135,7 @@ public class Variance extends AbstractManyChildFunction implements AggregateFunc
             final Double[] arr = list.toArray(new Double[0]);
 
             // calculate variance
-            return new VarDouble(Statistics.variance(arr));
+            return VarDouble.create(Statistics.variance(arr));
         }
     }
 }

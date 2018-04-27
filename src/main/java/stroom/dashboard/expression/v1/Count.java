@@ -50,7 +50,7 @@ public class Count extends AbstractFunction {
 
         @Override
         public Var eval() {
-            return new VarLong(count);
+            return VarLong.create(count);
         }
 
         @Override

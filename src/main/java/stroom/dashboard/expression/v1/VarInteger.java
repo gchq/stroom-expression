@@ -21,8 +21,12 @@ import java.util.Objects;
 public class VarInteger implements VarNumber {
     private final int value;
 
-    public VarInteger(final int value) {
+    private VarInteger(final int value) {
         this.value = value;
+    }
+
+    public static VarInteger create(final int value) {
+        return new VarInteger(value);
     }
 
     @Override

@@ -43,7 +43,7 @@ public class Ceiling extends AbstractRoundingFunction {
                 return VarNull.INSTANCE;
             }
 
-            return new VarDouble(Math.ceil(val));
+            return VarDouble.create(Math.ceil(val));
         }
     }
 
@@ -63,7 +63,7 @@ public class Ceiling extends AbstractRoundingFunction {
                 return VarNull.INSTANCE;
             }
 
-            return new VarDouble(Math.ceil(val * multiplier) / multiplier);
+            return VarDouble.create(Math.ceil(val * multiplier) / multiplier);
         }
     }
 }

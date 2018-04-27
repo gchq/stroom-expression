@@ -24,8 +24,16 @@ public class VarString implements Var, Appendable {
 
     private final String value;
 
-    public VarString(final String value) {
+    private VarString(final String value) {
         this.value = value;
+    }
+
+    public static VarString create(final String value) {
+        if ("".equals(value)) {
+            return EMPTY;
+        }
+
+        return new VarString(value);
     }
 
     @Override

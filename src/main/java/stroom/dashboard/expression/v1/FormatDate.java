@@ -66,7 +66,7 @@ public class FormatDate extends AbstractFunction implements Serializable {
             }
 
             final String string = DateUtil.format(millis, formatter, zoneId);
-            gen = new StaticValueFunction(new VarString(string)).createGenerator();
+            gen = new StaticValueFunction(VarString.create(string)).createGenerator();
         }
     }
 
@@ -113,13 +113,13 @@ public class FormatDate extends AbstractFunction implements Serializable {
         public Var eval() {
             final Long millis = childGenerator.eval().toLong();
             if (millis == null) {
-                return new VarErr("Unable to convert argument to long");
+                return VarErr.create("Unable to convert argument to long");
             }
 
             try {
-                return new VarString(FormatterCache.format(millis, pattern, timeZone));
+                return VarString.create(FormatterCache.format(millis, pattern, timeZone));
             } catch (final RuntimeException e) {
-                return new VarErr(e.getMessage());
+                return VarErr.create(e.getMessage());
             }
         }
     }

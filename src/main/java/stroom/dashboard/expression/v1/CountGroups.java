@@ -54,7 +54,7 @@ public class CountGroups extends AbstractFunction {
                 return VarNull.INSTANCE;
             }
 
-            return new VarLong(count);
+            return VarLong.create(count);
         }
 
         @Override

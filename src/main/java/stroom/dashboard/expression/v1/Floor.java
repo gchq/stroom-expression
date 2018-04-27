@@ -43,7 +43,7 @@ public class Floor extends AbstractRoundingFunction {
                 return VarNull.INSTANCE;
             }
 
-            return new VarDouble(Math.floor(val));
+            return VarDouble.create(Math.floor(val));
         }
     }
 
@@ -63,7 +63,7 @@ public class Floor extends AbstractRoundingFunction {
                 return VarNull.INSTANCE;
             }
 
-            return new VarDouble(Math.floor(val * multiplier) / multiplier);
+            return VarDouble.create(Math.floor(val * multiplier) / multiplier);
         }
     }
 }

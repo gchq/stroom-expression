@@ -39,7 +39,7 @@ public abstract class ExtractionFunction extends AbstractFunction implements Ser
         } else {
             // Optimise replacement of static input in case user does something stupid.
             final String string = param.toString();
-            gen = new StaticValueFunction(new VarString(getExtractor().extract(string))).createGenerator();
+            gen = new StaticValueFunction(VarString.create(getExtractor().extract(string))).createGenerator();
             hasAggregate = false;
         }
     }

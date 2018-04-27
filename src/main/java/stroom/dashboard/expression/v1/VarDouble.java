@@ -22,8 +22,12 @@ import java.util.Objects;
 public class VarDouble implements VarNumber {
     private final double value;
 
-    public VarDouble(final double value) {
+    private VarDouble(final double value) {
         this.value = value;
+    }
+
+    public static VarDouble create(final double value) {
+        return new VarDouble(value);
     }
 
     @Override

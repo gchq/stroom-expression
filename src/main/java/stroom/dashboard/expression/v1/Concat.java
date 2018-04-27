@@ -51,7 +51,7 @@ public class Concat extends AbstractManyChildFunction {
                     sb.append(value);
                 }
             }
-            return new VarString(sb.toString());
+            return VarString.create(sb.toString());
         }
     }
 }

@@ -119,7 +119,7 @@ public class Match extends AbstractManyChildFunction implements Serializable {
                 return VarBoolean.create(pattern.matcher(value).matches());
 
             } catch (final RuntimeException e) {
-                return new VarErr(e.getMessage());
+                return VarErr.create(e.getMessage());
             }
         }
     }

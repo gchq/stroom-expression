@@ -43,7 +43,7 @@ public class StringLength extends AbstractFunction implements Serializable {
              * Optimise replacement of static input in case user does something
 			 * stupid.
 			 */
-            gen = new StaticValueFunction(new VarInteger(param.toString().length())).createGenerator();
+            gen = new StaticValueFunction(VarInteger.create(param.toString().length())).createGenerator();
             hasAggregate = false;
         }
     }
@@ -81,7 +81,7 @@ public class StringLength extends AbstractFunction implements Serializable {
         public Var eval() {
             final String val = childGenerator.eval().toString();
             if (val != null) {
-                return new VarInteger(val.length());
+                return VarInteger.create(val.length());
             }
 
             return VarNull.INSTANCE;

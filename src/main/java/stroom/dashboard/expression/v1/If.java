@@ -107,7 +107,7 @@ public class If extends AbstractManyChildFunction implements Serializable {
             try {
                 final Boolean condition = val.toBoolean();
                 if (condition == null) {
-                    return new VarErr("Expecting a condition");
+                    return VarErr.create("Expecting a condition");
                 }
                 if (condition) {
                     return childGenerators[1].eval();
@@ -115,7 +115,7 @@ public class If extends AbstractManyChildFunction implements Serializable {
                     return childGenerators[2].eval();
                 }
             } catch (final RuntimeException e) {
-                return new VarErr(e.getMessage());
+                return VarErr.create(e.getMessage());
             }
         }
     }

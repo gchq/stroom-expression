@@ -30,7 +30,7 @@ public abstract class Calculator implements Serializable {
         if (cur == null) {
             return value;
         }
-        return new VarDouble(op(cur, val));
+        return VarDouble.create(op(cur, val));
     }
 
     protected abstract double op(final double cur, final double val);

@@ -23,8 +23,12 @@ public class VarErr implements Var {
 
     private final String message;
 
-    public VarErr(final String message) {
+    private VarErr(final String message) {
         this.message = message;
+    }
+
+    public static VarErr create(final String message) {
+        return new VarErr(message);
     }
 
     @Override
