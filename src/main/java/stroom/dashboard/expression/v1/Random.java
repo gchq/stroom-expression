@@ -16,10 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
-import java.text.ParseException;
-
-public class Random extends AbstractFunction {
-    public static final String NAME = "random";
+class Random extends AbstractFunction {
+    static final String NAME = "random";
 
     public Random(final String name) {
         super(name, 0, 0);
@@ -38,15 +36,15 @@ public class Random extends AbstractFunction {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = -7551073465232523106L;
 
-        private Var value;
+        private Val value;
 
         @Override
-        public void set(final Var[] values) {
-            value = VarDouble.create(Math.random());
+        public void set(final Val[] values) {
+            value = ValDouble.create(Math.random());
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             return value;
         }
     }

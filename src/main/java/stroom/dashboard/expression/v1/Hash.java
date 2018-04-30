@@ -21,15 +21,10 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 
-public class Hash extends AbstractFunction implements Serializable {
+class Hash extends AbstractFunction implements Serializable {
+    static final String NAME = "hash";
     private static final long serialVersionUID = -305845496003936297L;
-
-    public static final String NAME = "hash";
-
     private static final String DEFAULT_ALGORITHM = "SHA-256";
 
     private String algorithm = DEFAULT_ALGORITHM;
@@ -40,6 +35,18 @@ public class Hash extends AbstractFunction implements Serializable {
 
     public Hash(final String name) {
         super(name, 1, 3);
+    }
+
+    private static String hash(final String value, final String algorithm, final String salt) throws NoSuchAlgorithmException {
+        // Create MessageDigest object.
+        final MessageDigest digest = MessageDigest.getInstance(algorithm);
+        if (salt != null) {
+            digest.update(salt.getBytes());
+        }
+
+        final byte[] arr = digest.digest(value.getBytes());
+        // Converts message digest value in base 16 (hex)
+        return new BigInteger(1, arr).toString(16);
     }
 
     @Override
@@ -68,7 +75,7 @@ public class Hash extends AbstractFunction implements Serializable {
                 if (string == null) {
                     throw new ParseException("Unable to convert first argument of '" + name + "' function to string", 0);
                 }
-                gen = new StaticValueFunction(VarString.create(hash(string, algorithm, salt))).createGenerator();
+                gen = new StaticValueFunction(ValString.create(hash(string, algorithm, salt))).createGenerator();
             }
         } catch (final NoSuchAlgorithmException e) {
             throw new ParseException(e.getMessage(), 0);
@@ -76,22 +83,10 @@ public class Hash extends AbstractFunction implements Serializable {
     }
 
     private String parseStringParam(final Param param, final String paramPos) throws ParseException {
-        if (!(param instanceof VarString)) {
+        if (!(param instanceof ValString)) {
             throw new ParseException("String expected as " + paramPos + " argument of '" + name + "' function", 0);
         }
         return param.toString();
-    }
-
-    private static String hash(final String value, final String algorithm, final String salt) throws NoSuchAlgorithmException {
-        // Create MessageDigest object.
-        final MessageDigest digest = MessageDigest.getInstance(algorithm);
-        if (salt != null) {
-            digest.update(salt.getBytes());
-        }
-
-        final byte[] arr = digest.digest(value.getBytes());
-        // Converts message digest value in base 16 (hex)
-        return new BigInteger(1, arr).toString(16);
     }
 
     @Override
@@ -115,28 +110,28 @@ public class Hash extends AbstractFunction implements Serializable {
         private final String algorithm;
         private final String salt;
 
-        public Gen(final Generator childGenerator, final String algorithm, final String salt) {
+        Gen(final Generator childGenerator, final String algorithm, final String salt) {
             super(childGenerator);
             this.algorithm = algorithm;
             this.salt = salt;
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             final String string = childGenerator.eval().toString();
             if (string == null) {
-                return VarErr.create("Unable to convert argument to string");
+                return ValErr.create("Unable to convert argument to string");
             }
 
             try {
-                return VarString.create(hash(string, algorithm, salt));
+                return ValString.create(hash(string, algorithm, salt));
             } catch (final NoSuchAlgorithmException | RuntimeException e) {
-                return VarErr.create(e.getMessage());
+                return ValErr.create(e.getMessage());
             }
         }
     }

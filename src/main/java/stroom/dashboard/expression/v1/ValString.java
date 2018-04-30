@@ -19,21 +19,21 @@ package stroom.dashboard.expression.v1;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class VarString implements Var {
-    public static final VarString EMPTY = new VarString("");
+public class ValString implements Val {
+    static final ValString EMPTY = new ValString("");
 
     private final String value;
 
-    private VarString(final String value) {
+    private ValString(final String value) {
         this.value = value;
     }
 
-    public static VarString create(final String value) {
+    public static ValString create(final String value) {
         if ("".equals(value)) {
             return EMPTY;
         }
 
-        return new VarString(value);
+        return new ValString(value);
     }
 
     @Override
@@ -105,12 +105,24 @@ public class VarString implements Var {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final VarString varString = (VarString) o;
-        return Objects.equals(value, varString.value);
+        final ValString valString = (ValString) o;
+        return Objects.equals(value, valString.value);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    @Override
+    public int compareTo(final Val o) {
+        final Double d1 = toDouble();
+        if (d1 != null) {
+            final Double d2 = o.toDouble();
+            if (d2 != null) {
+                return Double.compare(d1, d2);
+            }
+        }
+        return value.compareToIgnoreCase(((ValString) o).value);
     }
 }

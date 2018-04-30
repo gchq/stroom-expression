@@ -18,10 +18,9 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 
-public class Exclude extends AbstractIncludeExclude implements Serializable {
+class Exclude extends AbstractIncludeExclude implements Serializable {
+    static final String NAME = "exclude";
     private static final long serialVersionUID = -305845496003936297L;
-
-    public static final String NAME = "exclude";
 
     public Exclude(final String name) {
         super(name);

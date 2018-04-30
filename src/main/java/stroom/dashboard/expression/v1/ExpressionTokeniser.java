@@ -20,8 +20,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpressionTokeniser {
-    public List<Token> tokenise(final String expression) {
+class ExpressionTokeniser {
+    List<Token> tokenise(final String expression) {
         List<Token> tokens = new ArrayList<>();
 
         if (expression != null) {
@@ -309,8 +309,8 @@ public class ExpressionTokeniser {
         return output;
     }
 
-    public static class Token implements Param {
-        static Type[] SIMPLE_TOKENS = new Type[]{
+    static class Token implements Param {
+        static final Type[] SIMPLE_TOKENS = new Type[]{
                 Type.COMMA,
                 Type.ORDER,
                 Type.DIVISION,
@@ -335,11 +335,11 @@ public class ExpressionTokeniser {
             this.end = end;
         }
 
-        public Type getType() {
+        Type getType() {
             return type;
         }
 
-        public int getStart() {
+        int getStart() {
             return start;
         }
 
@@ -370,7 +370,7 @@ public class ExpressionTokeniser {
 
             private final char[] identifier;
 
-            private Type(final String identifier) {
+            Type(final String identifier) {
                 this.identifier = identifier.toCharArray();
             }
         }

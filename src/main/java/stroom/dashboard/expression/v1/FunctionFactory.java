@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FunctionFactory {
-    private final Map<String, Class<? extends Function>> map = new HashMap<String, Class<? extends Function>>();
+    private final Map<String, Class<? extends Function>> map = new HashMap<>();
 
     public FunctionFactory() {
         // Aggregate functions.

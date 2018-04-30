@@ -19,13 +19,13 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public abstract class AbstractCast extends AbstractFunction implements Serializable {
+abstract class AbstractCast extends AbstractFunction implements Serializable {
     private static final long serialVersionUID = -305845496003936297L;
     private Generator gen;
     private Function function;
     private boolean hasAggregate;
 
-    public AbstractCast(final String name) {
+    AbstractCast(final String name) {
         super(name, 1, 1);
     }
 
@@ -39,7 +39,7 @@ public abstract class AbstractCast extends AbstractFunction implements Serializa
             hasAggregate = function.hasAggregate();
         } else {
             // Optimise replacement of static input in case user does something stupid.
-            gen = new StaticValueFunction(getCaster().cast((Var) param)).createGenerator();
+            gen = new StaticValueFunction(getCaster().cast((Val) param)).createGenerator();
         }
     }
 
@@ -61,7 +61,7 @@ public abstract class AbstractCast extends AbstractFunction implements Serializa
     abstract AbstractCaster getCaster();
 
     abstract static class AbstractCaster implements Serializable {
-        abstract Var cast(Var var);
+        abstract Val cast(Val val);
     }
 
     private static class Gen extends AbstractSingleChildGenerator {
@@ -69,18 +69,18 @@ public abstract class AbstractCast extends AbstractFunction implements Serializa
 
         private final AbstractCaster caster;
 
-        public Gen(final Generator childGenerator, final AbstractCaster caster) {
+        Gen(final Generator childGenerator, final AbstractCaster caster) {
             super(childGenerator);
             this.caster = caster;
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             return caster.cast(childGenerator.eval());
         }
     }

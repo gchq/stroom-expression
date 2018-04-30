@@ -16,10 +16,10 @@
 
 package stroom.dashboard.expression.v1;
 
-public class VarNull implements Var {
-    public static final VarNull INSTANCE = new VarNull();
+public class ValNull implements Val {
+    public static final ValNull INSTANCE = new ValNull();
 
-    private VarNull() {
+    private ValNull() {
         // Use instance only
     }
 
@@ -66,6 +66,11 @@ public class VarNull implements Var {
 
     @Override
     public int hashCode() {
+        return 0;
+    }
+
+    @Override
+    public int compareTo(final Val o) {
         return 0;
     }
 }

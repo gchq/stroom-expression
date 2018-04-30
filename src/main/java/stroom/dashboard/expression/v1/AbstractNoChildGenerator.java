@@ -16,22 +16,22 @@
 
 package stroom.dashboard.expression.v1;
 
-public abstract class AbstractNoChildGenerator extends AbstractGenerator {
+abstract class AbstractNoChildGenerator extends AbstractGenerator {
     private static final long serialVersionUID = 513621715143449935L;
 
-    public AbstractNoChildGenerator() {
+    AbstractNoChildGenerator() {
     }
 
     @Override
-    public void addChildKey(final Var key) {
+    public void addChildKey(final Val key) {
     }
 
     @Override
-    public void set(final Var[] values) {
+    public void set(final Val[] values) {
     }
 
     @Override
-    public abstract Var eval();
+    public abstract Val eval();
 
     @Override
     public void merge(final Generator generator) {

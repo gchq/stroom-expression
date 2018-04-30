@@ -19,5 +19,5 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 
 public interface RoundCalculator extends Serializable {
-    Var calc(Var value);
+    Val calc(Val value);
 }

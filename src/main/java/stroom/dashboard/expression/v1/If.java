@@ -19,11 +19,9 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public class If extends AbstractManyChildFunction implements Serializable {
+class If extends AbstractManyChildFunction implements Serializable {
+    static final String NAME = "if";
     private static final long serialVersionUID = -305845496003936297L;
-
-    public static final String NAME = "if";
-
     private Generator gen;
     private boolean simple;
 
@@ -38,14 +36,14 @@ public class If extends AbstractManyChildFunction implements Serializable {
         // See if this is a static computation.
         simple = true;
         for (Param param : params) {
-            if (!(param instanceof Var)) {
+            if (!(param instanceof Val)) {
                 simple = false;
                 break;
             }
         }
 
-        if (params[0] instanceof Var) {
-            final Boolean condition = ((Var) params[0]).toBoolean();
+        if (params[0] instanceof Val) {
+            final Boolean condition = ((Val) params[0]).toBoolean();
             if (condition == null) {
                 throw new ParseException("Expecting a condition for first argument of '" + name + "' function", 0);
             }
@@ -53,11 +51,11 @@ public class If extends AbstractManyChildFunction implements Serializable {
 
         if (simple) {
             // Static computation.
-            final Boolean condition = ((Var) params[0]).toBoolean();
+            final Boolean condition = ((Val) params[0]).toBoolean();
             if (condition) {
-                gen = new StaticValueFunction((Var) params[1]).createGenerator();
+                gen = new StaticValueFunction((Val) params[1]).createGenerator();
             } else {
-                gen = new StaticValueFunction((Var) params[2]).createGenerator();
+                gen = new StaticValueFunction((Val) params[2]).createGenerator();
             }
         }
     }
@@ -86,20 +84,20 @@ public class If extends AbstractManyChildFunction implements Serializable {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        public Gen(final Generator[] childGenerators) {
+        Gen(final Generator[] childGenerators) {
             super(childGenerators);
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Var eval() {
-            final Var val = childGenerators[0].eval();
+        public Val eval() {
+            final Val val = childGenerators[0].eval();
             if (!val.hasValue()) {
                 return val;
             }
@@ -107,7 +105,7 @@ public class If extends AbstractManyChildFunction implements Serializable {
             try {
                 final Boolean condition = val.toBoolean();
                 if (condition == null) {
-                    return VarErr.create("Expecting a condition");
+                    return ValErr.create("Expecting a condition");
                 }
                 if (condition) {
                     return childGenerators[1].eval();
@@ -115,7 +113,7 @@ public class If extends AbstractManyChildFunction implements Serializable {
                     return childGenerators[2].eval();
                 }
             } catch (final RuntimeException e) {
-                return VarErr.create(e.getMessage());
+                return ValErr.create(e.getMessage());
             }
         }
     }

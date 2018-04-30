@@ -16,14 +16,14 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Max extends AbstractAggregateFunction {
-    public static final String NAME = "max";
+class Max extends AbstractAggregateFunction {
+    static final String NAME = "max";
 
     public Max(final String name) {
         super(name, new Calc());
     }
 
-    public static class Calc extends Calculator {
+    static class Calc extends Calculator {
         private static final long serialVersionUID = 1099553839843710283L;
 
         @Override

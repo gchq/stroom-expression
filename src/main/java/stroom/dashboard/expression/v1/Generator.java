@@ -24,7 +24,7 @@ public interface Generator extends Serializable, Comparable<Generator> {
      *
      * @param key The key of a child group.
      */
-    void addChildKey(Var key);
+    void addChildKey(Val key);
 
     /**
      * Set values that can be used to source whatever data is required by value
@@ -32,7 +32,7 @@ public interface Generator extends Serializable, Comparable<Generator> {
      *
      * @param values The current data values to pick data from.
      */
-    void set(Var[] values);
+    void set(Val[] values);
 
     /**
      * Evaluate this generator by applying the function that this generator
@@ -40,7 +40,7 @@ public interface Generator extends Serializable, Comparable<Generator> {
      *
      * @return The result of applying this function to the suppled values.
      */
-    Var eval();
+    Val eval();
 
     /**
      * Merge the values from another generator into this generator, e.g. for a

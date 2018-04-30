@@ -16,6 +16,6 @@
 
 package stroom.dashboard.expression.v1;
 
-public interface Appendable {
+interface Appendable {
     void appendString(StringBuilder sb);
 }

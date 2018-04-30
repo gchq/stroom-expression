@@ -20,8 +20,8 @@ import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CountUnique extends AbstractFunction {
-    public static final String NAME = "countUnique";
+class CountUnique extends AbstractFunction {
+    static final String NAME = "countUnique";
 
     private Generator gen;
     private Function function;
@@ -47,7 +47,7 @@ public class CountUnique extends AbstractFunction {
              * Optimise replacement of static input in case user does something
              * stupid.
              */
-            gen = new StaticValueFunction(VarInteger.create(1)).createGenerator();
+            gen = new StaticValueFunction(ValInteger.create(1)).createGenerator();
         }
     }
 
@@ -74,24 +74,24 @@ public class CountUnique extends AbstractFunction {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = -6770724151493320673L;
 
-        private final Set<Var> uniqueValues = new HashSet<>();
+        private final Set<Val> uniqueValues = new HashSet<>();
 
-        public Gen(final Generator childGenerator) {
+        Gen(final Generator childGenerator) {
             super(childGenerator);
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
-            final Var value = childGenerator.eval();
+            final Val value = childGenerator.eval();
             if (value.hasValue()) {
                 uniqueValues.add(value);
             }
         }
 
         @Override
-        public Var eval() {
-            return VarInteger.create(uniqueValues.size());
+        public Val eval() {
+            return ValInteger.create(uniqueValues.size());
         }
 
         @Override

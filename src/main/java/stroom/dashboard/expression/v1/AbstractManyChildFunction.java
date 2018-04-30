@@ -18,10 +18,10 @@ package stroom.dashboard.expression.v1;
 
 import java.text.ParseException;
 
-public abstract class AbstractManyChildFunction extends AbstractFunction {
+abstract class AbstractManyChildFunction extends AbstractFunction {
     Function[] functions;
 
-    public AbstractManyChildFunction(final String name, final int minParams, final int maxParams) {
+    AbstractManyChildFunction(final String name, final int minParams, final int maxParams) {
         super(name, minParams, maxParams);
     }
 
@@ -36,7 +36,7 @@ public abstract class AbstractManyChildFunction extends AbstractFunction {
                 final Function func = (Function) param;
                 functions[i] = func;
             } else {
-                functions[i] = new StaticValueFunction((Var) param);
+                functions[i] = new StaticValueFunction((Val) param);
             }
         }
     }

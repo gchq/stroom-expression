@@ -16,8 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Sum extends AbstractAggregateFunction {
-    public static final String NAME = "sum";
+class Sum extends AbstractAggregateFunction {
+    static final String NAME = "sum";
 
     public Sum(final String name) {
         super(name, new Add.Calc());

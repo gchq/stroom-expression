@@ -19,11 +19,9 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public class Substring extends AbstractFunction implements Serializable {
+class Substring extends AbstractFunction implements Serializable {
+    static final String NAME = "substring";
     private static final long serialVersionUID = -305845496003936297L;
-
-    public static final String NAME = "substring";
-
     private Function startFunction;
     private Function endFunction;
 
@@ -48,7 +46,7 @@ public class Substring extends AbstractFunction implements Serializable {
             hasAggregate = function.hasAggregate();
 
         } else {
-            function = new StaticValueFunction((Var) param);
+            function = new StaticValueFunction((Val) param);
             hasAggregate = false;
 
             // Optimise replacement of static input in case user does something stupid.
@@ -58,7 +56,7 @@ public class Substring extends AbstractFunction implements Serializable {
                 final Double endPos = endFunction.createGenerator().eval().toDouble();
 
                 if (value == null || startPos == null || endPos == null) {
-                    gen = new StaticValueFunction(VarString.EMPTY).createGenerator();
+                    gen = new StaticValueFunction(ValString.EMPTY).createGenerator();
                 } else {
                     int start = startPos.intValue();
                     int end = endPos.intValue();
@@ -68,11 +66,11 @@ public class Substring extends AbstractFunction implements Serializable {
                     }
 
                     if (end < 0 || end < start || start >= value.length()) {
-                        gen = new StaticValueFunction(VarString.EMPTY).createGenerator();
+                        gen = new StaticValueFunction(ValString.EMPTY).createGenerator();
                     } else if (end >= value.length()) {
-                        gen = new StaticValueFunction(VarString.create(value.substring(start))).createGenerator();
+                        gen = new StaticValueFunction(ValString.create(value.substring(start))).createGenerator();
                     } else {
-                        gen = new StaticValueFunction(VarString.create(value.substring(start, end))).createGenerator();
+                        gen = new StaticValueFunction(ValString.create(value.substring(start, end))).createGenerator();
                     }
                 }
             }
@@ -87,11 +85,11 @@ public class Substring extends AbstractFunction implements Serializable {
                 throw new ParseException("Non aggregate function expected as " + paramPos + " argument of '" + name + "' function", 0);
             }
         } else {
-            Integer pos = ((Var) param).toInteger();
+            Integer pos = ((Val) param).toInteger();
             if (pos == null) {
                 throw new ParseException("Number expected as " + paramPos + " argument of '" + name + "' function", 0);
             }
-            function = new StaticValueFunction(VarInteger.create(pos));
+            function = new StaticValueFunction(ValInteger.create(pos));
         }
         return function;
     }
@@ -114,30 +112,30 @@ public class Substring extends AbstractFunction implements Serializable {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private Generator startPosGenerator;
-        private Generator endPosGenerator;
+        private final Generator startPosGenerator;
+        private final Generator endPosGenerator;
 
-        public Gen(final Generator childGenerator, final Generator startPosGenerator, final Generator endPosGenerator) {
+        Gen(final Generator childGenerator, final Generator startPosGenerator, final Generator endPosGenerator) {
             super(childGenerator);
             this.startPosGenerator = startPosGenerator;
             this.endPosGenerator = endPosGenerator;
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
             startPosGenerator.set(values);
             endPosGenerator.set(values);
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             final String value = childGenerator.eval().toString();
             if (value != null) {
                 Integer startPos = startPosGenerator.eval().toInteger();
                 Integer endPos = endPosGenerator.eval().toInteger();
                 if (startPos == null || endPos == null) {
-                    return VarString.EMPTY;
+                    return ValString.EMPTY;
                 }
 
                 int start = startPos;
@@ -148,16 +146,16 @@ public class Substring extends AbstractFunction implements Serializable {
                 }
 
                 if (end < 0 || end < start || start >= value.length()) {
-                    return VarString.EMPTY;
+                    return ValString.EMPTY;
                 }
 
                 if (end >= value.length()) {
-                    return VarString.create(value.substring(start));
+                    return ValString.create(value.substring(start));
                 }
-                return VarString.create(value.substring(start, end));
+                return ValString.create(value.substring(start, end));
             }
 
-            return VarNull.INSTANCE;
+            return ValNull.INSTANCE;
         }
     }
 }

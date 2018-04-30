@@ -62,21 +62,21 @@ public abstract class NumericFunction extends AbstractManyChildFunction {
 
         private final Calculator calculator;
 
-        public Gen(final Generator[] childGenerators, final Calculator calculator) {
+        Gen(final Generator[] childGenerators, final Calculator calculator) {
             super(childGenerators);
             this.calculator = calculator;
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Var eval() {
-            Var value = VarNull.INSTANCE;
+        public Val eval() {
+            Val value = ValNull.INSTANCE;
             for (final Generator gen : childGenerators) {
                 value = calculator.calc(value, gen.eval());
             }

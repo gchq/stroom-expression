@@ -21,7 +21,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-public abstract class RoundDate extends AbstractFunction {
+abstract class RoundDate extends AbstractFunction {
     private Function function;
 
     public RoundDate(final String name) {
@@ -36,7 +36,7 @@ public abstract class RoundDate extends AbstractFunction {
         if (param instanceof Function) {
             function = (Function) param;
         } else {
-            function = new StaticValueFunction((Var) param);
+            function = new StaticValueFunction((Val) param);
         }
     }
 
@@ -57,15 +57,15 @@ public abstract class RoundDate extends AbstractFunction {
         private static final long serialVersionUID = 1099553839843710283L;
 
         @Override
-        public Var calc(final Var value) {
+        public Val calc(final Val value) {
             final Long val = value.toLong();
             if (val == null) {
-                return VarNull.INSTANCE;
+                return ValNull.INSTANCE;
             }
 
             LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(val), ZoneOffset.UTC);
             dateTime = adjust(dateTime);
-            return VarLong.create(dateTime.toInstant(ZoneOffset.UTC).toEpochMilli());
+            return ValLong.create(dateTime.toInstant(ZoneOffset.UTC).toEpochMilli());
         }
 
         protected abstract LocalDateTime adjust(LocalDateTime dateTime);

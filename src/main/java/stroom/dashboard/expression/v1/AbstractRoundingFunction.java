@@ -18,11 +18,11 @@ package stroom.dashboard.expression.v1;
 
 import java.text.ParseException;
 
-public abstract class AbstractRoundingFunction extends AbstractFunction {
+abstract class AbstractRoundingFunction extends AbstractFunction {
     private RoundCalculator calculator;
     private Function function;
 
-    public AbstractRoundingFunction(final String name) {
+    AbstractRoundingFunction(final String name) {
         super(name, 1, 2);
     }
 
@@ -31,8 +31,8 @@ public abstract class AbstractRoundingFunction extends AbstractFunction {
         super.setParams(params);
 
         if (params.length == 2) {
-            if (params[1] instanceof Var) {
-                final Integer precision = ((Var) params[1]).toInteger();
+            if (params[1] instanceof Val) {
+                final Integer precision = ((Val) params[1]).toInteger();
                 if (precision != null && precision > 0) {
                     calculator = createCalculator((double) precision);
                 } else {
@@ -51,7 +51,7 @@ public abstract class AbstractRoundingFunction extends AbstractFunction {
         if (param instanceof Function) {
             function = (Function) param;
         } else {
-            function = new StaticValueFunction((Var) param);
+            function = new StaticValueFunction((Val) param);
         }
     }
 

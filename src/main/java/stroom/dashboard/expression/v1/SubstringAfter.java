@@ -19,11 +19,9 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public class SubstringAfter extends AbstractFunction implements Serializable {
+class SubstringAfter extends AbstractFunction implements Serializable {
+    static final String NAME = "substringAfter";
     private static final long serialVersionUID = -305845496003936297L;
-
-    public static final String NAME = "substringAfter";
-
     private Function afterFunction;
 
     private Generator gen;
@@ -46,7 +44,7 @@ public class SubstringAfter extends AbstractFunction implements Serializable {
             hasAggregate = function.hasAggregate();
 
         } else {
-            function = new StaticValueFunction((Var) param);
+            function = new StaticValueFunction((Val) param);
             hasAggregate = false;
 
             // Optimise replacement of static input in case user does something stupid.
@@ -57,12 +55,12 @@ public class SubstringAfter extends AbstractFunction implements Serializable {
                     final int index = value.indexOf(after);
 
                     if (index < 0) {
-                        gen = new StaticValueFunction(VarString.EMPTY).createGenerator();
+                        gen = new StaticValueFunction(ValString.EMPTY).createGenerator();
                     } else {
-                        gen = new StaticValueFunction(VarString.create(value.substring(index + after.length()))).createGenerator();
+                        gen = new StaticValueFunction(ValString.create(value.substring(index + after.length()))).createGenerator();
                     }
                 } else {
-                    gen = new StaticValueFunction(VarString.EMPTY).createGenerator();
+                    gen = new StaticValueFunction(ValString.EMPTY).createGenerator();
                 }
             }
         }
@@ -75,10 +73,10 @@ public class SubstringAfter extends AbstractFunction implements Serializable {
             if (function.hasAggregate()) {
                 throw new ParseException("Non aggregate function expected as " + paramPos + " argument of '" + name + "' function", 0);
             }
-        } else if (!(param instanceof VarString)) {
+        } else if (!(param instanceof ValString)) {
             throw new ParseException("String or function expected as " + paramPos + " argument of '" + name + "' function", 0);
         } else {
-            function = new StaticValueFunction((Var) param);
+            function = new StaticValueFunction((Val) param);
         }
         return function;
     }
@@ -101,37 +99,37 @@ public class SubstringAfter extends AbstractFunction implements Serializable {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private Generator afterGenerator;
+        private final Generator afterGenerator;
 
-        public Gen(final Generator childGenerator, final Generator afterGenerator) {
+        Gen(final Generator childGenerator, final Generator afterGenerator) {
             super(childGenerator);
             this.afterGenerator = afterGenerator;
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
             afterGenerator.set(values);
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             final String value = childGenerator.eval().toString();
             if (value != null) {
                 final String after = afterGenerator.eval().toString();
                 if (after == null) {
-                    return VarString.EMPTY;
+                    return ValString.EMPTY;
                 }
 
                 final int index = value.indexOf(after);
                 if (index < 0) {
-                    return VarString.EMPTY;
+                    return ValString.EMPTY;
                 }
 
-                return VarString.create(value.substring(index + after.length()));
+                return ValString.create(value.substring(index + after.length()));
             }
 
-            return VarNull.INSTANCE;
+            return ValNull.INSTANCE;
         }
     }
 }

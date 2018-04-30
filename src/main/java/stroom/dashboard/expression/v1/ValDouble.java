@@ -16,21 +16,18 @@
 
 package stroom.dashboard.expression.v1;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
-public class VarLong implements VarNumber {
-    private final long value;
+public class ValDouble implements ValNumber {
+    private final double value;
 
-    private VarLong(final long value) {
+    private ValDouble(final double value) {
         this.value = value;
     }
 
-    public static VarLong create(final long value) {
-        final int offset = 128;
-        if (value >= -128 && value <= 127) { // will cache
-            return VarLongCache.cache[(int) value + offset];
-        }
-        return new VarLong(value);
+    public static ValDouble create(final double value) {
+        return new ValDouble(value);
     }
 
     @Override
@@ -40,12 +37,12 @@ public class VarLong implements VarNumber {
 
     @Override
     public Long toLong() {
-        return value;
+        return (long) value;
     }
 
     @Override
     public Double toDouble() {
-        return (double) value;
+        return value;
     }
 
     @Override
@@ -55,7 +52,8 @@ public class VarLong implements VarNumber {
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        final BigDecimal bigDecimal = BigDecimal.valueOf(value);
+        return bigDecimal.stripTrailingZeros().toPlainString();
     }
 
     @Override
@@ -72,8 +70,8 @@ public class VarLong implements VarNumber {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final VarLong varLong = (VarLong) o;
-        return value == varLong.value;
+        final ValDouble valDouble = (ValDouble) o;
+        return Double.compare(valDouble.value, value) == 0;
     }
 
     @Override
@@ -81,15 +79,8 @@ public class VarLong implements VarNumber {
         return Objects.hash(value);
     }
 
-    private static class VarLongCache {
-        private VarLongCache() {
-        }
-
-        static final VarLong cache[] = new VarLong[-(-128) + 127 + 1];
-
-        static {
-            for (int i = 0; i < cache.length; i++)
-                cache[i] = new VarLong(i - 128);
-        }
+    @Override
+    public int compareTo(final Val o) {
+        return Double.compare(value, ((ValDouble) o).value);
     }
 }

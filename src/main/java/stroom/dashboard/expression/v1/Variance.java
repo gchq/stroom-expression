@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Variance extends AbstractManyChildFunction implements AggregateFunction {
-    public static final String NAME = "variance";
+class Variance extends AbstractManyChildFunction implements AggregateFunction {
+    static final String NAME = "variance";
 
     public Variance(final String name) {
         super(name, 1, Integer.MAX_VALUE);
@@ -66,12 +66,12 @@ public class Variance extends AbstractManyChildFunction implements AggregateFunc
 
         private final List<Double> list = Collections.synchronizedList(new ArrayList<>());
 
-        public AggregateGen(final Generator childGenerator) {
+        AggregateGen(final Generator childGenerator) {
             super(childGenerator);
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
             final Double d = childGenerator.eval().toDouble();
             if (d != null) {
@@ -80,9 +80,9 @@ public class Variance extends AbstractManyChildFunction implements AggregateFunc
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             if (list.size() == 0) {
-                return VarNull.INSTANCE;
+                return ValNull.INSTANCE;
             }
 
             // Isolate list.
@@ -92,7 +92,7 @@ public class Variance extends AbstractManyChildFunction implements AggregateFunc
             }
 
             // calculate variance
-            return VarDouble.create(Statistics.variance(arr));
+            return ValDouble.create(Statistics.variance(arr));
         }
 
         @Override
@@ -106,19 +106,19 @@ public class Variance extends AbstractManyChildFunction implements AggregateFunc
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = -6770724151493320673L;
 
-        public Gen(final Generator[] generators) {
+        Gen(final Generator[] generators) {
             super(generators);
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             for (final Generator gen : childGenerators) {
                 gen.set(values);
             }
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             final List<Double> list = new ArrayList<>(childGenerators.length);
             for (final Generator gen : childGenerators) {
                 Double value = gen.eval().toDouble();
@@ -128,14 +128,14 @@ public class Variance extends AbstractManyChildFunction implements AggregateFunc
             }
 
             if (list.size() == 0) {
-                return VarNull.INSTANCE;
+                return ValNull.INSTANCE;
             }
 
             // Isolate list.
             final Double[] arr = list.toArray(new Double[0]);
 
             // calculate variance
-            return VarDouble.create(Statistics.variance(arr));
+            return ValDouble.create(Statistics.variance(arr));
         }
     }
 }

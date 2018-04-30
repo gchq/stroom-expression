@@ -47,15 +47,15 @@ final class FormatterCache {
         // Utility
     }
 
-    public static long parse(final String value, final String pattern, final String timeZone) {
+    static long parse(final String value, final String pattern, final String timeZone) {
         return DateUtil.parse(value, getFormatter(pattern), getZoneId(timeZone));
     }
 
-    public static String format(final Long value, final String pattern, final String timeZone) {
+    static String format(final Long value, final String pattern, final String timeZone) {
         return DateUtil.format(value, getFormatter(pattern), getZoneId(timeZone));
     }
 
-    public static DateTimeFormatter getFormatter(final String pattern) {
+    static DateTimeFormatter getFormatter(final String pattern) {
         if (pattern == null || pattern.equals(DateUtil.DEFAULT_PATTERN)) {
             return DateUtil.DEFAULT_FORMATTER;
         }
@@ -77,7 +77,7 @@ final class FormatterCache {
         return cachedFormatter.formatter;
     }
 
-    public static ZoneId getZoneId(final String timeZone) {
+    static ZoneId getZoneId(final String timeZone) {
         if (timeZone == null) {
             return ZoneOffset.UTC;
         }

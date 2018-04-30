@@ -16,9 +16,9 @@
 
 package stroom.dashboard.expression.v1;
 
-public class GreaterThan extends AbstractManyChildFunction {
-    public static final String NAME = ">";
-    public static final String ALIAS = "greaterThan";
+class GreaterThan extends AbstractManyChildFunction {
+    static final String NAME = ">";
+    static final String ALIAS = "greaterThan";
     private final boolean usingOperator;
 
     public GreaterThan(final String name) {
@@ -61,36 +61,36 @@ public class GreaterThan extends AbstractManyChildFunction {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 217968020285584214L;
 
-        public Gen(final Generator[] childGenerators) {
+        Gen(final Generator[] childGenerators) {
             super(childGenerators);
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Var eval() {
-            final Var a = childGenerators[0].eval();
-            final Var b = childGenerators[1].eval();
-            Var retVal = VarBoolean.FALSE;
+        public Val eval() {
+            final Val a = childGenerators[0].eval();
+            final Val b = childGenerators[1].eval();
+            Val retVal = ValBoolean.FALSE;
 
             if (!a.hasValue() || !b.hasValue()) {
-                retVal = VarNull.INSTANCE;
+                retVal = ValNull.INSTANCE;
             } else {
                 final Double da = a.toDouble();
                 final Double db = b.toDouble();
                 if (da == null || db == null) {
                     int ret = a.toString().compareTo(b.toString());
                     if (ret > 0) {
-                        retVal = VarBoolean.TRUE;
+                        retVal = ValBoolean.TRUE;
                     }
                 } else {
                     if (da > db) {
-                        retVal = VarBoolean.TRUE;
+                        retVal = ValBoolean.TRUE;
                     }
                 }
             }

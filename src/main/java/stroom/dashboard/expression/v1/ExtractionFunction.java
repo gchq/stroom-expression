@@ -19,12 +19,12 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public abstract class ExtractionFunction extends AbstractFunction implements Serializable {
+abstract class ExtractionFunction extends AbstractFunction implements Serializable {
     private Generator gen;
     private Function function;
     private boolean hasAggregate;
 
-    public ExtractionFunction(final String name) {
+    ExtractionFunction(final String name) {
         super(name, 1, 1);
     }
 
@@ -39,7 +39,7 @@ public abstract class ExtractionFunction extends AbstractFunction implements Ser
         } else {
             // Optimise replacement of static input in case user does something stupid.
             final String string = param.toString();
-            gen = new StaticValueFunction(VarString.create(getExtractor().extract(string))).createGenerator();
+            gen = new StaticValueFunction(ValString.create(getExtractor().extract(string))).createGenerator();
             hasAggregate = false;
         }
     }

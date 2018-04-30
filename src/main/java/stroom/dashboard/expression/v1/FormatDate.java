@@ -22,11 +22,9 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-public class FormatDate extends AbstractFunction implements Serializable {
+class FormatDate extends AbstractFunction implements Serializable {
+    static final String NAME = "formatDate";
     private static final long serialVersionUID = -305845496003936297L;
-
-    public static final String NAME = "formatDate";
-
     private String pattern = DateUtil.DEFAULT_PATTERN;
     private String timeZone;
 
@@ -60,18 +58,18 @@ public class FormatDate extends AbstractFunction implements Serializable {
                 throw new ParseException("Non aggregate function expected as first argument of '" + name + "' function", 0);
             }
         } else {
-            final Long millis = ((Var) param).toLong();
+            final Long millis = ((Val) param).toLong();
             if (millis == null) {
                 throw new ParseException("Unable to convert first argument of '" + name + "' function to long", 0);
             }
 
             final String string = DateUtil.format(millis, formatter, zoneId);
-            gen = new StaticValueFunction(VarString.create(string)).createGenerator();
+            gen = new StaticValueFunction(ValString.create(string)).createGenerator();
         }
     }
 
     private String parseStringParam(final Param param, final String paramPos) throws ParseException {
-        if (!(param instanceof VarString)) {
+        if (!(param instanceof ValString)) {
             throw new ParseException("String expected as " + paramPos + " argument of '" + name + "' function", 0);
         }
         return param.toString();
@@ -98,28 +96,28 @@ public class FormatDate extends AbstractFunction implements Serializable {
         private final String pattern;
         private final String timeZone;
 
-        public Gen(final Generator childGenerator, final String pattern, final String timeZone) {
+        Gen(final Generator childGenerator, final String pattern, final String timeZone) {
             super(childGenerator);
             this.pattern = pattern;
             this.timeZone = timeZone;
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             final Long millis = childGenerator.eval().toLong();
             if (millis == null) {
-                return VarErr.create("Unable to convert argument to long");
+                return ValErr.create("Unable to convert argument to long");
             }
 
             try {
-                return VarString.create(FormatterCache.format(millis, pattern, timeZone));
+                return ValString.create(FormatterCache.format(millis, pattern, timeZone));
             } catch (final RuntimeException e) {
-                return VarErr.create(e.getMessage());
+                return ValErr.create(e.getMessage());
             }
         }
     }

@@ -16,8 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Floor extends AbstractRoundingFunction {
-    public static final String NAME = "floor";
+class Floor extends AbstractRoundingFunction {
+    static final String NAME = "floor";
 
     public Floor(final String name) {
         super(name);
@@ -37,13 +37,13 @@ public class Floor extends AbstractRoundingFunction {
         private static final long serialVersionUID = -2414316545075369054L;
 
         @Override
-        public Var calc(final Var value) {
+        public Val calc(final Val value) {
             final Double val = value.toDouble();
             if (val == null) {
-                return VarNull.INSTANCE;
+                return ValNull.INSTANCE;
             }
 
-            return VarDouble.create(Math.floor(val));
+            return ValDouble.create(Math.floor(val));
         }
     }
 
@@ -57,13 +57,13 @@ public class Floor extends AbstractRoundingFunction {
         }
 
         @Override
-        public Var calc(final Var value) {
+        public Val calc(final Val value) {
             final Double val = value.toDouble();
             if (val == null) {
-                return VarNull.INSTANCE;
+                return ValNull.INSTANCE;
             }
 
-            return VarDouble.create(Math.floor(val * multiplier) / multiplier);
+            return ValDouble.create(Math.floor(val * multiplier) / multiplier);
         }
     }
 }

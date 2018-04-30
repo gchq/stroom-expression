@@ -18,46 +18,44 @@ package stroom.dashboard.expression.v1;
 
 import java.util.Objects;
 
-public class VarBoolean implements Var {
-    public static final VarBoolean TRUE = new VarBoolean(true);
-    public static final VarBoolean FALSE = new VarBoolean(false);
+public class ValInteger implements ValNumber {
+    private final int value;
 
-    private final boolean value;
-
-    private VarBoolean(final boolean value) {
+    private ValInteger(final int value) {
         this.value = value;
     }
 
-    public static VarBoolean create(final boolean value) {
-        if (value) {
-            return TRUE;
+    public static ValInteger create(final int value) {
+        final int offset = 128;
+        if (value >= -128 && value <= 127) { // will cache
+            return ValIntegerCache.cache[value + offset];
         }
-        return FALSE;
+        return new ValInteger(value);
     }
 
     @Override
     public Integer toInteger() {
-        return value ? 1 : 0;
-    }
-
-    @Override
-    public Long toLong() {
-        return value ? 1L : 0L;
-    }
-
-    @Override
-    public Double toDouble() {
-        return value ? 1D : 0D;
-    }
-
-    @Override
-    public Boolean toBoolean() {
         return value;
     }
 
     @Override
+    public Long toLong() {
+        return (long) value;
+    }
+
+    @Override
+    public Double toDouble() {
+        return (double) value;
+    }
+
+    @Override
+    public Boolean toBoolean() {
+        return value != 0;
+    }
+
+    @Override
     public String toString() {
-        return value ? "true" : "false";
+        return String.valueOf(value);
     }
 
     @Override
@@ -74,12 +72,29 @@ public class VarBoolean implements Var {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final VarBoolean that = (VarBoolean) o;
+        final ValInteger that = (ValInteger) o;
         return value == that.value;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    @Override
+    public int compareTo(final Val o) {
+        return Integer.compare(value, ((ValInteger) o).value);
+    }
+
+    private static class ValIntegerCache {
+        static final ValInteger cache[] = new ValInteger[-(-128) + 127 + 1];
+
+        static {
+            for (int i = 0; i < cache.length; i++)
+                cache[i] = new ValInteger(i - 128);
+        }
+
+        private ValIntegerCache() {
+        }
     }
 }

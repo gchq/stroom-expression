@@ -1,11 +1,11 @@
 package stroom.dashboard.expression.v1;
 
-public class Statistics {
-    public static double standardDeviation(final Double[] values) {
+class Statistics {
+    static double standardDeviation(final Double[] values) {
         return Math.sqrt(variance(values));
     }
 
-    public static double variance(final Double[] values) {
+    static double variance(final Double[] values) {
         if (values.length == 0) {
             return 0;
         }

@@ -17,10 +17,10 @@
 package stroom.dashboard.expression.v1;
 
 public class StaticValueFunction implements Function, Appendable {
-    private final Var value;
+    private final Val value;
     private final Generator gen;
 
-    public StaticValueFunction(final Var value) {
+    public StaticValueFunction(final Val value) {
         this.value = value;
         this.gen = new Gen(value);
     }
@@ -60,14 +60,14 @@ public class StaticValueFunction implements Function, Appendable {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = -7551073465232523106L;
 
-        private final Var value;
+        private final Val value;
 
-        public Gen(final Var value) {
+        Gen(final Val value) {
             this.value = value;
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             return value;
         }
     }

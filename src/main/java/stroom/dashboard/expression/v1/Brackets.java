@@ -18,7 +18,7 @@ package stroom.dashboard.expression.v1;
 
 import java.text.ParseException;
 
-public class Brackets extends AbstractFunction {
+class Brackets extends AbstractFunction {
     private Function function;
 
     public Brackets() {
@@ -33,7 +33,7 @@ public class Brackets extends AbstractFunction {
         if (param instanceof Function) {
             function = (Function) param;
         } else {
-            function = new StaticValueFunction((Var) param);
+            function = new StaticValueFunction((Val) param);
         }
     }
 

@@ -16,66 +16,75 @@
 
 package stroom.dashboard.expression.v1;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
-public class VarDouble implements VarNumber {
-    private final double value;
+public class ValErr implements Val {
+    public static final ValErr INSTANCE = new ValErr("Err");
 
-    private VarDouble(final double value) {
-        this.value = value;
+    private final String message;
+
+    private ValErr(final String message) {
+        this.message = message;
     }
 
-    public static VarDouble create(final double value) {
-        return new VarDouble(value);
+    public static ValErr create(final String message) {
+        return new ValErr(message);
     }
 
     @Override
     public Integer toInteger() {
-        return (int) value;
+        return null;
     }
 
     @Override
     public Long toLong() {
-        return (long) value;
+        return null;
     }
 
     @Override
     public Double toDouble() {
-        return value;
+        return null;
     }
 
     @Override
     public Boolean toBoolean() {
-        return value != 0;
+        return null;
     }
 
     @Override
     public String toString() {
-        final BigDecimal bigDecimal = BigDecimal.valueOf(value);
-        return bigDecimal.stripTrailingZeros().toPlainString();
+        return null;
     }
 
     @Override
     public void appendString(final StringBuilder sb) {
-        sb.append(toString());
+        sb.append("err()");
     }
 
     @Override
     public boolean hasValue() {
-        return true;
+        return false;
+    }
+
+    String getMessage() {
+        return message;
     }
 
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final VarDouble varDouble = (VarDouble) o;
-        return Double.compare(varDouble.value, value) == 0;
+        final ValErr valErr = (ValErr) o;
+        return Objects.equals(message, valErr.message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value);
+        return Objects.hash(message);
+    }
+
+    @Override
+    public int compareTo(final Val o) {
+        return 0;
     }
 }

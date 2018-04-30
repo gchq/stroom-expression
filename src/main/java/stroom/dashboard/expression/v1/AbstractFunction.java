@@ -18,14 +18,14 @@ package stroom.dashboard.expression.v1;
 
 import java.text.ParseException;
 
-public abstract class AbstractFunction implements Function, Appendable {
+abstract class AbstractFunction implements Function, Appendable {
     final String name;
     private final int minParams;
     private final int maxParams;
 
     Param[] params;
 
-    public AbstractFunction(final String name, final int minParams, final int maxParams) {
+    AbstractFunction(final String name, final int minParams, final int maxParams) {
         this.name = name;
         this.minParams = minParams;
         this.maxParams = maxParams;
@@ -58,7 +58,7 @@ public abstract class AbstractFunction implements Function, Appendable {
         sb.append(")");
     }
 
-    protected void appendParams(final StringBuilder sb) {
+    void appendParams(final StringBuilder sb) {
         if (params != null) {
             for (int i = 0; i < params.length; i++) {
                 final Param param = params[i];

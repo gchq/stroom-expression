@@ -18,7 +18,7 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 
-public interface Var extends Param, Serializable, Appendable {
+public interface Val extends Param, Serializable, Appendable, Comparable<Val> {
     Integer toInteger();
 
     Long toLong();

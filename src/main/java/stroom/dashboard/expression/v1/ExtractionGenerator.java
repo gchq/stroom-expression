@@ -16,7 +16,7 @@
 
 package stroom.dashboard.expression.v1;
 
-public class ExtractionGenerator extends AbstractSingleChildGenerator {
+class ExtractionGenerator extends AbstractSingleChildGenerator {
     private static final long serialVersionUID = -5360650022530956741L;
 
     private final Extractor extractor;
@@ -27,16 +27,16 @@ public class ExtractionGenerator extends AbstractSingleChildGenerator {
     }
 
     @Override
-    public void set(final Var[] values) {
+    public void set(final Val[] values) {
         childGenerator.set(values);
     }
 
     @Override
-    public Var eval() {
+    public Val eval() {
         final String string = childGenerator.eval().toString();
         if (string != null) {
-            return VarString.create(extractor.extract(string));
+            return ValString.create(extractor.extract(string));
         }
-        return VarNull.INSTANCE;
+        return ValNull.INSTANCE;
     }
 }

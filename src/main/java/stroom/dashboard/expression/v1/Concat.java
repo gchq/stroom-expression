@@ -16,8 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Concat extends AbstractManyChildFunction {
-    public static final String NAME = "concat";
+class Concat extends AbstractManyChildFunction {
+    static final String NAME = "concat";
 
     public Concat(final String name) {
         super(name, 2, Integer.MAX_VALUE);
@@ -31,19 +31,19 @@ public class Concat extends AbstractManyChildFunction {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 217968020285584214L;
 
-        public Gen(final Generator[] childGenerators) {
+        Gen(final Generator[] childGenerators) {
             super(childGenerators);
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             final StringBuilder sb = new StringBuilder();
             for (final Generator gen : childGenerators) {
                 final String value = gen.eval().toString();
@@ -51,7 +51,7 @@ public class Concat extends AbstractManyChildFunction {
                     sb.append(value);
                 }
             }
-            return VarString.create(sb.toString());
+            return ValString.create(sb.toString());
         }
     }
 }

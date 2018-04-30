@@ -18,68 +18,83 @@ package stroom.dashboard.expression.v1;
 
 import java.util.Objects;
 
-public class VarErr implements Var {
-    public static final VarErr INSTANCE = new VarErr("Err");
+public class ValLong implements ValNumber {
+    private final long value;
 
-    private final String message;
-
-    private VarErr(final String message) {
-        this.message = message;
+    private ValLong(final long value) {
+        this.value = value;
     }
 
-    public static VarErr create(final String message) {
-        return new VarErr(message);
+    public static ValLong create(final long value) {
+        final int offset = 128;
+        if (value >= -128 && value <= 127) { // will cache
+            return ValLongCache.cache[(int) value + offset];
+        }
+        return new ValLong(value);
     }
 
     @Override
     public Integer toInteger() {
-        return null;
+        return (int) value;
     }
 
     @Override
     public Long toLong() {
-        return null;
+        return value;
     }
 
     @Override
     public Double toDouble() {
-        return null;
+        return (double) value;
     }
 
     @Override
     public Boolean toBoolean() {
-        return null;
+        return value != 0;
     }
 
     @Override
     public String toString() {
-        return null;
+        return String.valueOf(value);
     }
 
     @Override
     public void appendString(final StringBuilder sb) {
-        sb.append("err()");
+        sb.append(toString());
     }
 
     @Override
     public boolean hasValue() {
-        return false;
-    }
-
-    public String getMessage() {
-        return message;
+        return true;
     }
 
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final VarErr varErr = (VarErr) o;
-        return Objects.equals(message, varErr.message);
+        final ValLong valLong = (ValLong) o;
+        return value == valLong.value;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(message);
+        return Objects.hash(value);
+    }
+
+    @Override
+    public int compareTo(final Val o) {
+        return Long.compare(value, ((ValLong) o).value);
+    }
+
+    private static class ValLongCache {
+        static final ValLong cache[] = new ValLong[-(-128) + 127 + 1];
+
+        static {
+            for (int i = 0; i < cache.length; i++)
+                cache[i] = new ValLong(i - 128);
+        }
+
+        private ValLongCache() {
+        }
     }
 }

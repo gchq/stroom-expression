@@ -19,8 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public class LowerCase extends AbstractFunction implements Serializable {
-    public static final String NAME = "lowerCase";
+class LowerCase extends AbstractFunction implements Serializable {
+    static final String NAME = "lowerCase";
     private static final long serialVersionUID = -305845496003936297L;
     private Generator gen;
     private Function function;
@@ -40,7 +40,7 @@ public class LowerCase extends AbstractFunction implements Serializable {
             hasAggregate = function.hasAggregate();
         } else {
             // Optimise replacement of static input in case user does something stupid.
-            gen = new StaticValueFunction(VarString.create(param.toString().toLowerCase())).createGenerator();
+            gen = new StaticValueFunction(ValString.create(param.toString().toLowerCase())).createGenerator();
             hasAggregate = false;
         }
     }
@@ -64,24 +64,23 @@ public class LowerCase extends AbstractFunction implements Serializable {
         private static final long serialVersionUID = 8153777070911899616L;
 
 
-        public Gen(final Generator childGenerator) {
+        Gen(final Generator childGenerator) {
             super(childGenerator);
-
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Var eval() {
-            final Var val = childGenerator.eval();
+        public Val eval() {
+            final Val val = childGenerator.eval();
             final String string = val.toString();
             if (string != null) {
-                return VarString.create(string.toLowerCase());
+                return ValString.create(string.toLowerCase());
             }
-            return VarNull.INSTANCE;
+            return ValNull.INSTANCE;
         }
     }
 }

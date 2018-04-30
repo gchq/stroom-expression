@@ -28,10 +28,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 
 final class DateUtil {
-    private static final int DATE_LENGTH = "2000-01-01T00:00:00.000Z".length();
-
     static final String DEFAULT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXX";
     static final DateTimeFormatter DEFAULT_FORMATTER = DateTimeFormatter.ofPattern(DEFAULT_PATTERN);
+    private static final int DATE_LENGTH = "2000-01-01T00:00:00.000Z".length();
 
     private DateUtil() {
         // Private constructor.

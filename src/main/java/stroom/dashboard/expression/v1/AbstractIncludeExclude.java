@@ -20,13 +20,13 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.regex.Pattern;
 
-public abstract class AbstractIncludeExclude extends AbstractManyChildFunction implements Serializable {
+abstract class AbstractIncludeExclude extends AbstractManyChildFunction implements Serializable {
     private static final long serialVersionUID = -305845496003936297L;
 
     private Generator gen;
     private boolean simple;
 
-    public AbstractIncludeExclude(final String name) {
+    AbstractIncludeExclude(final String name) {
         super(name, 2, Integer.MAX_VALUE);
     }
 
@@ -37,7 +37,7 @@ public abstract class AbstractIncludeExclude extends AbstractManyChildFunction i
         // See if this is a static computation.
         simple = true;
         for (Param param : params) {
-            if (!(param instanceof Var)) {
+            if (!(param instanceof Val)) {
                 simple = false;
                 break;
             }
@@ -65,14 +65,14 @@ public abstract class AbstractIncludeExclude extends AbstractManyChildFunction i
             }
 
             if (found) {
-                gen = new StaticValueFunction(VarString.create(value)).createGenerator();
+                gen = new StaticValueFunction(ValString.create(value)).createGenerator();
             } else {
-                gen = new StaticValueFunction(VarNull.INSTANCE).createGenerator();
+                gen = new StaticValueFunction(ValNull.INSTANCE).createGenerator();
             }
 
         } else {
             for (int i = 1; i < params.length; i++) {
-                if (params[i] instanceof Var) {
+                if (params[i] instanceof Val) {
                     // Test regex is valid.
                     final String regex = params[i].toString();
                     if (regex.length() == 0) {
@@ -105,20 +105,20 @@ public abstract class AbstractIncludeExclude extends AbstractManyChildFunction i
     abstract static class AbstractGen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        public AbstractGen(final Generator[] childGenerators) {
+        AbstractGen(final Generator[] childGenerators) {
             super(childGenerators);
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Var eval() {
-            final Var val = childGenerators[0].eval();
+        public Val eval() {
+            final Val val = childGenerators[0].eval();
             if (!val.hasValue()) {
                 return val;
             }
@@ -142,13 +142,13 @@ public abstract class AbstractIncludeExclude extends AbstractManyChildFunction i
                 }
 
                 if (found) {
-                    return VarString.create(value);
+                    return ValString.create(value);
                 } else {
-                    return VarNull.INSTANCE;
+                    return ValNull.INSTANCE;
                 }
 
             } catch (final RuntimeException e) {
-                return VarErr.create(e.getMessage());
+                return ValErr.create(e.getMessage());
             }
         }
 

@@ -19,8 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public class StringLength extends AbstractFunction implements Serializable {
-    public static final String NAME = "stringLength";
+class StringLength extends AbstractFunction implements Serializable {
+    static final String NAME = "stringLength";
     private static final long serialVersionUID = -305845496003936297L;
     private Generator gen;
     private Function function;
@@ -41,9 +41,9 @@ public class StringLength extends AbstractFunction implements Serializable {
         } else {
             /*
              * Optimise replacement of static input in case user does something
-			 * stupid.
-			 */
-            gen = new StaticValueFunction(VarInteger.create(param.toString().length())).createGenerator();
+             * stupid.
+             */
+            gen = new StaticValueFunction(ValInteger.create(param.toString().length())).createGenerator();
             hasAggregate = false;
         }
     }
@@ -67,24 +67,24 @@ public class StringLength extends AbstractFunction implements Serializable {
         private static final long serialVersionUID = 8153777070911899616L;
 
 
-        public Gen(final Generator childGenerator) {
+        Gen(final Generator childGenerator) {
             super(childGenerator);
 
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             final String val = childGenerator.eval().toString();
             if (val != null) {
-                return VarInteger.create(val.length());
+                return ValInteger.create(val.length());
             }
 
-            return VarNull.INSTANCE;
+            return ValNull.INSTANCE;
         }
     }
 }

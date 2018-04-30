@@ -26,7 +26,7 @@ public class Expression implements Function {
         if (param instanceof Function) {
             function = (Function) param;
         } else {
-            function = new StaticValueFunction((Var) param);
+            function = new StaticValueFunction((Val) param);
         }
 
         this.hasAggregate = function.hasAggregate();

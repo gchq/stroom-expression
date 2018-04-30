@@ -22,11 +22,9 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-public class ParseDate extends AbstractFunction implements Serializable {
+class ParseDate extends AbstractFunction implements Serializable {
+    static final String NAME = "parseDate";
     private static final long serialVersionUID = -305845496003936297L;
-
-    public static final String NAME = "parseDate";
-
     private String pattern = DateUtil.DEFAULT_PATTERN;
     private String timeZone;
 
@@ -60,22 +58,22 @@ public class ParseDate extends AbstractFunction implements Serializable {
                 throw new ParseException("Non aggregate function expected as first argument of '" + name + "' function", 0);
             }
 
-        } else if (param instanceof VarString) {
+        } else if (param instanceof ValString) {
             final String string = param.toString();
             final long millis = DateUtil.parse(string, formatter, zoneId);
-            gen = new StaticValueFunction(VarLong.create(millis)).createGenerator();
+            gen = new StaticValueFunction(ValLong.create(millis)).createGenerator();
 
         } else {
-            final Long millis = ((Var) param).toLong();
+            final Long millis = ((Val) param).toLong();
             if (millis == null) {
                 throw new ParseException("Unable to convert first argument of '" + name + "' function to long", 0);
             }
-            gen = new StaticValueFunction(VarLong.create(millis)).createGenerator();
+            gen = new StaticValueFunction(ValLong.create(millis)).createGenerator();
         }
     }
 
     private String parseStringParam(final Param param, final String paramPos) throws ParseException {
-        if (!(param instanceof VarString)) {
+        if (!(param instanceof ValString)) {
             throw new ParseException("String expected as " + paramPos + " argument of '" + name + "' function", 0);
         }
         return param.toString();
@@ -102,29 +100,29 @@ public class ParseDate extends AbstractFunction implements Serializable {
         private final String pattern;
         private final String timeZone;
 
-        public Gen(final Generator childGenerator, final String pattern, final String timeZone) {
+        Gen(final Generator childGenerator, final String pattern, final String timeZone) {
             super(childGenerator);
             this.pattern = pattern;
             this.timeZone = timeZone;
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Var eval() {
+        public Val eval() {
             final String value = childGenerator.eval().toString();
             if (value != null) {
                 try {
-                    return VarLong.create(FormatterCache.parse(value, pattern, timeZone));
+                    return ValLong.create(FormatterCache.parse(value, pattern, timeZone));
                 } catch (final RuntimeException e) {
-                    return VarErr.create(e.getMessage());
+                    return ValErr.create(e.getMessage());
                 }
             }
 
-            return VarNull.INSTANCE;
+            return ValNull.INSTANCE;
         }
     }
 }

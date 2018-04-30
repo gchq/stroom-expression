@@ -19,11 +19,9 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public class Not extends AbstractFunction implements Serializable {
+class Not extends AbstractFunction implements Serializable {
+    static final String NAME = "not";
     private static final long serialVersionUID = -305845496003936297L;
-
-    public static final String NAME = "not";
-
     private Generator gen;
     private Function function;
     private boolean hasAggregate;
@@ -41,12 +39,12 @@ public class Not extends AbstractFunction implements Serializable {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
         } else {
-            final Boolean condition = ((Var) params[0]).toBoolean();
+            final Boolean condition = ((Val) params[0]).toBoolean();
             if (condition == null) {
                 throw new ParseException("Expecting a condition for first argument of '" + name + "' function", 0);
             }
             // Static computation.
-            gen = new StaticValueFunction(VarBoolean.create(!condition)).createGenerator();
+            gen = new StaticValueFunction(ValBoolean.create(!condition)).createGenerator();
         }
     }
 
@@ -69,18 +67,18 @@ public class Not extends AbstractFunction implements Serializable {
         private static final long serialVersionUID = 8153777070911899616L;
 
 
-        public Gen(final Generator childGenerator) {
+        Gen(final Generator childGenerator) {
             super(childGenerator);
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Var eval() {
-            final Var val = childGenerator.eval();
+        public Val eval() {
+            final Val val = childGenerator.eval();
             if (!val.hasValue()) {
                 return val;
             }
@@ -88,11 +86,11 @@ public class Not extends AbstractFunction implements Serializable {
             try {
                 final Boolean condition = val.toBoolean();
                 if (condition == null) {
-                    return VarErr.create("Expecting a condition");
+                    return ValErr.create("Expecting a condition");
                 }
-                return VarBoolean.create(!condition);
+                return ValBoolean.create(!condition);
             } catch (final RuntimeException e) {
-                return VarErr.create(e.getMessage());
+                return ValErr.create(e.getMessage());
             }
         }
     }

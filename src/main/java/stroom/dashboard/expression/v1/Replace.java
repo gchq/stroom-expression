@@ -20,11 +20,9 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.regex.Pattern;
 
-public class Replace extends AbstractManyChildFunction implements Serializable {
+class Replace extends AbstractManyChildFunction implements Serializable {
+    static final String NAME = "replace";
     private static final long serialVersionUID = -305845496003936297L;
-
-    public static final String NAME = "replace";
-
     private Generator gen;
     private boolean simple;
 
@@ -39,7 +37,7 @@ public class Replace extends AbstractManyChildFunction implements Serializable {
         // See if this is a static computation.
         simple = true;
         for (Param param : params) {
-            if (!(param instanceof Var)) {
+            if (!(param instanceof Val)) {
                 simple = false;
                 break;
             }
@@ -57,10 +55,10 @@ public class Replace extends AbstractManyChildFunction implements Serializable {
 
             final Pattern pattern = PatternCache.get(regex);
             final String newValue = pattern.matcher(value).replaceAll(replacement);
-            gen = new StaticValueFunction(VarString.create(newValue)).createGenerator();
+            gen = new StaticValueFunction(ValString.create(newValue)).createGenerator();
 
         } else {
-            if (params[1] instanceof Var) {
+            if (params[1] instanceof Val) {
                 // Test regex is valid.
                 final String regex = params[1].toString();
                 if (regex.length() == 0) {
@@ -95,20 +93,20 @@ public class Replace extends AbstractManyChildFunction implements Serializable {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        public Gen(final Generator[] childGenerators) {
+        Gen(final Generator[] childGenerators) {
             super(childGenerators);
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Var eval() {
-            final Var val = childGenerators[0].eval();
+        public Val eval() {
+            final Val val = childGenerators[0].eval();
             if (!val.hasValue()) {
                 return val;
             }
@@ -118,10 +116,10 @@ public class Replace extends AbstractManyChildFunction implements Serializable {
                 final String regex = childGenerators[1].eval().toString();
                 final String replacement = childGenerators[2].eval().toString();
                 final Pattern pattern = PatternCache.get(regex);
-                return VarString.create(pattern.matcher(value).replaceAll(replacement));
+                return ValString.create(pattern.matcher(value).replaceAll(replacement));
 
             } catch (final RuntimeException e) {
-                return VarErr.create(e.getMessage());
+                return ValErr.create(e.getMessage());
             }
         }
     }

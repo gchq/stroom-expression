@@ -16,8 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Ceiling extends AbstractRoundingFunction {
-    public static final String NAME = "ceiling";
+class Ceiling extends AbstractRoundingFunction {
+    static final String NAME = "ceiling";
 
     public Ceiling(final String name) {
         super(name);
@@ -37,13 +37,13 @@ public class Ceiling extends AbstractRoundingFunction {
         private static final long serialVersionUID = -2414316545075369054L;
 
         @Override
-        public Var calc(final Var value) {
+        public Val calc(final Val value) {
             final Double val = value.toDouble();
             if (val == null) {
-                return VarNull.INSTANCE;
+                return ValNull.INSTANCE;
             }
 
-            return VarDouble.create(Math.ceil(val));
+            return ValDouble.create(Math.ceil(val));
         }
     }
 
@@ -57,13 +57,13 @@ public class Ceiling extends AbstractRoundingFunction {
         }
 
         @Override
-        public Var calc(final Var value) {
+        public Val calc(final Val value) {
             final Double val = value.toDouble();
             if (val == null) {
-                return VarNull.INSTANCE;
+                return ValNull.INSTANCE;
             }
 
-            return VarDouble.create(Math.ceil(val * multiplier) / multiplier);
+            return ValDouble.create(Math.ceil(val * multiplier) / multiplier);
         }
     }
 }

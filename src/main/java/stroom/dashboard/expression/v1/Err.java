@@ -16,10 +16,10 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Err extends AbstractStaticFunction {
-    public static final String NAME = "err";
+class Err extends AbstractStaticFunction {
+    static final String NAME = "err";
 
     public Err(final String name) {
-        super(name, VarErr.INSTANCE);
+        super(name, ValErr.INSTANCE);
     }
 }

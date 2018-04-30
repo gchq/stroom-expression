@@ -18,12 +18,10 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 
-public class ToBoolean extends AbstractCast implements Serializable {
+class ToBoolean extends AbstractCast implements Serializable {
+    static final String NAME = "toBoolean";
     private static final long serialVersionUID = -305845496003936297L;
-
     private static final Cast CAST = new Cast();
-
-    public static final String NAME = "toBoolean";
 
     public ToBoolean(final String name) {
         super(name);
@@ -36,16 +34,16 @@ public class ToBoolean extends AbstractCast implements Serializable {
 
     private static class Cast extends AbstractCaster {
         @Override
-        Var cast(final Var var) {
-            if (!var.hasValue()) {
-                return var;
+        Val cast(final Val val) {
+            if (!val.hasValue()) {
+                return val;
             }
 
-            final Boolean value = var.toBoolean();
+            final Boolean value = val.toBoolean();
             if (value != null) {
-                return VarBoolean.create(value);
+                return ValBoolean.create(value);
             }
-            return VarErr.INSTANCE;
+            return ValErr.INSTANCE;
         }
     }
 }

@@ -30,7 +30,7 @@ public class TestTypeConverter {
     }
 
     private void test(final String expected, final double dbl) {
-        final String actual = VarDouble.create(dbl).toString();
+        final String actual = ValDouble.create(dbl).toString();
         Assert.assertEquals(expected, actual);
     }
 }

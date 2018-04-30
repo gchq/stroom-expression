@@ -34,6 +34,13 @@ public class FieldIndexMap {
         this.autoCreate = autoCreate;
     }
 
+    public static FieldIndexMap forFields(final String... fieldNames) {
+        final FieldIndexMap instance = new FieldIndexMap();
+        Arrays.stream(fieldNames)
+                .forEach(f -> instance.create(f, true));
+        return instance;
+    }
+
     public int create(final String fieldName) {
         return create(fieldName, false);
     }
@@ -60,13 +67,6 @@ public class FieldIndexMap {
 
     public int size() {
         return fieldToPos.size();
-    }
-
-    public static FieldIndexMap forFields(final String... fieldNames) {
-        final FieldIndexMap instance = new FieldIndexMap();
-        Arrays.stream(fieldNames)
-                .forEach(f -> instance.create(f, true));
-        return instance;
     }
 
     /**

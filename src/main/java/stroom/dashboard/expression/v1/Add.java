@@ -16,9 +16,9 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Add extends NumericFunction {
-    public static final String NAME = "+";
-    public static final String ALIAS = "add";
+class Add extends NumericFunction {
+    static final String NAME = "+";
+    static final String ALIAS = "add";
     private static final Calc CALC = new Calc();
 
     public Add(final String name) {
@@ -30,7 +30,7 @@ public class Add extends NumericFunction {
         return CALC;
     }
 
-    public static class Calc extends Calculator {
+    static class Calc extends Calculator {
         private static final long serialVersionUID = 1099553839843710283L;
 
         @Override

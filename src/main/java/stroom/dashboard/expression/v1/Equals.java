@@ -16,9 +16,9 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Equals extends AbstractManyChildFunction {
-    public static final String NAME = "=";
-    public static final String ALIAS = "equals";
+class Equals extends AbstractManyChildFunction {
+    static final String NAME = "=";
+    static final String ALIAS = "equals";
     private final boolean usingOperator;
 
     public Equals(final String name) {
@@ -61,32 +61,37 @@ public class Equals extends AbstractManyChildFunction {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 217968020285584214L;
 
-        public Gen(final Generator[] childGenerators) {
+        Gen(final Generator[] childGenerators) {
             super(childGenerators);
         }
 
         @Override
-        public void set(final Var[] values) {
+        public void set(final Val[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Var eval() {
-            final Var a = childGenerators[0].eval();
-            final Var b = childGenerators[1].eval();
-            Var retVal = VarBoolean.FALSE;
+        public Val eval() {
+            final Val a = childGenerators[0].eval();
+            final Val b = childGenerators[1].eval();
 
             if (!a.hasValue() || !b.hasValue()) {
-                retVal = VarNull.INSTANCE;
-            } else {
-                if (a.toString().equals(b.toString())) {
-                    retVal = VarBoolean.TRUE;
+                return ValNull.INSTANCE;
+            } else if (a.getClass().equals(b.getClass())) {
+                if (a instanceof ValInteger) {
+                    return ValBoolean.create(a.toInteger().equals(b.toInteger()));
+                }
+                if (a instanceof ValLong) {
+                    return ValBoolean.create(a.toLong().equals(b.toLong()));
+                }
+                if (a instanceof ValBoolean) {
+                    return ValBoolean.create(a.toBoolean().equals(b.toBoolean()));
                 }
             }
 
-            return retVal;
+            return ValBoolean.create(a.toString().equals(b.toString()));
         }
     }
 }

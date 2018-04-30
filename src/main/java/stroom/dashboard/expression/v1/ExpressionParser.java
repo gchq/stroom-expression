@@ -91,7 +91,7 @@ public class ExpressionParser {
     private List<Param> processObjects(final List<Param> objects, final FieldIndexMap fieldIndexMap) throws ParseException {
         Token functionStart = null;
         int start = -1;
-        int end = -1;
+        int end;
         for (int i = 0; i < objects.size(); i++) {
             final Param object = objects.get(i);
 

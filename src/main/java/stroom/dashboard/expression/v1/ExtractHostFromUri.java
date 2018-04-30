@@ -22,8 +22,20 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class ExtractHostFromUri extends ExtractionFunction {
-    public static class ExtractorImpl implements Extractor {
+class ExtractHostFromUri extends ExtractionFunction {
+    static final String NAME = "extractHostFromUri";
+    private static final Extractor EXTRACTOR = new ExtractorImpl();
+
+    public ExtractHostFromUri(final String name) {
+        super(name);
+    }
+
+    @Override
+    Extractor getExtractor() {
+        return EXTRACTOR;
+    }
+
+    static class ExtractorImpl implements Extractor {
         private static final long serialVersionUID = -5893918049538006730L;
 
         private static final Logger LOGGER = LoggerFactory.getLogger(ExtractorImpl.class);
@@ -38,17 +50,5 @@ public class ExtractHostFromUri extends ExtractionFunction {
             }
             return null;
         }
-    }
-
-    public static final String NAME = "extractHostFromUri";
-    private static final Extractor EXTRACTOR = new ExtractorImpl();
-
-    public ExtractHostFromUri(final String name) {
-        super(name);
-    }
-
-    @Override
-    Extractor getExtractor() {
-        return EXTRACTOR;
     }
 }

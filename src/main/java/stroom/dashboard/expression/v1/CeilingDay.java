@@ -18,8 +18,8 @@ package stroom.dashboard.expression.v1;
 
 import java.time.LocalDateTime;
 
-public class CeilingDay extends RoundDate {
-    public static final String NAME = "ceilingDay";
+class CeilingDay extends RoundDate {
+    static final String NAME = "ceilingDay";
     private static final Calc CALC = new Calc();
 
     public CeilingDay(final String name) {
@@ -31,7 +31,7 @@ public class CeilingDay extends RoundDate {
         return CALC;
     }
 
-    public static class Calc extends RoundDateCalculator {
+    static class Calc extends RoundDateCalculator {
         private static final long serialVersionUID = -5893918049538006730L;
 
         @Override

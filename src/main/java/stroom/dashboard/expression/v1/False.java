@@ -16,10 +16,10 @@
 
 package stroom.dashboard.expression.v1;
 
-public class False extends AbstractStaticFunction {
-    public static final String NAME = "false";
+class False extends AbstractStaticFunction {
+    static final String NAME = "false";
 
     public False(final String name) {
-        super(name, VarBoolean.FALSE);
+        super(name, ValBoolean.FALSE);
     }
 }

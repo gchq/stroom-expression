@@ -16,10 +16,10 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Null extends AbstractStaticFunction {
-    public static final String NAME = "null";
+class Null extends AbstractStaticFunction {
+    static final String NAME = "null";
 
     public Null(final String name) {
-        super(name, VarNull.INSTANCE);
+        super(name, ValNull.INSTANCE);
     }
 }

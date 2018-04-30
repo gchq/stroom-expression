@@ -18,12 +18,10 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 
-public class ToInteger extends AbstractCast implements Serializable {
+class ToInteger extends AbstractCast implements Serializable {
+    static final String NAME = "toInteger";
     private static final long serialVersionUID = -305845496003936297L;
-
     private static final Cast CAST = new Cast();
-
-    public static final String NAME = "toInteger";
 
     public ToInteger(final String name) {
         super(name);
@@ -36,16 +34,16 @@ public class ToInteger extends AbstractCast implements Serializable {
 
     private static class Cast extends AbstractCaster {
         @Override
-        Var cast(final Var var) {
-            if (!var.hasValue()) {
-                return var;
+        Val cast(final Val val) {
+            if (!val.hasValue()) {
+                return val;
             }
 
-            final Integer value = var.toInteger();
+            final Integer value = val.toInteger();
             if (value != null) {
-                return VarInteger.create(value);
+                return ValInteger.create(value);
             }
-            return VarErr.INSTANCE;
+            return ValErr.INSTANCE;
         }
     }
 }
