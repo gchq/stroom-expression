@@ -24,7 +24,7 @@ public interface Generator extends Serializable, Comparable<Generator> {
      *
      * @param key The key of a child group.
      */
-    void addChildKey(Val key);
+    void addChildKey(Key key);
 
     /**
      * Set values that can be used to source whatever data is required by value

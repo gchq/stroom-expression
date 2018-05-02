@@ -26,7 +26,7 @@ abstract class AbstractSingleChildGenerator extends AbstractGenerator {
     }
 
     @Override
-    public void addChildKey(final Val key) {
+    public void addChildKey(final Key key) {
         childGenerator.addChildKey(key);
     }
 

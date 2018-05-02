@@ -27,7 +27,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 
-final class DateUtil {
+public final class DateUtil {
     static final String DEFAULT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXX";
     static final DateTimeFormatter DEFAULT_FORMATTER = DateTimeFormatter.ofPattern(DEFAULT_PATTERN);
     private static final int DATE_LENGTH = "2000-01-01T00:00:00.000Z".length();
@@ -36,6 +36,18 @@ final class DateUtil {
         // Private constructor.
     }
 
+    /**
+     * Create a 'normal' type date.
+     *
+     * @param ms The date/time to convert to a string, in milliseconds since the epoch
+     * @return The 'normal' string representation of the passed date/time
+     */
+    public static String createNormalDateTimeString(final Long ms) {
+        if (ms == null) {
+            return "";
+        }
+        return DEFAULT_FORMATTER.format(Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC));
+    }
 
     /**
      * Parse a 'normal' type date.
@@ -44,7 +56,7 @@ final class DateUtil {
      * @return date as milliseconds since epoch
      * @throws IllegalArgumentException if date does not parse
      */
-    static long parseNormalDateTimeString(final String date) {
+    public static long parseNormalDateTimeString(final String date) {
         if (date == null || date.length() != DATE_LENGTH) {
             throw new IllegalArgumentException("Unable to parse date: \"" + date + '"');
         }
@@ -57,7 +69,7 @@ final class DateUtil {
         return dateTime.toInstant().toEpochMilli();
     }
 
-    static ZoneId getTimeZone(final String timeZone) throws ParseException {
+    public static ZoneId getTimeZone(final String timeZone) throws ParseException {
         ZoneId dateTimeZone;
 
         if (timeZone != null) {
@@ -73,7 +85,7 @@ final class DateUtil {
         return dateTimeZone;
     }
 
-    static long parse(final String value, final DateTimeFormatter formatter, final ZoneId zoneId) {
+    public static long parse(final String value, final DateTimeFormatter formatter, final ZoneId zoneId) {
         final ZonedDateTime dateTime = parseInternal(value, formatter, zoneId);
         if (dateTime == null) {
             throw new IllegalArgumentException("Unable to parse date: \"" + value + '"');
@@ -82,7 +94,7 @@ final class DateUtil {
         return dateTime.toInstant().toEpochMilli();
     }
 
-    static String format(final Long value, final DateTimeFormatter formatter, final ZoneId zoneId) {
+    public static String format(final Long value, final DateTimeFormatter formatter, final ZoneId zoneId) {
         return formatter.format(Instant.ofEpochMilli(value).atZone(zoneId));
     }
 

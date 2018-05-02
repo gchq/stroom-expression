@@ -26,7 +26,7 @@ abstract class AbstractManyChildGenerator extends AbstractGenerator {
     }
 
     @Override
-    public void addChildKey(final Val key) {
+    public void addChildKey(final Key key) {
         if (childGenerators != null) {
             for (final Generator gen : childGenerators) {
                 gen.addChildKey(key);

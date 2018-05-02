@@ -44,7 +44,7 @@ class CountGroups extends AbstractFunction {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = -9130548669643582369L;
 
-        private final Set<Val> childGroups = new HashSet<>();
+        private final Set<Key> childGroups = new HashSet<>();
         private long nonGroupedChildCount;
 
         @Override
@@ -58,8 +58,8 @@ class CountGroups extends AbstractFunction {
         }
 
         @Override
-        public void addChildKey(final Val key) {
-            if (!key.hasValue()) {
+        public void addChildKey(final Key key) {
+            if (key == null) {
                 nonGroupedChildCount++;
             } else {
                 childGroups.add(key);
