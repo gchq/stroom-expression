@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v1.3.2] - 2018-05-10
+
+* Updated slf4j-api to 1.7.25 to keep inline with dropwizard version 1.2.5.
+
 ## [v1.3.1] - 2018-05-02
 
 * Simplified Key.
@@ -78,7 +82,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.3.2...HEAD
+[v1.3.2]: https://github.com/gchq/stroom-expression/compare/v1.3.1...v1.3.2
 [v1.3.1]: https://github.com/gchq/stroom-expression/compare/v1.3.0...v1.3.1
 [v1.3.0]: https://github.com/gchq/stroom-expression/compare/v1.2.0...v1.3.0
 [v1.2.0]: https://github.com/gchq/stroom-expression/compare/v1.1.0...v1.2.0
