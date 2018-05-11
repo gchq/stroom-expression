@@ -36,11 +36,13 @@ ext.versions = [
     zzDUMMYzz: 'makes sorting this list easier'
 ]
 
+ext.moduleName = 'stroom.expression'
+
 group = 'stroom'
 version = versions.stroomExpression
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.10
+targetCompatibility = 1.10
 
 repositories {
     mavenLocal()
@@ -53,7 +55,7 @@ repositories {
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
 
-    testCompile 'junit:junit:4.12'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
     testCompile 'org.mockito:mockito-core:2.0.2-beta'
     testCompile 'com.caucho:hessian:4.0.38';
 }
@@ -69,6 +71,48 @@ def pomConfig = {
     scm {
        url "https://github.com/stroom/stroom-expression"
     }
+}
+
+compileJava {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'slf4j.api',
+        ]
+        classpath = files()
+    }
+}
+
+compileTestJava {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+//                '--add-modules', 'junit',
+//                '--add-reads', "$moduleName=junit",
+                '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+        ]
+        classpath = files()
+    }
+}
+
+test {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        jvmArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'ALL-MODULE-PATH',
+//                '--add-reads', "$moduleName=junit",
+                '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+        ]
+        classpath = files()
+    }
+}
+
+javadoc {
+    options.addStringOption('-module-path', classpath.asPath)
+    options.addStringOption('Xdoclint:all,-missing', '-html5')
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
