@@ -17,6 +17,7 @@
 package stroom.dashboard.expression.v1;
 
 import com.caucho.hessian.io.Hessian2Output;
+import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -24,10 +25,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.text.ParseException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestExpressionParser {
     private final ExpressionParser parser = new ExpressionParser(new FunctionFactory(), new ParamFactory());
@@ -78,12 +76,12 @@ public class TestExpressionParser {
         gen.set(getVal(180D));
 
         Val out = gen.eval();
-        assertEquals(180D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(180D, Offset.offset(0D));
 
         gen.set(getVal(500D));
 
         out = gen.eval();
-        assertEquals(180D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(180D, Offset.offset(0D));
 
         gen.set(getVal(600D));
         gen.set(getVal(13D));
@@ -91,7 +89,7 @@ public class TestExpressionParser {
         gen.set(getVal(87D));
 
         out = gen.eval();
-        assertEquals(13D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(13D, Offset.offset(0D));
     }
 
     private Val[] getVal(final String... str) {
@@ -117,7 +115,7 @@ public class TestExpressionParser {
         gen.set(getVal(300D));
 
         final Val out = gen.eval();
-        assertEquals(8D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(8D, Offset.offset(0D));
     }
 
     @Test
@@ -128,7 +126,7 @@ public class TestExpressionParser {
         gen.set(getVal(180D));
 
         final Val out = gen.eval();
-        assertEquals(8D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(8D, Offset.offset(0D));
     }
 
     @Test
@@ -139,13 +137,13 @@ public class TestExpressionParser {
         gen.set(getVal(180D));
 
         Val out = gen.eval();
-        assertEquals(2D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(2D, Offset.offset(0D));
 
         gen.set(getVal(300D));
         gen.set(getVal(180D));
 
         out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
     }
 
     @Test
@@ -156,12 +154,12 @@ public class TestExpressionParser {
         gen.set(getVal(180D));
 
         Val out = gen.eval();
-        assertEquals(300D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(300D, Offset.offset(0D));
 
         gen.set(getVal(500D));
 
         out = gen.eval();
-        assertEquals(500D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(500D, Offset.offset(0D));
 
         gen.set(getVal(600D));
         gen.set(getVal(13D));
@@ -169,7 +167,7 @@ public class TestExpressionParser {
         gen.set(getVal(87D));
 
         out = gen.eval();
-        assertEquals(600D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(600D, Offset.offset(0D));
     }
 
     @Test
@@ -179,7 +177,7 @@ public class TestExpressionParser {
         gen.set(getVal(10D));
 
         final Val out = gen.eval();
-        assertEquals(100D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(100D, Offset.offset(0D));
     }
 
     @Test
@@ -190,7 +188,7 @@ public class TestExpressionParser {
         gen.set(getVal(40D));
 
         final Val out = gen.eval();
-        assertEquals(100D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(100D, Offset.offset(0D));
     }
 
     @Test
@@ -201,13 +199,13 @@ public class TestExpressionParser {
         gen.set(getVal(2D));
 
         Val out = gen.eval();
-        assertEquals(3D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3D, Offset.offset(0D));
 
         gen.set(getVal(1D));
         gen.set(getVal(1D));
 
         out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
     }
 
     @Test
@@ -222,13 +220,13 @@ public class TestExpressionParser {
         gen.set(getVal(2D));
 
         Val out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
 
         gen.set(getVal(1D));
         gen.set(getVal(1D));
 
         out = gen.eval();
-        assertEquals(5D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(5D, Offset.offset(0D));
     }
 
     @Test
@@ -239,13 +237,13 @@ public class TestExpressionParser {
         gen.set(getVal(2D));
 
         Val out = gen.eval();
-        assertEquals(7D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(7D, Offset.offset(0D));
 
         gen.set(getVal(1D));
         gen.set(getVal(1D));
 
         out = gen.eval();
-        assertEquals(11D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(11D, Offset.offset(0D));
     }
 
     @Test
@@ -260,13 +258,13 @@ public class TestExpressionParser {
         gen.set(getVal(4D));
 
         Val out = gen.eval();
-        assertEquals(3D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3D, Offset.offset(0D));
 
         gen.set(getVal(1D));
         gen.set(getVal(8D));
 
         out = gen.eval();
-        assertEquals(6D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(6D, Offset.offset(0D));
     }
 
     @Test
@@ -277,13 +275,13 @@ public class TestExpressionParser {
         gen.set(getVal(4D));
 
         Val out = gen.eval();
-        assertEquals(3.5D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3.5D, Offset.offset(0D));
 
         gen.set(getVal(1D));
         gen.set(getVal(8D));
 
         out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
     }
 
     @Test
@@ -291,7 +289,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("match('this', 'this')");
 
         final Val out = gen.eval();
-        assertTrue(out.toBoolean());
+        assertThat(out.toBoolean()).isTrue();
     }
 
     @Test
@@ -299,7 +297,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("match('this', 'that')");
 
         final Val out = gen.eval();
-        assertFalse(out.toBoolean());
+        assertThat(out.toBoolean()).isFalse();
     }
 
     @Test
@@ -309,7 +307,7 @@ public class TestExpressionParser {
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        assertTrue(out.toBoolean());
+        assertThat(out.toBoolean()).isTrue();
     }
 
     @Test
@@ -319,7 +317,7 @@ public class TestExpressionParser {
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        assertFalse(out.toBoolean());
+        assertThat(out.toBoolean()).isFalse();
     }
 
     @Test
@@ -327,7 +325,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("true()");
 
         final Val out = gen.eval();
-        assertTrue(out.toBoolean());
+        assertThat(out.toBoolean()).isTrue();
     }
 
     @Test
@@ -335,7 +333,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("false()");
 
         final Val out = gen.eval();
-        assertFalse(out.toBoolean());
+        assertThat(out.toBoolean()).isFalse();
     }
 
     @Test
@@ -343,7 +341,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("null()");
 
         final Val out = gen.eval();
-        assertTrue(out instanceof ValNull);
+        assertThat(out).isInstanceOf(ValNull.class);
     }
 
     @Test
@@ -351,7 +349,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("err()");
 
         final Val out = gen.eval();
-        assertTrue(out instanceof ValErr);
+        assertThat(out).isInstanceOf(ValErr.class);
     }
 
     @Test
@@ -359,7 +357,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("not(true())");
 
         final Val out = gen.eval();
-        assertFalse(out.toBoolean());
+        assertThat(out.toBoolean()).isFalse();
     }
 
     @Test
@@ -367,7 +365,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("not(false())");
 
         final Val out = gen.eval();
-        assertTrue(out.toBoolean());
+        assertThat(out.toBoolean()).isTrue();
     }
 
     @Test
@@ -375,7 +373,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("if(true(), 'this', 'that')");
 
         final Val out = gen.eval();
-        assertEquals("this", out.toString());
+        assertThat(out.toString()).isEqualTo("this");
     }
 
     @Test
@@ -383,7 +381,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("if(false(), 'this', 'that')");
 
         final Val out = gen.eval();
-        assertEquals("that", out.toString());
+        assertThat(out.toString()).isEqualTo("that");
     }
 
     @Test
@@ -393,7 +391,7 @@ public class TestExpressionParser {
         gen.set(getVal("true"));
 
         final Val out = gen.eval();
-        assertEquals("this", out.toString());
+        assertThat(out.toString()).isEqualTo("this");
     }
 
     @Test
@@ -403,7 +401,7 @@ public class TestExpressionParser {
         gen.set(getVal("false"));
 
         final Val out = gen.eval();
-        assertEquals("that", out.toString());
+        assertThat(out.toString()).isEqualTo("that");
     }
 
     @Test
@@ -413,7 +411,7 @@ public class TestExpressionParser {
         gen.set(getVal("foo"));
 
         final Val out = gen.eval();
-        assertEquals("this", out.toString());
+        assertThat(out.toString()).isEqualTo("this");
     }
 
     @Test
@@ -423,7 +421,7 @@ public class TestExpressionParser {
         gen.set(getVal("bar"));
 
         final Val out = gen.eval();
-        assertEquals("that", out.toString());
+        assertThat(out.toString()).isEqualTo("that");
     }
 
     @Test
@@ -433,7 +431,7 @@ public class TestExpressionParser {
         gen.set(getVal("false"));
 
         final Val out = gen.eval();
-        assertEquals("this", out.toString());
+        assertThat(out.toString()).isEqualTo("this");
     }
 
     @Test
@@ -443,7 +441,7 @@ public class TestExpressionParser {
         gen.set(getVal(3D));
 
         final Val out = gen.eval();
-        assertEquals("that", out.toString());
+        assertThat(out.toString()).isEqualTo("that");
     }
 
     @Test
@@ -453,7 +451,7 @@ public class TestExpressionParser {
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        assertEquals("that", out.toString());
+        assertThat(out.toString()).isEqualTo("that");
     }
 
     @Test
@@ -463,7 +461,7 @@ public class TestExpressionParser {
         gen.set(getVal(3D));
 
         final Val out = gen.eval();
-        assertEquals("this is it", out.toString());
+        assertThat(out.toString()).isEqualTo("this is it");
     }
 
     @Test
@@ -473,7 +471,7 @@ public class TestExpressionParser {
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        assertEquals("this is it", out.toString());
+        assertThat(out.toString()).isEqualTo("this is it");
     }
 
     @Test
@@ -483,7 +481,7 @@ public class TestExpressionParser {
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
     }
 
     @Test
@@ -493,7 +491,7 @@ public class TestExpressionParser {
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        assertEquals("h", out.toString());
+        assertThat(out.toString()).isEqualTo("h");
     }
 
     @Test
@@ -503,7 +501,7 @@ public class TestExpressionParser {
         gen.set(getVal("his"));
 
         final Val out = gen.eval();
-        assertEquals("s", out.toString());
+        assertThat(out.toString()).isEqualTo("s");
     }
 
     @Test
@@ -513,7 +511,7 @@ public class TestExpressionParser {
         gen.set(getVal("his"));
 
         final Val out = gen.eval();
-        assertEquals("s", out.toString());
+        assertThat(out.toString()).isEqualTo("s");
     }
 
     @Test
@@ -523,7 +521,7 @@ public class TestExpressionParser {
         gen.set(getVal("his"));
 
         final Val out = gen.eval();
-        assertEquals("", out.toString());
+        assertThat(out.toString()).isEmpty();
     }
 
     @Test
@@ -533,7 +531,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("aa", out.toString());
+        assertThat(out.toString()).isEqualTo("aa");
     }
 
     @Test
@@ -543,7 +541,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("", out.toString());
+        assertThat(out.toString()).isEmpty();
     }
 
     @Test
@@ -553,7 +551,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("aa-", out.toString());
+        assertThat(out.toString()).isEqualTo("aa-");
     }
 
     @Test
@@ -563,7 +561,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("", out.toString());
+        assertThat(out.toString()).isEmpty();
     }
 
     @Test
@@ -573,7 +571,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("bb", out.toString());
+        assertThat(out.toString()).isEqualTo("bb");
     }
 
     @Test
@@ -583,7 +581,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("a-bb", out.toString());
+        assertThat(out.toString()).isEqualTo("a-bb");
     }
 
     @Test
@@ -593,7 +591,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("b", out.toString());
+        assertThat(out.toString()).isEqualTo("b");
     }
 
     @Test
@@ -603,7 +601,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("", out.toString());
+        assertThat(out.toString()).isEmpty();
     }
 
     @Test
@@ -613,7 +611,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals(2, out.toInteger().intValue());
+        assertThat(out.toInteger().intValue()).isEqualTo(2);
     }
 
     @Test
@@ -623,7 +621,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("-bb", out.toString());
+        assertThat(out.toString()).isEqualTo("-bb");
     }
 
     @Test
@@ -633,7 +631,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("aa-bb", out.toString());
+        assertThat(out.toString()).isEqualTo("aa-bb");
     }
 
     @Test
@@ -643,7 +641,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("bb", out.toString());
+        assertThat(out.toString()).isEqualTo("bb");
     }
 
     @Test
@@ -653,7 +651,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("", out.toString());
+        assertThat(out.toString()).isEmpty();
     }
 
     @Test
@@ -663,7 +661,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("-bb", out.toString());
+        assertThat(out.toString()).isEqualTo("-bb");
     }
 
     @Test
@@ -673,7 +671,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("a-bb", out.toString());
+        assertThat(out.toString()).isEqualTo("a-bb");
     }
 
     @Test
@@ -683,7 +681,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("b", out.toString());
+        assertThat(out.toString()).isEqualTo("b");
     }
 
     @Test
@@ -693,7 +691,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        assertEquals("", out.toString());
+        assertThat(out.toString()).isEmpty();
     }
 
     @Test
@@ -703,7 +701,7 @@ public class TestExpressionParser {
         gen.set(getVal("hullo"));
 
         final Val out = gen.eval();
-        assertEquals("hello", out.toString());
+        assertThat(out.toString()).isEqualTo("hello");
     }
 
     @Test
@@ -713,7 +711,7 @@ public class TestExpressionParser {
         gen.set(getVal("hullo"));
 
         final Val out = gen.eval();
-        assertEquals("hello", out.toString());
+        assertThat(out.toString()).isEqualTo("hello");
     }
 
     @Test
@@ -721,7 +719,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("include(${val}, 'this', 'that')");
         gen.set(getVal("this"));
         final Val out = gen.eval();
-        assertEquals("this", out.toString());
+        assertThat(out.toString()).isEqualTo("this");
     }
 
     @Test
@@ -729,7 +727,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("include(${val}, 'this', 'that')");
         gen.set(getVal("that"));
         final Val out = gen.eval();
-        assertEquals("that", out.toString());
+        assertThat(out.toString()).isEqualTo("that");
     }
 
     @Test
@@ -737,7 +735,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("include(${val}, 'this', 'that')");
         gen.set(getVal("other"));
         final Val out = gen.eval();
-        assertNull(out.toString());
+        assertThat(out.toString()).isNull();
     }
 
     @Test
@@ -745,7 +743,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("exclude(${val}, 'this', 'that')");
         gen.set(getVal("this"));
         final Val out = gen.eval();
-        assertNull(out.toString());
+        assertThat(out.toString()).isNull();
     }
 
     @Test
@@ -753,7 +751,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("exclude(${val}, 'this', 'that')");
         gen.set(getVal("that"));
         final Val out = gen.eval();
-        assertNull(out.toString());
+        assertThat(out.toString()).isNull();
     }
 
     @Test
@@ -761,7 +759,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("exclude(${val}, 'this', 'that')");
         gen.set(getVal("other"));
         final Val out = gen.eval();
-        assertEquals("other", out.toString());
+        assertThat(out.toString()).isEqualTo("other");
     }
 
     @Test
@@ -771,7 +769,7 @@ public class TestExpressionParser {
         gen.set(getVal("plop"));
 
         final Val out = gen.eval();
-        assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -781,7 +779,7 @@ public class TestExpressionParser {
         gen.set(getVal("plop"));
 
         final Val out = gen.eval();
-        assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -791,7 +789,7 @@ public class TestExpressionParser {
         gen.set(getVal("plop"));
 
         final Val out = gen.eval();
-        assertEquals("false", out.toString());
+        assertThat(out.toString()).isEqualTo("false");
     }
 
     @Test
@@ -801,7 +799,7 @@ public class TestExpressionParser {
         gen.set(getVal("plop", "plip"));
 
         final Val out = gen.eval();
-        assertEquals("false", out.toString());
+        assertThat(out.toString()).isEqualTo("false");
     }
 
     @Test
@@ -811,7 +809,7 @@ public class TestExpressionParser {
         gen.set(getVal("plop", "plop"));
 
         final Val out = gen.eval();
-        assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -821,7 +819,7 @@ public class TestExpressionParser {
         gen.set(getVal("plop", "plop"));
 
         final Val out = gen.eval();
-        assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -829,7 +827,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator2("lessThan(1, 0)");
 
         final Val out = gen.eval();
-        assertEquals("false", out.toString());
+        assertThat(out.toString()).isEqualTo("false");
     }
 
     @Test
@@ -837,7 +835,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator2("lessThan(1, 1)");
 
         final Val out = gen.eval();
-        assertEquals("false", out.toString());
+        assertThat(out.toString()).isEqualTo("false");
     }
 
     @Test
@@ -847,7 +845,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D, 2D));
 
         final Val out = gen.eval();
-        assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -857,7 +855,7 @@ public class TestExpressionParser {
         gen.set(getVal("fred", "fred"));
 
         final Val out = gen.eval();
-        assertEquals("false", out.toString());
+        assertThat(out.toString()).isEqualTo("false");
     }
 
     @Test
@@ -867,7 +865,7 @@ public class TestExpressionParser {
         gen.set(getVal("fred", "fred1"));
 
         final Val out = gen.eval();
-        assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -877,7 +875,7 @@ public class TestExpressionParser {
         gen.set(getVal("fred1", "fred"));
 
         final Val out = gen.eval();
-        assertEquals("false", out.toString());
+        assertThat(out.toString()).isEqualTo("false");
     }
 
     @Test
@@ -885,7 +883,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator2("lessThanOrEqualTo(1, 0)");
 
         final Val out = gen.eval();
-        assertEquals("false", out.toString());
+        assertThat(out.toString()).isEqualTo("false");
     }
 
     @Test
@@ -893,7 +891,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator2("lessThanOrEqualTo(1, 1)");
 
         final Val out = gen.eval();
-        assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -903,7 +901,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D, 2D));
 
         final Val out = gen.eval();
-        assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -913,7 +911,7 @@ public class TestExpressionParser {
         gen.set(getVal("fred", "fred"));
 
         final Val out = gen.eval();
-        assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -923,7 +921,7 @@ public class TestExpressionParser {
         gen.set(getVal("fred", "fred1"));
 
         final Val out = gen.eval();
-        assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -933,7 +931,7 @@ public class TestExpressionParser {
         gen.set(getVal("fred1", "fred"));
 
         final Val out = gen.eval();
-        assertEquals("false", out.toString());
+        assertThat(out.toString()).isEqualTo("false");
     }
 
     @Test
@@ -943,7 +941,7 @@ public class TestExpressionParser {
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        assertEquals("this", out.toString());
+        assertThat(out.toString()).isEqualTo("this");
     }
 
     @Test
@@ -953,7 +951,7 @@ public class TestExpressionParser {
         gen.set(getVal("test"));
 
         final Val out = gen.eval();
-        assertEquals("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", out.toString());
+        assertThat(out.toString()).isEqualTo("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08");
     }
 
     @Test
@@ -963,7 +961,7 @@ public class TestExpressionParser {
         gen.set(getVal("test"));
 
         final Val out = gen.eval();
-        assertEquals("ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff", out.toString());
+        assertThat(out.toString()).isEqualTo("ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff");
     }
 
     @Test
@@ -973,7 +971,7 @@ public class TestExpressionParser {
         gen.set(getVal("test"));
 
         final Val out = gen.eval();
-        assertEquals("af2910d4d8acf3fcf9683d3ca4425327cb1b4b48bc690f566e27b0e0144c17af82066cf6af14d3a30312ed9df671e0e24b1c66ed3973d1a7836899d75c4d6bb8", out.toString());
+        assertThat(out.toString()).isEqualTo("af2910d4d8acf3fcf9683d3ca4425327cb1b4b48bc690f566e27b0e0144c17af82066cf6af14d3a30312ed9df671e0e24b1c66ed3973d1a7836899d75c4d6bb8");
     }
 
     @Test
@@ -984,13 +982,13 @@ public class TestExpressionParser {
         gen.set(getVal(133D));
 
         Val out = gen.eval();
-        assertEquals(2D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(2D, Offset.offset(0D));
 
         gen.set(getVal(11D));
         gen.set(getVal(122D));
 
         out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
     }
 
     @Test
@@ -1001,13 +999,13 @@ public class TestExpressionParser {
         gen.set(getVal(133D));
 
         Val out = gen.eval();
-        assertEquals(2D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(2D, Offset.offset(0D));
 
         gen.set(getVal(11D));
         gen.set(getVal(122D));
 
         out = gen.eval();
-        assertEquals(3D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3D, Offset.offset(0D));
     }
 
     @Test
@@ -1018,13 +1016,13 @@ public class TestExpressionParser {
         gen.set(getVal(133D));
 
         Val out = gen.eval();
-        assertEquals(1D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(1D, Offset.offset(0D));
 
         gen.set(getVal(11D));
         gen.set(getVal(122D));
 
         out = gen.eval();
-        assertEquals(1D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(1D, Offset.offset(0D));
     }
 
     @Test
@@ -1034,7 +1032,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(7D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(7D, Offset.offset(0D));
     }
 
     @Test
@@ -1044,7 +1042,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(12D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(12D, Offset.offset(0D));
     }
 
     @Test
@@ -1055,13 +1053,13 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         Val out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
 
         gen.set(getVal(1D));
         gen.set(getVal(1D));
 
         out = gen.eval();
-        assertEquals(6D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(6D, Offset.offset(0D));
     }
 
     @Test
@@ -1071,7 +1069,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(-1D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(-1D, Offset.offset(0D));
     }
 
     @Test
@@ -1082,13 +1080,13 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         Val out = gen.eval();
-        assertEquals(0D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(0D, Offset.offset(0D));
 
         gen.set(getVal(1D));
         gen.set(getVal(1D));
 
         out = gen.eval();
-        assertEquals(-2D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(-2D, Offset.offset(0D));
     }
 
     @Test
@@ -1098,7 +1096,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(12D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(12D, Offset.offset(0D));
     }
 
     @Test
@@ -1109,13 +1107,13 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         Val out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
 
         gen.set(getVal(1D));
         gen.set(getVal(1D));
 
         out = gen.eval();
-        assertEquals(8D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(8D, Offset.offset(0D));
     }
 
     @Test
@@ -1125,7 +1123,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(2D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(2D, Offset.offset(0D));
     }
 
     @Test
@@ -1136,13 +1134,13 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         Val out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
 
         gen.set(getVal(1D));
         gen.set(getVal(1D));
 
         out = gen.eval();
-        assertEquals(2D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(2D, Offset.offset(0D));
     }
 
     @Test
@@ -1152,7 +1150,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(8D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(8D, Offset.offset(0D));
     }
 
     @Test
@@ -1162,7 +1160,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(8D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(8D, Offset.offset(0D));
     }
 
     @Test
@@ -1172,7 +1170,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.34D));
 
         final Val out = gen.eval();
-        assertEquals(1D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(1D, Offset.offset(0D));
     }
 
     @Test
@@ -1183,7 +1181,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.8655D));
 
         final Val out = gen.eval();
-        assertEquals(3D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3D, Offset.offset(0D));
     }
 
     @Test
@@ -1194,7 +1192,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.8655D));
 
         final Val out = gen.eval();
-        assertEquals(3.8D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3.8D, Offset.offset(0D));
     }
 
     @Test
@@ -1205,7 +1203,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.8655D));
 
         final Val out = gen.eval();
-        assertEquals(3.86D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3.86D, Offset.offset(0D));
     }
 
     @Test
@@ -1215,7 +1213,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(9D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(9D, Offset.offset(0D));
     }
 
     @Test
@@ -1225,7 +1223,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(9D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(9D, Offset.offset(0D));
     }
 
     @Test
@@ -1235,7 +1233,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.34D));
 
         final Val out = gen.eval();
-        assertEquals(2D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(2D, Offset.offset(0D));
     }
 
     @Test
@@ -1246,7 +1244,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.8655D));
 
         final Val out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
     }
 
     @Test
@@ -1257,7 +1255,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.8655D));
 
         final Val out = gen.eval();
-        assertEquals(3.9D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3.9D, Offset.offset(0D));
     }
 
     @Test
@@ -1268,7 +1266,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.8655D));
 
         final Val out = gen.eval();
-        assertEquals(3.87D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3.87D, Offset.offset(0D));
     }
 
     @Test
@@ -1278,7 +1276,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(8D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(8D, Offset.offset(0D));
     }
 
     @Test
@@ -1288,7 +1286,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D));
 
         final Val out = gen.eval();
-        assertEquals(9D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(9D, Offset.offset(0D));
     }
 
     @Test
@@ -1298,7 +1296,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.34D));
 
         final Val out = gen.eval();
-        assertEquals(1D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(1D, Offset.offset(0D));
     }
 
     @Test
@@ -1309,7 +1307,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.8655D));
 
         final Val out = gen.eval();
-        assertEquals(4D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(4D, Offset.offset(0D));
     }
 
     @Test
@@ -1320,7 +1318,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.8655D));
 
         final Val out = gen.eval();
-        assertEquals(3.9D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3.9D, Offset.offset(0D));
     }
 
     @Test
@@ -1331,7 +1329,7 @@ public class TestExpressionParser {
         gen.set(getVal(1.8655D));
 
         final Val out = gen.eval();
-        assertEquals(3.87D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(3.87D, Offset.offset(0D));
     }
 
     @Test
@@ -1365,7 +1363,7 @@ public class TestExpressionParser {
 
         gen.set(getVal(in));
         final Val out = gen.eval();
-        assertEquals(expectedMs, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(expectedMs, Offset.offset(0D));
     }
 
     @Test
@@ -1375,7 +1373,7 @@ public class TestExpressionParser {
         final Val out = gen.eval();
 
         // Non BODMAS would evaluate as 6 or even 4 - BODMAS should be 8.
-        assertEquals(8D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(8D, Offset.offset(0D));
     }
 
     @Test
@@ -1385,7 +1383,7 @@ public class TestExpressionParser {
         final Val out = gen.eval();
 
         // Non BODMAS would evaluate as 6 or even 4 - BODMAS should be 6.
-        assertEquals(6D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(6D, Offset.offset(0D));
     }
 
     @Test
@@ -1395,7 +1393,7 @@ public class TestExpressionParser {
         final Val out = gen.eval();
 
         // Non BODMAS would evaluate as 6 or even 4 - BODMAS should be 2.
-        assertEquals(2D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(2D, Offset.offset(0D));
     }
 
     @Test
@@ -1405,7 +1403,7 @@ public class TestExpressionParser {
         final Val out = gen.eval();
 
         // Non BODMAS would evaluate as 18 - BODMAS should be 12.
-        assertEquals(12D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(12D, Offset.offset(0D));
     }
 
     @Test
@@ -1414,7 +1412,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Val out = gen.eval();
-        assertEquals("www.example.com:1234", out.toString());
+        assertThat(out.toString()).isEqualTo("www.example.com:1234");
     }
 
     @Test
@@ -1423,7 +1421,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path#frag"));
         Val out = gen.eval();
-        assertEquals("frag", out.toString());
+        assertThat(out.toString()).isEqualTo("frag");
     }
 
     @Test
@@ -1432,7 +1430,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Val out = gen.eval();
-        assertEquals("www.example.com", out.toString());
+        assertThat(out.toString()).isEqualTo("www.example.com");
     }
 
     @Test
@@ -1441,7 +1439,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Val out = gen.eval();
-        assertEquals("/this/is/a/path", out.toString());
+        assertThat(out.toString()).isEqualTo("/this/is/a/path");
     }
 
     @Test
@@ -1450,7 +1448,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Val out = gen.eval();
-        assertEquals("1234", out.toString());
+        assertThat(out.toString()).isEqualTo("1234");
     }
 
     @Test
@@ -1459,7 +1457,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path?this=that&foo=bar"));
         Val out = gen.eval();
-        assertEquals("this=that&foo=bar", out.toString());
+        assertThat(out.toString()).isEqualTo("this=that&foo=bar");
     }
 
     @Test
@@ -1468,7 +1466,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Val out = gen.eval();
-        assertEquals("http", out.toString());
+        assertThat(out.toString()).isEqualTo("http");
     }
 
     @Test
@@ -1477,7 +1475,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
         Val out = gen.eval();
-        assertEquals("//www.example.com:1234/this/is/a/path", out.toString());
+        assertThat(out.toString()).isEqualTo("//www.example.com:1234/this/is/a/path");
     }
 
     @Test
@@ -1486,7 +1484,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("http://john:doe@example.com:81/"));
         Val out = gen.eval();
-        assertEquals("john:doe", out.toString());
+        assertThat(out.toString()).isEqualTo("john:doe");
     }
 
     @Test
@@ -1495,7 +1493,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("2014-02-22T12:12:12.888Z"));
         Val out = gen.eval();
-        assertEquals(1393071132888L, out.toLong().longValue());
+        assertThat(out.toLong().longValue()).isEqualTo(1393071132888L);
     }
 
     @Test
@@ -1504,7 +1502,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("2014 02 22"));
         Val out = gen.eval();
-        assertEquals(1393027200000L, out.toLong().longValue());
+        assertThat(out.toLong().longValue()).isEqualTo(1393027200000L);
     }
 
     @Test
@@ -1513,7 +1511,7 @@ public class TestExpressionParser {
 
         gen.set(getVal("2014 02 22"));
         Val out = gen.eval();
-        assertEquals(1393012800000L, out.toLong().longValue());
+        assertThat(out.toLong().longValue()).isEqualTo(1393012800000L);
     }
 
     @Test
@@ -1522,7 +1520,7 @@ public class TestExpressionParser {
 
         gen.set(getVal(1393071132888L));
         Val out = gen.eval();
-        assertEquals("2014-02-22T12:12:12.888Z", out.toString());
+        assertThat(out.toString()).isEqualTo("2014-02-22T12:12:12.888Z");
     }
 
     @Test
@@ -1531,7 +1529,7 @@ public class TestExpressionParser {
 
         gen.set(getVal(1393071132888L));
         Val out = gen.eval();
-        assertEquals("2014 02 22", out.toString());
+        assertThat(out.toString()).isEqualTo("2014 02 22");
     }
 
     @Test
@@ -1540,7 +1538,7 @@ public class TestExpressionParser {
 
         gen.set(getVal(1393071132888L));
         Val out = gen.eval();
-        assertEquals("2014 02 23", out.toString());
+        assertThat(out.toString()).isEqualTo("2014 02 23");
     }
 
     @Test
@@ -1548,7 +1546,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("variance(600, 470, 170, 430, 300)");
 
         Val out = gen.eval();
-        assertEquals(21704D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(21704D, Offset.offset(0D));
     }
 
     @Test
@@ -1562,7 +1560,7 @@ public class TestExpressionParser {
         gen.set(getVal(300));
 
         Val out = gen.eval();
-        assertEquals(21704D, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(21704D, Offset.offset(0D));
     }
 
     @Test
@@ -1570,7 +1568,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("round(stDev(600, 470, 170, 430, 300))");
 
         Val out = gen.eval();
-        assertEquals(147, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(147, Offset.offset(0D));
     }
 
     @Test
@@ -1584,72 +1582,72 @@ public class TestExpressionParser {
         gen.set(getVal(300));
 
         Val out = gen.eval();
-        assertEquals(147, out.toDouble(), 0);
+        assertThat(out.toDouble()).isEqualTo(147, Offset.offset(0D));
     }
 
     @Test
     public void testToBoolean1() throws ParseException {
         final Generator gen = createGenerator("toBoolean('true')");
-        assertEquals(ValBoolean.TRUE, gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValBoolean.TRUE);
     }
 
     @Test
     public void testToBoolean2() throws ParseException {
         final Generator gen = createGenerator("toBoolean(${val})");
         gen.set(getVal("true"));
-        assertEquals(ValBoolean.TRUE, gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValBoolean.TRUE);
     }
 
     @Test
     public void testToDouble1() throws ParseException {
         final Generator gen = createGenerator("toDouble('100')");
-        assertEquals(ValDouble.create(100), gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValDouble.create(100));
     }
 
     @Test
     public void testToDouble2() throws ParseException {
         final Generator gen = createGenerator("toDouble(${val})");
         gen.set(getVal("100"));
-        assertEquals(ValDouble.create(100), gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValDouble.create(100));
     }
 
     @Test
     public void testToInteger1() throws ParseException {
         final Generator gen = createGenerator("toInteger('100')");
-        assertEquals(ValInteger.create(100), gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValInteger.create(100));
     }
 
     @Test
     public void testToInteger2() throws ParseException {
         final Generator gen = createGenerator("toInteger(${val})");
         gen.set(getVal("100"));
-        assertEquals(ValInteger.create(100), gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValInteger.create(100));
     }
 
     @Test
     public void testToLong1() throws ParseException {
         final Generator gen = createGenerator("toLong('100')");
-        assertEquals(ValLong.create(100), gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValLong.create(100));
     }
 
     @Test
     public void testToLong2() throws ParseException {
         final Generator gen = createGenerator("toLong(${val})");
         gen.set(getVal("100"));
-        assertEquals(ValLong.create(100), gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValLong.create(100));
     }
 
     @Test
     public void testToString1() throws ParseException {
         final Generator gen = createGenerator("toString('100')");
-        assertEquals(ValString.create("100"), gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValString.create("100"));
     }
 
     @Test
     public void testToString2() throws ParseException {
         final Generator gen = createGenerator("toString(${val})");
         gen.set(getVal("100"));
-        assertEquals(ValString.create("100"), gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValString.create("100"));
     }
 
     private Generator createGenerator(final String expression) throws ParseException {
@@ -1665,7 +1663,7 @@ public class TestExpressionParser {
 
         final Expression exp = parser.parse(fieldIndexMap, expression);
         final String actual = exp.toString();
-        assertEquals(expression, actual);
+        assertThat(actual).isEqualTo(expression);
 
         testSerialisation(exp);
         return exp;
@@ -1685,7 +1683,7 @@ public class TestExpressionParser {
 
         final Expression exp = parser.parse(fieldIndexMap, expression);
         final String actual = exp.toString();
-        assertEquals(expression, actual);
+        assertThat(actual).isEqualTo(expression);
 
         testSerialisation(exp);
         return exp;

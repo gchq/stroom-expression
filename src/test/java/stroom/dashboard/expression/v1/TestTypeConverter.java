@@ -18,7 +18,7 @@ package stroom.dashboard.expression.v1;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestTypeConverter {
     @Test
@@ -32,6 +32,6 @@ public class TestTypeConverter {
 
     private void test(final String expected, final double dbl) {
         final String actual = ValDouble.create(dbl).toString();
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 }

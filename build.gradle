@@ -56,6 +56,7 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
 
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
+    testCompile "org.assertj:assertj-core:3.10.0"
     testCompile 'org.mockito:mockito-core:2.0.2-beta'
     testCompile 'com.caucho:hessian:4.0.38';
 }
