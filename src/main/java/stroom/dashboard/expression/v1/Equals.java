@@ -77,8 +77,14 @@ class Equals extends AbstractManyChildFunction {
             final Val a = childGenerators[0].eval();
             final Val b = childGenerators[1].eval();
 
-            if (!a.hasValue() || !b.hasValue()) {
-                return ValNull.INSTANCE;
+            if (ValErr.INSTANCE.equals(a) || ValErr.INSTANCE.equals(b)) {
+                // one is an error so propagate it
+                return ValErr.INSTANCE;
+            } else if (ValNull.INSTANCE.equals(a) && ValNull.INSTANCE.equals(b)) {
+                // both null so equality is true
+                return ValBoolean.TRUE;
+            } else if (!a.hasValue() || !b.hasValue()) {
+                return ValBoolean.FALSE;
             } else if (a.getClass().equals(b.getClass())) {
                 if (a instanceof ValInteger) {
                     return ValBoolean.create(a.toInteger().equals(b.toInteger()));

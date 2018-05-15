@@ -433,6 +433,16 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testIf_nullHandling() throws ParseException {
+        final Generator gen = createGenerator("if(${val}=null(), true(), false())");
+
+        gen.set(new Val[]{ValNull.INSTANCE});
+
+        final Val out = gen.eval();
+        Assert.assertEquals(ValBoolean.TRUE, out);
+    }
+
+    @Test
     public void testReplace1() throws ParseException {
         final Generator gen = createGenerator("replace('this', 'is', 'at')");
 
