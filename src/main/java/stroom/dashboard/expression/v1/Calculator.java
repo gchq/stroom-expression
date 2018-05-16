@@ -30,7 +30,11 @@ abstract class Calculator implements Serializable {
         if (cur == null) {
             return value;
         }
-        return ValDouble.create(op(cur, val));
+        try {
+            return ValDouble.create(op(cur, val));
+        } catch (RuntimeException e) {
+            return ValErr.create(e.getMessage());
+        }
     }
 
     protected abstract double op(final double cur, final double val);

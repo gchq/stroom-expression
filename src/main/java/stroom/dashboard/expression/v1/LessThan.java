@@ -16,6 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
+import java.util.Optional;
+
 class LessThan extends AbstractManyChildFunction {
     static final String NAME = "<";
     static final String ALIAS = "lessThan";
@@ -61,6 +63,12 @@ class LessThan extends AbstractManyChildFunction {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 217968020285584214L;
 
+        private static final Evaluator EVALUATOR = Evaluator.builder(NAME)
+                .addReturnErrorOnFirstErrorValue()
+                .addReturnErrorOnFirstNullValue()
+                .addEvaluationFunction(Gen::doEval)
+                .build();
+
         Gen(final Generator[] childGenerators) {
             super(childGenerators);
         }
@@ -74,24 +82,25 @@ class LessThan extends AbstractManyChildFunction {
 
         @Override
         public Val eval() {
-            final Val a = childGenerators[0].eval();
-            final Val b = childGenerators[1].eval();
-            Val retVal = ValBoolean.FALSE;
+            return EVALUATOR.evaluate(childGenerators);
+        }
 
-            if (!a.hasValue() || !b.hasValue()) {
-                retVal = ValNull.INSTANCE;
+        private static Optional<Val> doEval(Val... values) {
+            final Val a = values[0];
+            final Val b = values[1];
+
+            Optional<Val> retVal = Evaluator.OPT_FALSE_VALUE;
+
+            final Double da = a.toDouble();
+            final Double db = b.toDouble();
+            if (da == null || db == null) {
+                int ret = a.toString().compareTo(b.toString());
+                if (ret < 0) {
+                    retVal = Evaluator.OPT_TRUE_VALUE;
+                }
             } else {
-                final Double da = a.toDouble();
-                final Double db = b.toDouble();
-                if (da == null || db == null) {
-                    int ret = a.toString().compareTo(b.toString());
-                    if (ret < 0) {
-                        retVal = ValBoolean.TRUE;
-                    }
-                } else {
-                    if (da < db) {
-                        retVal = ValBoolean.TRUE;
-                    }
+                if (da < db) {
+                    retVal = Evaluator.OPT_TRUE_VALUE;
                 }
             }
 

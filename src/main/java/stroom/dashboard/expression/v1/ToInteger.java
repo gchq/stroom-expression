@@ -43,7 +43,7 @@ class ToInteger extends AbstractCast implements Serializable {
             if (value != null) {
                 return ValInteger.create(value);
             }
-            return ValErr.INSTANCE;
+            return ValErr.create(String.format("Unable to cast %s to a integer", val));
         }
     }
 }

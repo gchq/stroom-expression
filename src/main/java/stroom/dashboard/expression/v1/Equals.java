@@ -16,6 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
+import java.util.Optional;
+
 class Equals extends AbstractManyChildFunction {
     static final String NAME = "=";
     static final String ALIAS = "equals";
@@ -61,6 +63,11 @@ class Equals extends AbstractManyChildFunction {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 217968020285584214L;
 
+        private static final Evaluator EVALUATOR = Evaluator.builder(NAME)
+                .addReturnErrorOnFirstErrorValue()
+                .addEvaluationFunction(Gen::doEval)
+                .build();
+
         Gen(final Generator[] childGenerators) {
             super(childGenerators);
         }
@@ -74,30 +81,30 @@ class Equals extends AbstractManyChildFunction {
 
         @Override
         public Val eval() {
-            final Val a = childGenerators[0].eval();
-            final Val b = childGenerators[1].eval();
+            return EVALUATOR.evaluate(childGenerators);
+        }
 
-            if (ValErr.INSTANCE.equals(a) || ValErr.INSTANCE.equals(b)) {
-                // one is an error so propagate it
-                return ValErr.INSTANCE;
-            } else if (ValNull.INSTANCE.equals(a) && ValNull.INSTANCE.equals(b)) {
+        private static Optional<Val> doEval(Val... values) {
+            Val a = values[0];
+            Val b = values[1];
+            if (a instanceof ValNull && b instanceof ValNull) {
                 // both null so equality is true
-                return ValBoolean.TRUE;
+                return Optional.of(ValBoolean.TRUE);
             } else if (!a.hasValue() || !b.hasValue()) {
-                return ValBoolean.FALSE;
+                return Optional.of(ValErr.create(String.format("Both values must have a value, %s %s", a, b)));
             } else if (a.getClass().equals(b.getClass())) {
                 if (a instanceof ValInteger) {
-                    return ValBoolean.create(a.toInteger().equals(b.toInteger()));
+                    return Optional.of(ValBoolean.create(a.toInteger().equals(b.toInteger())));
                 }
                 if (a instanceof ValLong) {
-                    return ValBoolean.create(a.toLong().equals(b.toLong()));
+                    return Optional.of(ValBoolean.create(a.toLong().equals(b.toLong())));
                 }
                 if (a instanceof ValBoolean) {
-                    return ValBoolean.create(a.toBoolean().equals(b.toBoolean()));
+                    return Optional.of(ValBoolean.create(a.toBoolean().equals(b.toBoolean())));
                 }
             }
 
-            return ValBoolean.create(a.toString().equals(b.toString()));
+            return Optional.of(ValBoolean.create(a.toString().equals(b.toString())));
         }
     }
 }
