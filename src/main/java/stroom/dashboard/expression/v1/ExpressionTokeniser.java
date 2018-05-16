@@ -18,7 +18,9 @@ package stroom.dashboard.expression.v1;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 class ExpressionTokeniser {
     List<Token> tokenise(final String expression) {
@@ -211,7 +213,8 @@ class ExpressionTokeniser {
 
     private void extractSimpleToken(final Token token, final List<Token> output) {
         int start = token.start;
-        for (int i = token.start; i <= token.end; i++) {
+        int i = start;
+        while (i <= token.end) {
             for (final Token.Type type : Token.SIMPLE_TOKENS) {
 
                 boolean match = true;
@@ -230,10 +233,18 @@ class ExpressionTokeniser {
 
                     output.add(new Token(type, token.expression, i, i + type.identifier.length - 1));
 
-                    // Move the start.
+                    // Move the start and our position
                     start = i + type.identifier.length;
+                    if (type.identifier.length > 1) {
+                        // identifier is multi-char so advance position to stop us re-matching
+                        // a sub-set of it.
+                        i += type.identifier.length - 1;
+                    }
+                    // matched our token so break out
+                    break;
                 }
             }
+            i++;
         }
 
         // Add any remaining as yet unidentified content.
@@ -310,7 +321,12 @@ class ExpressionTokeniser {
     }
 
     static class Token implements Param {
-        static final Type[] SIMPLE_TOKENS = new Type[]{
+        // refuses to compile if I create the reverse comparator in one step, who knows why
+        private static Comparator<Type> IDENTIFIER_LENGTH_COMPARATOR = Comparator.comparing(t -> t.identifier.length);
+        private static Comparator<Type> IDENTIFIER_LENGTH_COMPARATOR_REVERSED = IDENTIFIER_LENGTH_COMPARATOR.reversed();
+
+        // array of simple tokens reverse sorted on identifier length
+        static final Type[] SIMPLE_TOKENS = Stream.of(
                 Type.COMMA,
                 Type.ORDER,
                 Type.DIVISION,
@@ -321,8 +337,10 @@ class ExpressionTokeniser {
                 Type.GREATER_THAN,
                 Type.GREATER_THAN_OR_EQUAL_TO,
                 Type.LESS_THAN,
-                Type.LESS_THAN_OR_EQUAL_TO
-        };
+                Type.LESS_THAN_OR_EQUAL_TO)
+                .sorted(IDENTIFIER_LENGTH_COMPARATOR_REVERSED)
+                .toArray(Type[]::new);
+
         private final Type type;
         private final char[] expression;
         private final int start;

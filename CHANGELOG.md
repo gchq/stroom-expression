@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+* Issue **#20** : Fix parse errors when using `>=` and `<=`
+
 ## [v1.3.2] - 2018-05-10
 
 * Updated slf4j-api to 1.7.25 to keep inline with dropwizard version 1.2.5.
