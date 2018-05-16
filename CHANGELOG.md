@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+* Issue **#20** : Fix parse errors when using `>=` and `<=`
+
 * Issue **#19** : Fix handling of `err()` in multi child generators
 
 * Issue **#18** : Fix null handling for `equals`

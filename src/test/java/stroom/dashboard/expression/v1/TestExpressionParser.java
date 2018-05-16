@@ -913,6 +913,16 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testLessThanOrEqualTo3_mk2() throws ParseException {
+        final Generator gen = createGenerator2("(${val1}<=${val2})");
+
+        gen.set(getVal(1D, 2D));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("true", out.toString());
+    }
+
+    @Test
     public void testLessThanOrEqualTo4() throws ParseException {
         final Generator gen = createGenerator2("lessThanOrEqualTo(${val1}, ${val2})");
 
@@ -940,6 +950,26 @@ public class TestExpressionParser {
 
         final Val out = gen.eval();
         Assert.assertEquals("false", out.toString());
+    }
+
+    @Test
+    public void testGreaterThanOrEqualTo1() throws ParseException {
+        final Generator gen = createGenerator2("greaterThanOrEqualTo(${val1}, ${val2})");
+
+        gen.set(getVal(2D, 1D));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("true", out.toString());
+    }
+
+    @Test
+    public void testGreaterThanOrEqualTo1_mk2() throws ParseException {
+        final Generator gen = createGenerator2("(${val1}>=${val2})");
+
+        gen.set(getVal(2D, 1D));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("true", out.toString());
     }
 
     @Test
