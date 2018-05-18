@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [v1.4.0] - 2018-05-18
+
 * Issue **#22** : Add `typeOf(...)` function, e.g. `typeOf("abc")` => `string`.
 
 * Issue **#18** : Fix handling of VarErr in `=`; now `(err()=err())` returns `err()`.
@@ -93,7 +95,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.3.2...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.4.0...HEAD
+[v1.4.0]: https://github.com/gchq/stroom-expression/compare/v1.3.2...v1.4.0
 [v1.3.2]: https://github.com/gchq/stroom-expression/compare/v1.3.1...v1.3.2
 [v1.3.1]: https://github.com/gchq/stroom-expression/compare/v1.3.0...v1.3.1
 [v1.3.0]: https://github.com/gchq/stroom-expression/compare/v1.2.0...v1.3.0
