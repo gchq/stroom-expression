@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+* Issue **#18** : Fix handling of VarNull in `>=`, `<=`, `>` and `<`; now returns VarErr. Fix handling of VarNull in `=`; now `(null()=null())` returns VarNull.
+
 * Issue **#20** : Fix parse errors when using `>=` and `<=`
 
 ## [v1.3.2] - 2018-05-10

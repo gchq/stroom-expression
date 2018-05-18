@@ -963,6 +963,277 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testBooleanExpressions() throws ParseException {
+
+        ValBoolean vTrue = ValBoolean.TRUE;
+        ValBoolean vFals = ValBoolean.FALSE; // intentional typo to keep var name length consistent
+        ValNull vNull = ValNull.INSTANCE;
+        ValErr vEror = ValErr.create("Expecting an error"); // intentional typo to keep var name length consistent
+
+        ValLong vLng0 = ValLong.create(0L);
+        ValLong vLng1 = ValLong.create(1L);
+        ValLong vLng2 = ValLong.create(2L);
+
+        ValInteger vInt0 = ValInteger.create(0);
+        ValInteger vInt1 = ValInteger.create(1);
+        ValInteger vInt2 = ValInteger.create(2);
+
+        ValDouble vDbl0 = ValDouble.create(0);
+        ValDouble vDbl1 = ValDouble.create(1);
+        ValDouble vDbl2 = ValDouble.create(2);
+
+        ValString vStr1 = ValString.create("1");
+        ValString vStr2 = ValString.create("2");
+        ValString vStrA = ValString.create("AAA");
+        ValString vStrB = ValString.create("BBB");
+        ValString vStra = ValString.create("aaa");
+        ValString vStrT = ValString.create("true");
+        ValString vStrF = ValString.create("false");
+        ValString vStr_ = ValString.EMPTY;
+
+        // null, equals
+        assertBooleanExpression(vNull, "=", vNull, vTrue);
+
+        // booleans, equals
+        assertBooleanExpression(vTrue, "=", vTrue, vTrue);
+        assertBooleanExpression(vFals, "=", vFals, vTrue);
+        assertBooleanExpression(vTrue, "=", vFals, vFals);
+
+        // longs, equals
+        assertBooleanExpression(vLng1, "=", vNull, vFals);
+        assertBooleanExpression(vNull, "=", vLng1, vFals);
+        assertBooleanExpression(vLng1, "=", vLng1, vTrue);
+        assertBooleanExpression(vLng1, "=", vLng2, vFals);
+        assertBooleanExpression(vLng1, "=", vTrue, vTrue); // true() cast to 1
+        assertBooleanExpression(vLng1, "=", vFals, vFals);
+
+        // integers, equals
+        assertBooleanExpression(vInt1, "=", vNull, vFals);
+        assertBooleanExpression(vNull, "=", vInt1, vFals);
+        assertBooleanExpression(vInt1, "=", vInt1, vTrue);
+        assertBooleanExpression(vInt1, "=", vInt2, vFals);
+        assertBooleanExpression(vInt1, "=", vTrue, vTrue); // true() cast to 1
+        assertBooleanExpression(vInt1, "=", vFals, vFals);
+
+        // doubles, equals
+        assertBooleanExpression(vDbl1, "=", vNull, vFals);
+        assertBooleanExpression(vNull, "=", vDbl1, vFals);
+        assertBooleanExpression(vDbl1, "=", vDbl1, vTrue);
+        assertBooleanExpression(vDbl1, "=", vDbl2, vFals);
+        assertBooleanExpression(vDbl1, "=", vTrue, vTrue); // true() cast to 1
+        assertBooleanExpression(vDbl1, "=", vFals, vFals);
+
+        // strings, equals
+        assertBooleanExpression(vStrA, "=", vNull, vFals);
+        assertBooleanExpression(vNull, "=", vStrA, vFals);
+        assertBooleanExpression(vStrA, "=", vStrA, vTrue);
+        assertBooleanExpression(vStrA, "=", vStrB, vFals);
+        assertBooleanExpression(vStrA, "=", vTrue, vFals);
+        assertBooleanExpression(vStrA, "=", vFals, vFals);
+        assertBooleanExpression(vStrA, "=", vStra, vFals);
+
+        // mixed types, equals
+        assertBooleanExpression(vLng1, "=", vStr1, vTrue);
+        assertBooleanExpression(vDbl1, "=", vStr1, vTrue);
+        assertBooleanExpression(vLng1, "=", vTrue, vTrue); //true cast to 1
+        assertBooleanExpression(vInt1, "=", vTrue, vTrue); //true cast to 1
+        assertBooleanExpression(vDbl1, "=", vTrue, vTrue);
+        assertBooleanExpression(vLng0, "=", vFals, vTrue); // false() cast to 0
+        assertBooleanExpression(vInt0, "=", vFals, vTrue); // false() cast to 0
+        assertBooleanExpression(vDbl0, "=", vFals, vTrue); // false() cast to 0
+        assertBooleanExpression(vDbl1, "=", vLng1, vTrue);
+        assertBooleanExpression(vStrT, "=", vTrue, vTrue); // true() cast to "true"
+        assertBooleanExpression(vStrF, "=", vFals, vTrue); // false() cast to "false"
+
+
+        // booleans, greater than
+        assertBooleanExpression(vTrue, ">", vTrue, vFals);
+        assertBooleanExpression(vFals, ">", vFals, vFals);
+        assertBooleanExpression(vTrue, ">", vFals, vTrue);
+
+        // longs, greater than
+        assertBooleanExpression(vLng1, ">", vNull, vEror);
+        assertBooleanExpression(vNull, ">", vLng1, vEror);
+        assertBooleanExpression(vLng1, ">", vLng1, vFals);
+        assertBooleanExpression(vLng1, ">", vLng2, vFals);
+        assertBooleanExpression(vLng2, ">", vLng1, vTrue);
+        assertBooleanExpression(vLng1, ">", vTrue, vFals); //true cast to 1
+        assertBooleanExpression(vLng2, ">", vDbl1, vTrue);
+        assertBooleanExpression(vLng2, ">", vStr1, vTrue);
+
+        // longs, greater than
+        assertBooleanExpression(vInt1, ">", vNull, vEror);
+        assertBooleanExpression(vNull, ">", vInt1, vEror);
+        assertBooleanExpression(vInt1, ">", vInt1, vFals);
+        assertBooleanExpression(vInt1, ">", vInt2, vFals);
+        assertBooleanExpression(vInt2, ">", vInt1, vTrue);
+        assertBooleanExpression(vInt1, ">", vTrue, vFals); // true cast to 1
+        assertBooleanExpression(vInt2, ">", vDbl1, vTrue);
+        assertBooleanExpression(vInt2, ">", vStr1, vTrue);
+
+        // doubles, greater than
+        assertBooleanExpression(vDbl1, ">", vNull, vEror);
+        assertBooleanExpression(vNull, ">", vDbl1, vEror);
+        assertBooleanExpression(vDbl1, ">", vDbl1, vFals);
+        assertBooleanExpression(vDbl1, ">", vDbl2, vFals);
+        assertBooleanExpression(vDbl2, ">", vDbl1, vTrue);
+        assertBooleanExpression(vDbl1, ">", vTrue, vFals); //true() cast to 1
+        assertBooleanExpression(vDbl2, ">", vDbl1, vTrue);
+        assertBooleanExpression(vDbl2, ">", vStr1, vTrue);
+
+        // strings, greater than
+        assertBooleanExpression(vStrA, ">", vStrA, vFals);
+        assertBooleanExpression(vStrA, ">", vStrB, vFals);
+        assertBooleanExpression(vStrB, ">", vStrA, vTrue);
+        assertBooleanExpression(vStrA, ">", vStr_, vTrue);
+        assertBooleanExpression(vStrA, ">", vStr1, vTrue);
+        assertBooleanExpression(vStrA, ">", vNull, vEror);
+        assertBooleanExpression(vStrA, ">", vStra, vFals);
+        assertBooleanExpression(vStra, ">", vStrA, vTrue);
+
+
+        // booleans, greater than or equal to
+        assertBooleanExpression(vTrue, ">=", vTrue, vTrue);
+        assertBooleanExpression(vFals, ">=", vFals, vTrue);
+        assertBooleanExpression(vTrue, ">=", vFals, vTrue);
+        assertBooleanExpression(vFals, ">=", vTrue, vFals);
+
+        // longs, greater than or equal to
+        assertBooleanExpression(vLng1, ">=", vNull, vEror);
+        assertBooleanExpression(vNull, ">=", vLng1, vEror);
+        assertBooleanExpression(vLng1, ">=", vLng1, vTrue);
+        assertBooleanExpression(vLng1, ">=", vLng2, vFals);
+        assertBooleanExpression(vLng2, ">=", vLng1, vTrue);
+        assertBooleanExpression(vLng1, ">=", vTrue, vTrue); // true() cast to 1
+        assertBooleanExpression(vLng2, ">=", vDbl1, vTrue);
+        assertBooleanExpression(vLng2, ">=", vStr1, vTrue);
+
+        // integers, greater than or equal to
+        assertBooleanExpression(vInt1, ">=", vNull, vEror);
+        assertBooleanExpression(vNull, ">=", vInt1, vEror);
+        assertBooleanExpression(vInt1, ">=", vInt1, vTrue);
+        assertBooleanExpression(vInt1, ">=", vInt2, vFals);
+        assertBooleanExpression(vInt2, ">=", vInt1, vTrue);
+        assertBooleanExpression(vInt1, ">=", vTrue, vTrue); //true() cast to 1
+        assertBooleanExpression(vInt2, ">=", vDbl1, vTrue);
+        assertBooleanExpression(vInt2, ">=", vStr1, vTrue);
+
+        // doubles, greater than or equal to
+        assertBooleanExpression(vDbl1, ">=", vNull, vEror);
+        assertBooleanExpression(vNull, ">=", vDbl1, vEror);
+        assertBooleanExpression(vDbl1, ">=", vDbl1, vTrue);
+        assertBooleanExpression(vDbl1, ">=", vDbl2, vFals);
+        assertBooleanExpression(vDbl2, ">=", vDbl1, vTrue);
+        assertBooleanExpression(vDbl1, ">=", vTrue, vTrue); // true() cast to 1
+        assertBooleanExpression(vDbl2, ">=", vDbl1, vTrue);
+        assertBooleanExpression(vDbl2, ">=", vStr1, vTrue);
+
+        // strings, greater than or equal to
+        assertBooleanExpression(vStrA, ">=", vStrA, vTrue);
+        assertBooleanExpression(vStrA, ">=", vStrB, vFals);
+        assertBooleanExpression(vStrB, ">=", vStrA, vTrue);
+        assertBooleanExpression(vStrA, ">=", vStr_, vTrue);
+        assertBooleanExpression(vStrA, ">=", vStr1, vTrue);
+        assertBooleanExpression(vStrA, ">=", vNull, vEror);
+
+
+        // booleans, less than
+        assertBooleanExpression(vTrue, "<", vTrue, vFals);
+        assertBooleanExpression(vFals, "<", vFals, vFals);
+        assertBooleanExpression(vTrue, "<", vFals, vFals);
+        assertBooleanExpression(vFals, "<", vTrue, vTrue);
+
+        // longs, less than
+        assertBooleanExpression(vLng1, "<", vNull, vEror);
+        assertBooleanExpression(vNull, "<", vLng1, vEror);
+        assertBooleanExpression(vLng1, "<", vLng1, vFals);
+        assertBooleanExpression(vLng1, "<", vLng2, vTrue);
+        assertBooleanExpression(vLng2, "<", vLng1, vFals);
+        assertBooleanExpression(vLng1, "<", vTrue, vFals); // true() cast to 1
+        assertBooleanExpression(vLng2, "<", vDbl1, vFals);
+        assertBooleanExpression(vLng2, "<", vStr1, vFals);
+
+        // integers, less than
+        assertBooleanExpression(vInt1, "<", vNull, vEror);
+        assertBooleanExpression(vNull, "<", vInt1, vEror);
+        assertBooleanExpression(vInt1, "<", vInt1, vFals);
+        assertBooleanExpression(vInt1, "<", vInt2, vTrue);
+        assertBooleanExpression(vInt2, "<", vInt1, vFals);
+        assertBooleanExpression(vInt1, "<", vTrue, vFals); // true() cast to 1
+        assertBooleanExpression(vInt2, "<", vDbl1, vFals);
+        assertBooleanExpression(vInt2, "<", vStr1, vFals);
+
+        // doubles, less than
+        assertBooleanExpression(vDbl1, "<", vNull, vEror);
+        assertBooleanExpression(vNull, "<", vDbl1, vEror);
+        assertBooleanExpression(vDbl1, "<", vDbl1, vFals);
+        assertBooleanExpression(vDbl1, "<", vDbl2, vTrue);
+        assertBooleanExpression(vDbl2, "<", vDbl1, vFals);
+        assertBooleanExpression(vDbl1, "<", vTrue, vFals); // true() cast to 1
+        assertBooleanExpression(vDbl2, "<", vDbl1, vFals);
+        assertBooleanExpression(vDbl2, "<", vStr1, vFals);
+
+        // strings, less than
+        assertBooleanExpression(vStrA, "<", vStrA, vFals);
+        assertBooleanExpression(vStrA, "<", vStrB, vTrue);
+        assertBooleanExpression(vStrB, "<", vStrA, vFals);
+        assertBooleanExpression(vStrA, "<", vStr_, vFals);
+        assertBooleanExpression(vStrA, "<", vStr1, vFals);
+        assertBooleanExpression(vStrA, "<", vNull, vEror);
+
+
+
+        // booleans, less than or equal to
+        assertBooleanExpression(vTrue, "<=", vTrue, vTrue);
+        assertBooleanExpression(vFals, "<=", vFals, vTrue);
+        assertBooleanExpression(vTrue, "<=", vFals, vFals);
+        assertBooleanExpression(vFals, "<=", vTrue, vTrue);
+
+        // longs, less than or equal to
+        assertBooleanExpression(vLng1, "<=", vNull, vEror);
+        assertBooleanExpression(vNull, "<=", vLng1, vEror);
+        assertBooleanExpression(vLng1, "<=", vLng1, vTrue);
+        assertBooleanExpression(vLng1, "<=", vLng2, vTrue);
+        assertBooleanExpression(vLng2, "<=", vLng1, vFals);
+        assertBooleanExpression(vLng1, "<=", vTrue, vTrue); // true() cast to 1
+        assertBooleanExpression(vLng2, "<=", vDbl1, vFals);
+        assertBooleanExpression(vDbl1, "<=", vLng2, vTrue);
+        assertBooleanExpression(vLng2, "<=", vStr1, vFals);
+
+        // integers, less than or equal to
+        assertBooleanExpression(vInt1, "<=", vNull, vEror);
+        assertBooleanExpression(vNull, "<=", vInt1, vEror);
+        assertBooleanExpression(vInt1, "<=", vInt1, vTrue);
+        assertBooleanExpression(vInt1, "<=", vInt2, vTrue);
+        assertBooleanExpression(vInt2, "<=", vInt1, vFals);
+        assertBooleanExpression(vInt1, "<=", vTrue, vTrue); //true() cast to 1
+        assertBooleanExpression(vInt2, "<=", vDbl1, vFals);
+        assertBooleanExpression(vInt1, "<=", vDbl2, vTrue);
+        assertBooleanExpression(vInt2, "<=", vStr1, vFals);
+        assertBooleanExpression(vInt1, "<=", vStr2, vTrue);
+
+        // doubles, less than or equal to
+        assertBooleanExpression(vDbl1, "<=", vNull, vEror);
+        assertBooleanExpression(vNull, "<=", vDbl1, vEror);
+        assertBooleanExpression(vDbl1, "<=", vDbl1, vTrue);
+        assertBooleanExpression(vDbl1, "<=", vDbl2, vTrue);
+        assertBooleanExpression(vDbl2, "<=", vDbl1, vFals);
+        assertBooleanExpression(vDbl1, "<=", vTrue, vTrue); // true() caste to 1
+        assertBooleanExpression(vDbl2, "<=", vStr1, vFals);
+        assertBooleanExpression(vDbl1, "<=", vStr2, vTrue);
+
+        // strings, less than or equal to
+        assertBooleanExpression(vStrA, "<=", vStrA, vTrue);
+        assertBooleanExpression(vStrA, "<=", vStrB, vTrue);
+        assertBooleanExpression(vStrB, "<=", vStrA, vFals);
+        assertBooleanExpression(vStrA, "<=", vStr_, vFals);
+        assertBooleanExpression(vStrA, "<=", vStr1, vFals);
+        assertBooleanExpression(vStrA, "<=", vNull, vEror);
+
+    }
+
+
+    @Test
     public void testSubstring2() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, 0, 99)");
 
@@ -1726,5 +1997,28 @@ public class TestExpressionParser {
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+
+    private void assertBooleanExpression(final Val val1, final String operator, final Val val2, final Val expectedOutput)
+            throws ParseException {
+
+        final String expression = String.format("(${val1}%s${val2})", operator);
+        final Expression exp = createExpression2(expression);
+        final Generator gen = exp.createGenerator();
+        gen.set(new Val[]{val1, val2});
+        Val out = gen.eval();
+
+        System.out.println(String.format("[%s: %s] %s [%s: %s] => [%s: %s%s]",
+                val1.getClass().getSimpleName(), val1.toString(),
+                operator,
+                val2.getClass().getSimpleName(), val2.toString(),
+                out.getClass().getSimpleName(), out.toString(),
+                (out instanceof ValErr ? (" - " + ((ValErr)out).getMessage()) : "")));
+
+        if (! (expectedOutput instanceof ValErr)) {
+            Assert.assertEquals(expectedOutput, out);
+        }
+        Assert.assertEquals(expectedOutput.getClass(), out.getClass());
     }
 }

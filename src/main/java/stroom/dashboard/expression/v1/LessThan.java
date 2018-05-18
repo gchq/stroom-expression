@@ -79,7 +79,7 @@ class LessThan extends AbstractManyChildFunction {
             Val retVal = ValBoolean.FALSE;
 
             if (!a.hasValue() || !b.hasValue()) {
-                retVal = ValNull.INSTANCE;
+                retVal = ValErr.create(String.format("Both values must have a value [%s] [%s]", a, b));
             } else {
                 final Double da = a.toDouble();
                 final Double db = b.toDouble();
