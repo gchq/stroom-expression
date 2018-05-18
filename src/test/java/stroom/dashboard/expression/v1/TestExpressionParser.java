@@ -1182,7 +1182,6 @@ public class TestExpressionParser {
         assertBooleanExpression(vStrA, "<", vNull, vEror);
 
 
-
         // booleans, less than or equal to
         assertBooleanExpression(vTrue, "<=", vTrue, vTrue);
         assertBooleanExpression(vFals, "<=", vFals, vTrue);
@@ -1440,6 +1439,15 @@ public class TestExpressionParser {
 
         out = gen.eval();
         Assert.assertEquals(2D, out.toDouble(), 0);
+    }
+
+    @Test
+    public void testDivide_byZero() throws ParseException {
+        final Generator gen = createGenerator("8/0");
+
+        final Val out = gen.eval();
+        Assert.assertTrue(out instanceof ValErr);
+        System.out.println("Error message: " + ((ValErr) out).getMessage());
     }
 
     @Test
@@ -2014,9 +2022,9 @@ public class TestExpressionParser {
                 operator,
                 val2.getClass().getSimpleName(), val2.toString(),
                 out.getClass().getSimpleName(), out.toString(),
-                (out instanceof ValErr ? (" - " + ((ValErr)out).getMessage()) : "")));
+                (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
 
-        if (! (expectedOutput instanceof ValErr)) {
+        if (!(expectedOutput instanceof ValErr)) {
             Assert.assertEquals(expectedOutput, out);
         }
         Assert.assertEquals(expectedOutput.getClass(), out.getClass());
