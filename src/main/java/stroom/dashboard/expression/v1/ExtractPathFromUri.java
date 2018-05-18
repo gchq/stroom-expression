@@ -20,26 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
-public class ExtractPathFromUri extends ExtractionFunction {
-    public static class ExtractorImpl implements Extractor {
-        private static final long serialVersionUID = -5893918049538006730L;
-
-        private static final Logger LOGGER = LoggerFactory.getLogger(ExtractorImpl.class);
-
-        @Override
-        public String extract(final String value) {
-            try {
-                final URI uri = new URI(value);
-                return uri.getPath();
-            } catch (final Exception e) {
-                LOGGER.debug(e.getMessage(), e);
-            }
-            return null;
-        }
-    }
-
-    public static final String NAME = "extractPathFromUri";
+class ExtractPathFromUri extends ExtractionFunction {
+    static final String NAME = "extractPathFromUri";
     private static final Extractor EXTRACTOR = new ExtractorImpl();
 
     public ExtractPathFromUri(final String name) {
@@ -49,5 +33,22 @@ public class ExtractPathFromUri extends ExtractionFunction {
     @Override
     Extractor getExtractor() {
         return EXTRACTOR;
+    }
+
+    static class ExtractorImpl implements Extractor {
+        private static final long serialVersionUID = -5893918049538006730L;
+
+        private static final Logger LOGGER = LoggerFactory.getLogger(ExtractorImpl.class);
+
+        @Override
+        public String extract(final String value) {
+            try {
+                final URI uri = new URI(value);
+                return uri.getPath();
+            } catch (final URISyntaxException | RuntimeException e) {
+                LOGGER.debug(e.getMessage(), e);
+            }
+            return null;
+        }
     }
 }

@@ -16,9 +16,9 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Divide extends NumericFunction {
-    public static final String NAME = "/";
-    public static final String ALIAS = "divide";
+class Divide extends NumericFunction {
+    static final String NAME = "/";
+    static final String ALIAS = "divide";
     private static final Calc CALC = new Calc();
 
     public Divide(final String name) {
@@ -30,12 +30,16 @@ public class Divide extends NumericFunction {
         return CALC;
     }
 
-    public static class Calc extends Calculator {
+    static class Calc extends Calculator {
         private static final long serialVersionUID = 1099553839843710283L;
 
         @Override
         protected double op(final double cur, final double val) {
-            return cur / val;
+            double retVal = cur / val;
+            if (Double.isNaN(retVal) || Double.isInfinite(retVal)) {
+                throw new ArithmeticException(String.format("Result of %s / %s is not a number", cur, val));
+            }
+            return retVal;
         }
     }
 }

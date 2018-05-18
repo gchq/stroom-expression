@@ -18,13 +18,13 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 
-public interface Generator extends Serializable, Comparable<Object> {
+public interface Generator extends Serializable, Comparable<Generator> {
     /**
      * For countGroups() we need to know what child keys are used.
      *
      * @param key The key of a child group.
      */
-    void addChildKey(Object key);
+    void addChildKey(Key key);
 
     /**
      * Set values that can be used to source whatever data is required by value
@@ -32,7 +32,7 @@ public interface Generator extends Serializable, Comparable<Object> {
      *
      * @param values The current data values to pick data from.
      */
-    void set(String[] values);
+    void set(Val[] values);
 
     /**
      * Evaluate this generator by applying the function that this generator
@@ -40,7 +40,7 @@ public interface Generator extends Serializable, Comparable<Object> {
      *
      * @return The result of applying this function to the suppled values.
      */
-    Object eval();
+    Val eval();
 
     /**
      * Merge the values from another generator into this generator, e.g. for a

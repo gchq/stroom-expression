@@ -19,8 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CountGroups extends AbstractFunction {
-    public static final String NAME = "countGroups";
+class CountGroups extends AbstractFunction {
+    static final String NAME = "countGroups";
 
     public CountGroups(final String name) {
         super(name, 0, 0);
@@ -44,21 +44,21 @@ public class CountGroups extends AbstractFunction {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = -9130548669643582369L;
 
-        private final Set<Object> childGroups = new HashSet<>();
+        private final Set<Key> childGroups = new HashSet<>();
         private long nonGroupedChildCount;
 
         @Override
-        public Object eval() {
+        public Val eval() {
             final long count = nonGroupedChildCount + childGroups.size();
             if (count == 0) {
-                return null;
+                return ValNull.INSTANCE;
             }
 
-            return Double.valueOf(count);
+            return ValLong.create(count);
         }
 
         @Override
-        public void addChildKey(final Object key) {
+        public void addChildKey(final Key key) {
             if (key == null) {
                 nonGroupedChildCount++;
             } else {

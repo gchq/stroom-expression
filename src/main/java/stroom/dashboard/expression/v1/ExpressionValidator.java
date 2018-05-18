@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Stack;
 
-public class ExpressionValidator {
+class ExpressionValidator {
     public void validate(final List<ExpressionTokeniser.Token> tokens) throws ParseException {
         // Ensure there are no unidentified tokens.
         for (final ExpressionTokeniser.Token token : tokens) {

@@ -16,8 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Floor extends AbstractRoundingFunction {
-    public static final String NAME = "floor";
+class Floor extends AbstractRoundingFunction {
+    static final String NAME = "floor";
 
     public Floor(final String name) {
         super(name);
@@ -29,7 +29,7 @@ public class Floor extends AbstractRoundingFunction {
             return new NumericFloor();
         }
 
-        final Double multiplier = Double.valueOf(Math.pow(10D, decimalPlaces));
+        final double multiplier = Math.pow(10D, decimalPlaces);
         return new DecimalPlaceFloor(multiplier);
     }
 
@@ -37,23 +37,33 @@ public class Floor extends AbstractRoundingFunction {
         private static final long serialVersionUID = -2414316545075369054L;
 
         @Override
-        public Double calc(final Double value) {
-            return Double.valueOf(Math.floor(value));
+        public Val calc(final Val value) {
+            final Double val = value.toDouble();
+            if (val == null) {
+                return ValNull.INSTANCE;
+            }
+
+            return ValDouble.create(Math.floor(val));
         }
     }
 
     private static class DecimalPlaceFloor implements RoundCalculator {
         private static final long serialVersionUID = -5893918049538006730L;
 
-        private final Double multiplier;
+        private final double multiplier;
 
-        public DecimalPlaceFloor(final Double multiplier) {
+        DecimalPlaceFloor(final double multiplier) {
             this.multiplier = multiplier;
         }
 
         @Override
-        public Double calc(final Double value) {
-            return Double.valueOf(Math.floor(value * multiplier) / multiplier);
+        public Val calc(final Val value) {
+            final Double val = value.toDouble();
+            if (val == null) {
+                return ValNull.INSTANCE;
+            }
+
+            return ValDouble.create(Math.floor(val * multiplier) / multiplier);
         }
     }
 }

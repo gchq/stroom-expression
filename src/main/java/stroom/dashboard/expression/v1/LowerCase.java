@@ -19,11 +19,11 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public class LowerCase extends AbstractFunction implements Serializable {
-    public static final String NAME = "lowerCase";
+class LowerCase extends AbstractFunction implements Serializable {
+    static final String NAME = "lowerCase";
     private static final long serialVersionUID = -305845496003936297L;
     private Generator gen;
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
 
     public LowerCase(final String name) {
@@ -31,16 +31,16 @@ public class LowerCase extends AbstractFunction implements Serializable {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
         } else {
             // Optimise replacement of static input in case user does something stupid.
-            gen = new StaticValueFunction(param.toString().toLowerCase()).createGenerator();
+            gen = new StaticValueFunction(ValString.create(param.toString().toLowerCase())).createGenerator();
             hasAggregate = false;
         }
     }
@@ -64,24 +64,23 @@ public class LowerCase extends AbstractFunction implements Serializable {
         private static final long serialVersionUID = 8153777070911899616L;
 
 
-        public Gen(final Generator childGenerator) {
+        Gen(final Generator childGenerator) {
             super(childGenerator);
-
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Object eval() {
-            final Object val = childGenerator.eval();
-            if (val != null) {
-                return TypeConverter.getString(val).toLowerCase();
+        public Val eval() {
+            final Val val = childGenerator.eval();
+            final String string = val.toString();
+            if (string != null) {
+                return ValString.create(string.toLowerCase());
             }
-
-            return null;
+            return ValNull.INSTANCE;
         }
     }
 }

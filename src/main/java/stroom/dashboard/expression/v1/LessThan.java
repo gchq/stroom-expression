@@ -16,9 +16,9 @@
 
 package stroom.dashboard.expression.v1;
 
-public class LessThan extends AbstractManyChildFunction {
-    public static final String NAME = "<";
-    public static final String ALIAS = "lessThan";
+class LessThan extends AbstractManyChildFunction {
+    static final String NAME = "<";
+    static final String ALIAS = "lessThan";
     private final boolean usingOperator;
 
     public LessThan(final String name) {
@@ -46,7 +46,7 @@ public class LessThan extends AbstractManyChildFunction {
         if (usingOperator) {
             if (params != null) {
                 for (int i = 0; i < params.length; i++) {
-                    final Object param = params[i];
+                    final Param param = params[i];
                     appendParam(sb, param);
                     if (i < params.length - 1) {
                         sb.append(name);
@@ -61,37 +61,37 @@ public class LessThan extends AbstractManyChildFunction {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 217968020285584214L;
 
-        public Gen(final Generator[] childGenerators) {
+        Gen(final Generator[] childGenerators) {
             super(childGenerators);
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Object eval() {
-            String retVal = "false";
-            Object a = childGenerators[0].eval();
-            Object b = childGenerators[1].eval();
+        public Val eval() {
+            final Val a = childGenerators[0].eval();
+            final Val b = childGenerators[1].eval();
+            Val retVal = ValBoolean.FALSE;
 
-            if (a == null || b == null) {
-                retVal = null;
-            }
-
-            Double da = TypeConverter.getDouble(a);
-            Double db = TypeConverter.getDouble(b);
-            if (da == null || db == null) {
-                int ret = TypeConverter.getString(a).compareTo(TypeConverter.getString(b));
-                if (ret < 0) {
-                    retVal = "true";
-                }
+            if (!a.hasValue() || !b.hasValue()) {
+                retVal = ValErr.create(String.format("Both values must have a value [%s] [%s]", a, b));
             } else {
-                if (da < db) {
-                    retVal = "true";
+                final Double da = a.toDouble();
+                final Double db = b.toDouble();
+                if (da == null || db == null) {
+                    int ret = a.toString().compareTo(b.toString());
+                    if (ret < 0) {
+                        retVal = ValBoolean.TRUE;
+                    }
+                } else {
+                    if (da < db) {
+                        retVal = ValBoolean.TRUE;
+                    }
                 }
             }
 

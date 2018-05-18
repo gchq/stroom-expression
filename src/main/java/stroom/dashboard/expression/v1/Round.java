@@ -16,8 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Round extends AbstractRoundingFunction {
-    public static final String NAME = "round";
+class Round extends AbstractRoundingFunction {
+    static final String NAME = "round";
 
     public Round(final String name) {
         super(name);
@@ -29,7 +29,7 @@ public class Round extends AbstractRoundingFunction {
             return new NumericRound();
         }
 
-        final Double multiplier = Double.valueOf(Math.pow(10D, decimalPlaces));
+        final double multiplier = Math.pow(10D, decimalPlaces);
         return new DecimalPlaceRound(multiplier);
     }
 
@@ -37,23 +37,33 @@ public class Round extends AbstractRoundingFunction {
         private static final long serialVersionUID = -2414316545075369054L;
 
         @Override
-        public Double calc(final Double value) {
-            return Double.valueOf(Math.round(value));
+        public Val calc(final Val value) {
+            final Double val = value.toDouble();
+            if (val == null) {
+                return ValNull.INSTANCE;
+            }
+
+            return ValDouble.create(Math.round(val));
         }
     }
 
     private static class DecimalPlaceRound implements RoundCalculator {
         private static final long serialVersionUID = -5893918049538006730L;
 
-        private final Double multiplier;
+        private final double multiplier;
 
-        public DecimalPlaceRound(final Double multiplier) {
+        DecimalPlaceRound(final double multiplier) {
             this.multiplier = multiplier;
         }
 
         @Override
-        public Double calc(final Double value) {
-            return Double.valueOf(Math.round(value * multiplier) / multiplier);
+        public Val calc(final Val value) {
+            final Double val = value.toDouble();
+            if (val == null) {
+                return ValNull.INSTANCE;
+            }
+
+            return ValDouble.create(Math.round(val * multiplier) / multiplier);
         }
     }
 }

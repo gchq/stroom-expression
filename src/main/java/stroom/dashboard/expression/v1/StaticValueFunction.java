@@ -16,19 +16,17 @@
 
 package stroom.dashboard.expression.v1;
 
-import java.text.ParseException;
-
 public class StaticValueFunction implements Function, Appendable {
-    private final Object value;
+    private final Val value;
     private final Generator gen;
 
-    public StaticValueFunction(final Object value) {
+    public StaticValueFunction(final Val value) {
         this.value = value;
         this.gen = new Gen(value);
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) {
         // Ignore
     }
 
@@ -46,7 +44,7 @@ public class StaticValueFunction implements Function, Appendable {
 
     @Override
     public void appendString(final StringBuilder sb) {
-        sb.append(TypeConverter.escape(value.toString()));
+        value.appendString(sb);
     }
 
     @Override
@@ -62,14 +60,14 @@ public class StaticValueFunction implements Function, Appendable {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = -7551073465232523106L;
 
-        private final Object value;
+        private final Val value;
 
-        public Gen(final Object value) {
+        Gen(final Val value) {
             this.value = value;
         }
 
         @Override
-        public Object eval() {
+        public Val eval() {
             return value;
         }
     }

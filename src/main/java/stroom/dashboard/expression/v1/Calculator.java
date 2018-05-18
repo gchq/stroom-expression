@@ -18,18 +18,23 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 
-public abstract class Calculator implements Serializable {
+abstract class Calculator implements Serializable {
     private static final long serialVersionUID = 7429374303179048909L;
 
-    public Double calc(final Double current, final Object value) {
-        final Double val = TypeConverter.getDouble(value);
+    Val calc(final Val current, final Val value) {
+        final Double cur = current.toDouble();
+        final Double val = value.toDouble();
         if (val == null) {
             return current;
         }
-        if (current == null) {
-            return val;
+        if (cur == null) {
+            return value;
         }
-        return op(current, val);
+        try {
+            return ValDouble.create(op(cur, val));
+        } catch (RuntimeException e) {
+            return ValErr.create(e.getMessage());
+        }
     }
 
     protected abstract double op(final double cur, final double val);

@@ -16,9 +16,9 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Equals extends AbstractManyChildFunction {
-    public static final String NAME = "=";
-    public static final String ALIAS = "equals";
+class Equals extends AbstractManyChildFunction {
+    static final String NAME = "=";
+    static final String ALIAS = "equals";
     private final boolean usingOperator;
 
     public Equals(final String name) {
@@ -46,7 +46,7 @@ public class Equals extends AbstractManyChildFunction {
         if (usingOperator) {
             if (params != null) {
                 for (int i = 0; i < params.length; i++) {
-                    final Object param = params[i];
+                    final Param param = params[i];
                     appendParam(sb, param);
                     if (i < params.length - 1) {
                         sb.append(name);
@@ -61,28 +61,50 @@ public class Equals extends AbstractManyChildFunction {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 217968020285584214L;
 
-        public Gen(final Generator[] childGenerators) {
+        Gen(final Generator[] childGenerators) {
             super(childGenerators);
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Object eval() {
-            String retVal = "false";
-            final Object a = childGenerators[0].eval();
-            final Object b = childGenerators[1].eval();
+        public Val eval() {
+            final Val a = childGenerators[0].eval();
+            final Val b = childGenerators[1].eval();
 
-            if (a.toString().equals(b.toString())) {
-                retVal = "true";
+            if (a instanceof ValNull && b instanceof ValNull) {
+                return ValBoolean.TRUE;
+            }
+            if (a instanceof ValErr && b instanceof ValErr) {
+                // treat two ValErr instances regardless of content as the same
+                return ValBoolean.TRUE;
+            } else if (a instanceof ValNull || b instanceof ValNull) {
+                // one is null, other is non-null
+                return ValBoolean.FALSE;
+            } else if (a.getClass().equals(b.getClass())) {
+                if (a instanceof ValInteger) {
+                    return ValBoolean.create(a.toInteger().equals(b.toInteger()));
+                }
+                if (a instanceof ValLong) {
+                    return ValBoolean.create(a.toLong().equals(b.toLong()));
+                }
+                if (a instanceof ValBoolean) {
+                    return ValBoolean.create(a.toBoolean().equals(b.toBoolean()));
+                }
+            } else {
+                final Double da = a.toDouble();
+                final Double db = b.toDouble();
+                if (da != null && db != null) {
+                    return ValBoolean.create(da.equals(db));
+                }
             }
 
-            return retVal;
+            return ValBoolean.create(a.toString().equals(b.toString()));
         }
     }
 }

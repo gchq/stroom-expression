@@ -16,17 +16,17 @@
 
 package stroom.dashboard.expression.v1;
 
-public abstract class AbstractManyChildGenerator extends AbstractGenerator {
+abstract class AbstractManyChildGenerator extends AbstractGenerator {
     private static final long serialVersionUID = 513621715143449935L;
 
     final Generator[] childGenerators;
 
-    public AbstractManyChildGenerator(final Generator[] childGenerators) {
+    AbstractManyChildGenerator(final Generator[] childGenerators) {
         this.childGenerators = childGenerators;
     }
 
     @Override
-    public void addChildKey(final Object key) {
+    public void addChildKey(final Key key) {
         if (childGenerators != null) {
             for (final Generator gen : childGenerators) {
                 gen.addChildKey(key);
@@ -35,17 +35,17 @@ public abstract class AbstractManyChildGenerator extends AbstractGenerator {
     }
 
     @Override
-    public abstract void set(String[] values);
+    public abstract void set(Val[] values);
 
     @Override
-    public abstract Object eval();
+    public abstract Val eval();
 
     @Override
     public void merge(final Generator generator) {
         addChildren((AbstractManyChildGenerator) generator);
     }
 
-    public void addChildren(final AbstractManyChildGenerator generator) {
+    private void addChildren(final AbstractManyChildGenerator generator) {
         for (int i = 0; i < childGenerators.length; i++) {
             childGenerators[i].merge(generator.childGenerators[i]);
         }

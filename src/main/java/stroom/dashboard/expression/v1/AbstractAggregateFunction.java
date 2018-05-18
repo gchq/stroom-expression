@@ -16,10 +16,10 @@
 
 package stroom.dashboard.expression.v1;
 
-public abstract class AbstractAggregateFunction extends AbstractManyChildFunction implements AggregateFunction {
+abstract class AbstractAggregateFunction extends AbstractManyChildFunction implements AggregateFunction {
     private final Calculator calculator;
 
-    public AbstractAggregateFunction(final String name, final Calculator calculator) {
+    AbstractAggregateFunction(final String name, final Calculator calculator) {
         super(name, 1, Integer.MAX_VALUE);
         this.calculator = calculator;
     }
@@ -51,21 +51,21 @@ public abstract class AbstractAggregateFunction extends AbstractManyChildFunctio
 
         private final Calculator calculator;
 
-        private Double current;
+        private Val current = ValNull.INSTANCE;
 
-        public AggregateGen(final Generator childGenerator, final Calculator calculator) {
+        AggregateGen(final Generator childGenerator, final Calculator calculator) {
             super(childGenerator);
             this.calculator = calculator;
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
             current = calculator.calc(current, childGenerator.eval());
         }
 
         @Override
-        public Object eval() {
+        public Val eval() {
             return current;
         }
 
@@ -82,25 +82,24 @@ public abstract class AbstractAggregateFunction extends AbstractManyChildFunctio
 
         private final Calculator calculator;
 
-        public Gen(final Generator[] childGenerators, final Calculator calculator) {
+        Gen(final Generator[] childGenerators, final Calculator calculator) {
             super(childGenerators);
             this.calculator = calculator;
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             for (final Generator gen : childGenerators) {
                 gen.set(values);
             }
         }
 
         @Override
-        public Object eval() {
-            Double value = null;
+        public Val eval() {
+            Val value = ValNull.INSTANCE;
             for (final Generator gen : childGenerators) {
                 value = calculator.calc(value, gen.eval());
             }
-
             return value;
         }
     }

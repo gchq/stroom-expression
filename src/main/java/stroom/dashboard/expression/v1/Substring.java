@@ -19,49 +19,79 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public class Substring extends AbstractFunction implements Serializable {
-    public static final String NAME = "substring";
+class Substring extends AbstractFunction implements Serializable {
+    static final String NAME = "substring";
     private static final long serialVersionUID = -305845496003936297L;
+    private Function startFunction;
+    private Function endFunction;
+
     private Generator gen;
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
-    private Double startPos;
-    private Double endPos;
 
     public Substring(final String name) {
         super(name, 3, 3);
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        if (!(params[1] instanceof Double)) {
-            throw new ParseException("Number expected as second argument of '" + name + "' function", 0);
-        }
-        startPos = (Double) params[1];
-        if (startPos < 0) {
-            startPos = 0D;
-        }
-        if (!(params[2] instanceof Double)) {
-            throw new ParseException("Number expected as third argument of '" + name + "' function", 0);
-        }
-        endPos = (Double) params[2];
+        startFunction = parsePosParam(params[1], "second");
+        endFunction = parsePosParam(params[2], "third");
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
+
         } else {
-            // Optimise replacement of static input in case user does something stupid.
-            int len = endPos.intValue();
-            if (endPos >= param.toString().length()) {
-                len = param.toString().length();
-            }
-            final String newValue = param.toString().substring(startPos.intValue(), len);
-            gen = new StaticValueFunction(newValue).createGenerator();
+            function = new StaticValueFunction((Val) param);
             hasAggregate = false;
+
+            // Optimise replacement of static input in case user does something stupid.
+            if (startFunction instanceof StaticValueFunction && endFunction instanceof StaticValueFunction) {
+                final String value = param.toString();
+                final Double startPos = startFunction.createGenerator().eval().toDouble();
+                final Double endPos = endFunction.createGenerator().eval().toDouble();
+
+                if (value == null || startPos == null || endPos == null) {
+                    gen = new StaticValueFunction(ValString.EMPTY).createGenerator();
+                } else {
+                    int start = startPos.intValue();
+                    int end = endPos.intValue();
+
+                    if (start < 0) {
+                        start = 0;
+                    }
+
+                    if (end < 0 || end < start || start >= value.length()) {
+                        gen = new StaticValueFunction(ValString.EMPTY).createGenerator();
+                    } else if (end >= value.length()) {
+                        gen = new StaticValueFunction(ValString.create(value.substring(start))).createGenerator();
+                    } else {
+                        gen = new StaticValueFunction(ValString.create(value.substring(start, end))).createGenerator();
+                    }
+                }
+            }
         }
+    }
+
+    private Function parsePosParam(final Param param, final String paramPos) throws ParseException {
+        Function function;
+        if (param instanceof Function) {
+            function = (Function) param;
+            if (function.hasAggregate()) {
+                throw new ParseException("Non aggregate function expected as " + paramPos + " argument of '" + name + "' function", 0);
+            }
+        } else {
+            Integer pos = ((Val) param).toInteger();
+            if (pos == null) {
+                throw new ParseException("Number expected as " + paramPos + " argument of '" + name + "' function", 0);
+            }
+            function = new StaticValueFunction(ValInteger.create(pos));
+        }
+        return function;
     }
 
     @Override
@@ -71,7 +101,7 @@ public class Substring extends AbstractFunction implements Serializable {
         }
 
         final Generator childGenerator = function.createGenerator();
-        return new Gen(childGenerator, startPos, endPos);
+        return new Gen(childGenerator, startFunction.createGenerator(), endFunction.createGenerator());
     }
 
     @Override
@@ -82,32 +112,50 @@ public class Substring extends AbstractFunction implements Serializable {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private Double startPos;
-        private Double endPos;
+        private final Generator startPosGenerator;
+        private final Generator endPosGenerator;
 
-        public Gen(final Generator childGenerator, final Double startPos, final Double endPos) {
+        Gen(final Generator childGenerator, final Generator startPosGenerator, final Generator endPosGenerator) {
             super(childGenerator);
-            this.startPos = startPos;
-            this.endPos = endPos;
+            this.startPosGenerator = startPosGenerator;
+            this.endPosGenerator = endPosGenerator;
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
+            startPosGenerator.set(values);
+            endPosGenerator.set(values);
         }
 
         @Override
-        public Object eval() {
-            final Object val = childGenerator.eval();
-            if (val != null) {
-                int len = endPos.intValue();
-                if (endPos >= TypeConverter.getString(val).length()) {
-                    len = TypeConverter.getString(val).length();
+        public Val eval() {
+            final String value = childGenerator.eval().toString();
+            if (value != null) {
+                Integer startPos = startPosGenerator.eval().toInteger();
+                Integer endPos = endPosGenerator.eval().toInteger();
+                if (startPos == null || endPos == null) {
+                    return ValString.EMPTY;
                 }
-                return TypeConverter.getString(val).substring(startPos.intValue(), len);
+
+                int start = startPos;
+                int end = endPos;
+
+                if (start < 0) {
+                    start = 0;
+                }
+
+                if (end < 0 || end < start || start >= value.length()) {
+                    return ValString.EMPTY;
+                }
+
+                if (end >= value.length()) {
+                    return ValString.create(value.substring(start));
+                }
+                return ValString.create(value.substring(start, end));
             }
 
-            return null;
+            return ValNull.INSTANCE;
         }
     }
 }

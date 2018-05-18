@@ -19,11 +19,11 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-public class StringLength extends AbstractFunction implements Serializable {
-    public static final String NAME = "stringLength";
+class StringLength extends AbstractFunction implements Serializable {
+    static final String NAME = "stringLength";
     private static final long serialVersionUID = -305845496003936297L;
     private Generator gen;
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
 
     public StringLength(final String name) {
@@ -31,19 +31,19 @@ public class StringLength extends AbstractFunction implements Serializable {
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        final Object param = params[0];
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
         } else {
             /*
              * Optimise replacement of static input in case user does something
-			 * stupid.
-			 */
-            gen = new StaticValueFunction(Double.valueOf(param.toString().length())).createGenerator();
+             * stupid.
+             */
+            gen = new StaticValueFunction(ValInteger.create(param.toString().length())).createGenerator();
             hasAggregate = false;
         }
     }
@@ -67,24 +67,24 @@ public class StringLength extends AbstractFunction implements Serializable {
         private static final long serialVersionUID = 8153777070911899616L;
 
 
-        public Gen(final Generator childGenerator) {
+        Gen(final Generator childGenerator) {
             super(childGenerator);
 
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
         }
 
         @Override
-        public Object eval() {
-            final Object val = childGenerator.eval();
+        public Val eval() {
+            final String val = childGenerator.eval().toString();
             if (val != null) {
-                return Double.valueOf(TypeConverter.getString(val).length());
+                return ValInteger.create(val.length());
             }
 
-            return null;
+            return ValNull.INSTANCE;
         }
     }
 }

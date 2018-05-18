@@ -45,7 +45,7 @@ public abstract class NumericFunction extends AbstractManyChildFunction {
         if (usingOperator) {
             if (params != null) {
                 for (int i = 0; i < params.length; i++) {
-                    final Object param = params[i];
+                    final Param param = params[i];
                     appendParam(sb, param);
                     if (i < params.length - 1) {
                         sb.append(name);
@@ -62,25 +62,24 @@ public abstract class NumericFunction extends AbstractManyChildFunction {
 
         private final Calculator calculator;
 
-        public Gen(final Generator[] childGenerators, final Calculator calculator) {
+        Gen(final Generator[] childGenerators, final Calculator calculator) {
             super(childGenerators);
             this.calculator = calculator;
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             for (final Generator generator : childGenerators) {
                 generator.set(values);
             }
         }
 
         @Override
-        public Object eval() {
-            Double value = null;
+        public Val eval() {
+            Val value = ValNull.INSTANCE;
             for (final Generator gen : childGenerators) {
                 value = calculator.calc(value, gen.eval());
             }
-
             return value;
         }
     }

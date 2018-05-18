@@ -16,19 +16,17 @@
 
 package stroom.dashboard.expression.v1;
 
-import java.text.ParseException;
-
 public class Expression implements Function {
-    private Function function = null;
+    private Function function;
     private boolean hasAggregate;
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
-        final Object param = params[0];
+    public void setParams(final Param[] params) {
+        final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
         } else {
-            function = new StaticValueFunction(param);
+            function = new StaticValueFunction((Val) param);
         }
 
         this.hasAggregate = function.hasAggregate();

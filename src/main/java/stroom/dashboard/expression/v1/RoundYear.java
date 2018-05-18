@@ -18,8 +18,8 @@ package stroom.dashboard.expression.v1;
 
 import java.time.LocalDateTime;
 
-public class RoundYear extends RoundDate {
-    public static final String NAME = "roundYear";
+class RoundYear extends RoundDate {
+    static final String NAME = "roundYear";
     private static final Calc CALC = new Calc();
 
     public RoundYear(final String name) {
@@ -31,7 +31,7 @@ public class RoundYear extends RoundDate {
         return CALC;
     }
 
-    public static class Calc extends RoundDateCalculator {
+    static class Calc extends RoundDateCalculator {
         private static final long serialVersionUID = -5893918049538006730L;
 
         @Override

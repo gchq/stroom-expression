@@ -16,9 +16,9 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Average extends AbstractManyChildFunction implements AggregateFunction {
-    public static final String NAME = "average";
-    public static final String ALIAS = "mean";
+class Average extends AbstractManyChildFunction implements AggregateFunction {
+    static final String NAME = "average";
+    static final String ALIAS = "mean";
     private final Add.Calc calculator = new Add.Calc();
 
     public Average(final String name) {
@@ -52,27 +52,27 @@ public class Average extends AbstractManyChildFunction implements AggregateFunct
 
         private final Calculator calculator;
 
-        private Double current;
+        private Val current = ValNull.INSTANCE;
         private int count;
 
-        public AggregateGen(final Generator childGenerator, final Calculator calculator) {
+        AggregateGen(final Generator childGenerator, final Calculator calculator) {
             super(childGenerator);
             this.calculator = calculator;
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             childGenerator.set(values);
             current = calculator.calc(current, childGenerator.eval());
             count++;
         }
 
         @Override
-        public Object eval() {
-            if (current == null || count == 0) {
-                return null;
+        public Val eval() {
+            if (!current.hasValue() || count == 0) {
+                return ValNull.INSTANCE;
             }
-            return current / count;
+            return ValDouble.create(current.toDouble() / count);
         }
 
         @Override
@@ -90,31 +90,28 @@ public class Average extends AbstractManyChildFunction implements AggregateFunct
 
         private final Calculator calculator;
 
-        public Gen(final Generator[] generators, final Calculator calculator) {
+        Gen(final Generator[] generators, final Calculator calculator) {
             super(generators);
             this.calculator = calculator;
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             for (final Generator gen : childGenerators) {
                 gen.set(values);
             }
         }
 
         @Override
-        public Object eval() {
-            Double value = null;
+        public Val eval() {
+            Val value = ValNull.INSTANCE;
             for (final Generator gen : childGenerators) {
                 value = calculator.calc(value, gen.eval());
             }
-
-            final Double cur = TypeConverter.getDouble(value);
-            if (cur == null) {
-                return null;
+            if (!value.hasValue()) {
+                return value;
             }
-
-            return cur / childGenerators.length;
+            return ValDouble.create(value.toDouble() / childGenerators.length);
         }
     }
 }

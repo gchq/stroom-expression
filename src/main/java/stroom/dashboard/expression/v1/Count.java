@@ -16,8 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Count extends AbstractFunction {
-    public static final String NAME = "count";
+class Count extends AbstractFunction {
+    static final String NAME = "count";
 
     public Count(final String name) {
         super(name, 0, 0);
@@ -41,16 +41,16 @@ public class Count extends AbstractFunction {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = 9222017471352363944L;
 
-        private double count;
+        private long count;
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             count++;
         }
 
         @Override
-        public Object eval() {
-            return count;
+        public Val eval() {
+            return ValLong.create(count);
         }
 
         @Override

@@ -16,8 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Negate extends NumericFunction {
-    public static final String NAME = "negate";
+class Negate extends NumericFunction {
+    static final String NAME = "negate";
     private static final Calc CALC = new Calc();
 
     public Negate(final String name) {
@@ -29,7 +29,7 @@ public class Negate extends NumericFunction {
         return CALC;
     }
 
-    public static class Calc extends Calculator {
+    static class Calc extends Calculator {
         private static final long serialVersionUID = 1099553839843710283L;
 
         @Override

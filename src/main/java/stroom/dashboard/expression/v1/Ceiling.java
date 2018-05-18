@@ -16,8 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Ceiling extends AbstractRoundingFunction {
-    public static final String NAME = "ceiling";
+class Ceiling extends AbstractRoundingFunction {
+    static final String NAME = "ceiling";
 
     public Ceiling(final String name) {
         super(name);
@@ -29,7 +29,7 @@ public class Ceiling extends AbstractRoundingFunction {
             return new NumericCeiling();
         }
 
-        final Double multiplier = Double.valueOf(Math.pow(10D, decimalPlaces));
+        final double multiplier = Math.pow(10D, decimalPlaces);
         return new DecimalPlaceCeiling(multiplier);
     }
 
@@ -37,23 +37,33 @@ public class Ceiling extends AbstractRoundingFunction {
         private static final long serialVersionUID = -2414316545075369054L;
 
         @Override
-        public Double calc(final Double value) {
-            return Double.valueOf(Math.ceil(value));
+        public Val calc(final Val value) {
+            final Double val = value.toDouble();
+            if (val == null) {
+                return ValNull.INSTANCE;
+            }
+
+            return ValDouble.create(Math.ceil(val));
         }
     }
 
     private static class DecimalPlaceCeiling implements RoundCalculator {
         private static final long serialVersionUID = -5893918049538006730L;
 
-        private final Double multiplier;
+        private final double multiplier;
 
-        public DecimalPlaceCeiling(final Double multiplier) {
+        DecimalPlaceCeiling(final double multiplier) {
             this.multiplier = multiplier;
         }
 
         @Override
-        public Double calc(final Double value) {
-            return Double.valueOf(Math.ceil(value * multiplier) / multiplier);
+        public Val calc(final Val value) {
+            final Double val = value.toDouble();
+            if (val == null) {
+                return ValNull.INSTANCE;
+            }
+
+            return ValDouble.create(Math.ceil(val * multiplier) / multiplier);
         }
     }
 }

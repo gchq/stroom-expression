@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FunctionFactory {
-    private final Map<String, Class<? extends Function>> map = new HashMap<String, Class<? extends Function>>();
+    private final Map<String, Class<? extends Function>> map = new HashMap<>();
 
     public FunctionFactory() {
         // Aggregate functions.
@@ -45,6 +45,9 @@ public class FunctionFactory {
         add(CeilingHour.class, CeilingHour.NAME);
         add(CeilingMinute.class, CeilingMinute.NAME);
         add(CeilingSecond.class, CeilingSecond.NAME);
+
+        add(ParseDate.class, ParseDate.NAME);
+        add(FormatDate.class, FormatDate.NAME);
 
         add(ExtractAuthorityFromUri.class, ExtractAuthorityFromUri.NAME);
         add(ExtractFragmentFromUri.class, ExtractFragmentFromUri.NAME);
@@ -70,11 +73,19 @@ public class FunctionFactory {
         add(StringLength.class, StringLength.NAME);
         add(UpperCase.class, UpperCase.NAME);
         add(LowerCase.class, LowerCase.NAME);
+        add(IndexOf.class, IndexOf.NAME);
+        add(LastIndexOf.class, LastIndexOf.NAME);
         add(Substring.class, Substring.NAME);
+        add(SubstringBefore.class, SubstringBefore.NAME);
+        add(SubstringAfter.class, SubstringAfter.NAME);
         add(Decode.class, Decode.NAME);
+        add(Include.class, Include.NAME);
+        add(Exclude.class, Exclude.NAME);
+        add(Hash.class, Hash.NAME);
 
         add(Count.class, Count.NAME);
         add(CountGroups.class, CountGroups.NAME);
+        add(CountUnique.class, CountUnique.NAME);
 
         add(Power.class, Power.NAME, Power.ALIAS);
         add(Divide.class, Divide.NAME, Divide.ALIAS);
@@ -88,7 +99,26 @@ public class FunctionFactory {
         add(GreaterThanOrEqualTo.class, GreaterThanOrEqualTo.NAME, GreaterThanOrEqualTo.ALIAS);
         add(LessThanOrEqualTo.class, LessThanOrEqualTo.NAME, LessThanOrEqualTo.ALIAS);
 
+        add(Variance.class, Variance.NAME);
+        add(StDev.class, StDev.NAME);
+
         add(Random.class, Random.NAME);
+
+        add(If.class, If.NAME);
+        add(Match.class, Match.NAME);
+        add(True.class, True.NAME);
+        add(False.class, False.NAME);
+        add(Null.class, Null.NAME);
+        add(Err.class, Err.NAME);
+        add(Not.class, Not.NAME);
+
+        // Casting
+        add(ToBoolean.class, ToBoolean.NAME);
+        add(ToDouble.class, ToDouble.NAME);
+        add(ToInteger.class, ToInteger.NAME);
+        add(ToLong.class, ToLong.NAME);
+        add(ToString.class, ToString.NAME);
+        add(TypeOf.class, TypeOf.NAME);
     }
 
     private void add(final Class<? extends Function> clazz, final String... names) {

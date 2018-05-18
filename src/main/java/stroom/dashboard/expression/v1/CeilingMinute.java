@@ -19,8 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-public class CeilingMinute extends RoundDate {
-    public static final String NAME = "ceilingMinute";
+class CeilingMinute extends RoundDate {
+    static final String NAME = "ceilingMinute";
     private static final Calc CALC = new Calc();
 
     public CeilingMinute(final String name) {
@@ -32,7 +32,7 @@ public class CeilingMinute extends RoundDate {
         return CALC;
     }
 
-    public static class Calc extends RoundDateCalculator {
+    static class Calc extends RoundDateCalculator {
         private static final long serialVersionUID = -5893918049538006730L;
 
         @Override

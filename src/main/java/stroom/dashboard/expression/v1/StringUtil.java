@@ -16,28 +16,21 @@
 
 package stroom.dashboard.expression.v1;
 
-import java.io.Serializable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class SerializablePattern implements Serializable {
-    private static final long serialVersionUID = 3482210112462557773L;
-
-    private final String regex;
-    private transient volatile Pattern pattern;
-
-    public SerializablePattern(final String regex) {
-        this.regex = regex;
+final class StringUtil {
+    private StringUtil() {
+        // Utility class
     }
 
-    public Matcher matcher(final CharSequence input) {
-        return getOrCreatePattern().matcher(input);
+    static String escape(final String string) {
+        return "'" + string.replaceAll("'", "''") + "'";
     }
 
-    public Pattern getOrCreatePattern() {
-        if (pattern == null) {
-            pattern = Pattern.compile(regex);
-        }
-        return pattern;
+    static String unescape(final String string) {
+        // Trim off containing quotes if the slice represents a single string.
+        //
+        // In some circumstances a string might contain two single quotes as the
+        // first is used to escape a second. If this is the case then we want to
+        // remove the escaping quote.
+        return string.substring(1, string.length() - 1).replaceAll("''", "'");
     }
 }

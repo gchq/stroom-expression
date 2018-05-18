@@ -4,9 +4,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
 
-### Added
+## [v1.4.0] - 2018-05-18
+
+* Issue **#22** : Add `typeOf(...)` function, e.g. `typeOf("abc")` => `string`.
+
+* Issue **#18** : Fix handling of VarErr in `=`; now `(err()=err())` returns `err()`.
+
+* Issue **#21** : Fix handling of division by zero, now returns ValErr.
+
+* Issue **#18** : Fix handling of VarNull in `>=`, `<=`, `>` and `<`; now returns VarErr. Fix handling of VarNull in `=`; now `(null()=null())` returns `true()`.
+
+* Issue **#20** : Fix parse errors when using `>=` and `<=`
+
+## [v1.3.2] - 2018-05-10
+
+* Updated slf4j-api to 1.7.25 to keep inline with dropwizard version 1.2.5.
+
+## [v1.3.1] - 2018-05-02
+
+* Simplified Key.
+
+## [v1.3.0] - 2018-05-02
+
+* Added Key type for child grouping.
+
+## [v1.2.0] - 2018-04-30
+
+* Changed `Var` to `Val`
+
+* Issue **#16** : Added cast functions `toBoolean`, `toDouble`, `toInteger`, `toLong` and `toString`.
+
+* Issue **#17** : Added `include` and `exclude` functions.
+
+* Issue **#15** : Added `if` and `not` functions.
+
+* Issue **#13** : Added value functions `true()`, `false()`, `null()` and `err()`.
+
+* Issue **#14** : Added `match` boolean function.
+
+* Issue **#12** : Added `variance` and `stDev` functions.
+
+* Issue **#8** : Added `hash` function.
+
+* Issue **#10** : Added `formatDate` function.
+
+* Issue **#9** : Added `parseDate` function.
+
+* Issue **#6** : Made `substring` and `decode` functions capable of accepting functional parameters.
+
+* Issue **#5** : Added `substringBefore`, `substringAfter`, `indexOf` and `lastIndexOf` functions.
+
+* Issue **#7** : Added `countUnique` function.
 
 ## [v1.1.0] - 2018-04-10
 
@@ -46,7 +95,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.4.0...HEAD
+[v1.4.0]: https://github.com/gchq/stroom-expression/compare/v1.3.2...v1.4.0
+[v1.3.2]: https://github.com/gchq/stroom-expression/compare/v1.3.1...v1.3.2
+[v1.3.1]: https://github.com/gchq/stroom-expression/compare/v1.3.0...v1.3.1
+[v1.3.0]: https://github.com/gchq/stroom-expression/compare/v1.2.0...v1.3.0
+[v1.2.0]: https://github.com/gchq/stroom-expression/compare/v1.1.0...v1.2.0
 [v1.1.0]: https://github.com/gchq/stroom-expression/compare/v1.0.3...v1.1.0
 [v1.0.3]: https://github.com/gchq/stroom-expression/compare/v1.0.2...v1.0.3
 [v1.0.2]: https://github.com/gchq/stroom-expression/compare/v1.0.1...v1.0.2

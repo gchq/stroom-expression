@@ -18,21 +18,21 @@ package stroom.dashboard.expression.v1;
 
 import java.text.ParseException;
 
-public abstract class AbstractFunction implements Function, Appendable {
+abstract class AbstractFunction implements Function, Appendable {
     final String name;
-    final int minParams;
-    final int maxParams;
+    private final int minParams;
+    private final int maxParams;
 
-    Object[] params;
+    Param[] params;
 
-    public AbstractFunction(final String name, final int minParams, final int maxParams) {
+    AbstractFunction(final String name, final int minParams, final int maxParams) {
         this.name = name;
         this.minParams = minParams;
         this.maxParams = maxParams;
     }
 
     @Override
-    public void setParams(final Object[] params) throws ParseException {
+    public void setParams(final Param[] params) throws ParseException {
         if (params.length < minParams || params.length > maxParams) {
             throw new ExpressionException("Invalid number of parameters supplied for '" + name + "' + function");
         }
@@ -58,10 +58,10 @@ public abstract class AbstractFunction implements Function, Appendable {
         sb.append(")");
     }
 
-    protected void appendParams(final StringBuilder sb) {
+    void appendParams(final StringBuilder sb) {
         if (params != null) {
             for (int i = 0; i < params.length; i++) {
-                final Object param = params[i];
+                final Param param = params[i];
                 appendParam(sb, param);
                 if (i < params.length - 1) {
                     sb.append(", ");
@@ -70,13 +70,11 @@ public abstract class AbstractFunction implements Function, Appendable {
         }
     }
 
-    protected void appendParam(final StringBuilder sb, final Object param) {
+    void appendParam(final StringBuilder sb, final Param param) {
         if (param instanceof Appendable) {
             ((Appendable) param).appendString(sb);
-        } else if (param instanceof Double) {
-            sb.append(TypeConverter.getString(param));
         } else {
-            sb.append(TypeConverter.escape(param.toString()));
+            sb.append(param.toString());
         }
     }
 

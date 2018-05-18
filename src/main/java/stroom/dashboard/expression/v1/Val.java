@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Crown Copyright
+ * Copyright 2018 Crown Copyright
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,20 @@
 
 package stroom.dashboard.expression.v1;
 
-public final class ObjectCompareUtil {
-    private ObjectCompareUtil() {
-        // Utility class
-    }
+import java.io.Serializable;
 
-    public static int compare(final Object o1, final Object o2) {
-        if (o1 != null && o2 != null) {
-            if (o1 instanceof Double && o2 instanceof Double) {
-                return ((Double) o1).compareTo((Double) o2);
-            }
-            return o1.toString().compareToIgnoreCase(o2.toString());
-        }
-        if (o1 == null) {
-            return -1;
-        }
-        if (o2 == null) {
-            return 1;
-        }
-        return 0;
-    }
+public interface Val extends Param, Serializable, Appendable, Comparable<Val> {
+    Integer toInteger();
+
+    Long toLong();
+
+    Double toDouble();
+
+    Boolean toBoolean();
+
+    String toString();
+
+    boolean hasValue();
+
+    String getType();
 }

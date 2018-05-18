@@ -16,7 +16,7 @@
 
 package stroom.dashboard.expression.v1;
 
-public class ExpressionException extends RuntimeException {
+class ExpressionException extends RuntimeException {
     public ExpressionException(final String message) {
         super(message);
     }

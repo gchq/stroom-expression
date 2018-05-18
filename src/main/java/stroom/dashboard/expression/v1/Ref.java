@@ -16,7 +16,7 @@
 
 package stroom.dashboard.expression.v1;
 
-public class Ref extends AbstractFunction {
+class Ref extends AbstractFunction {
     private static final NullGen NULL_GEN = new NullGen();
     private final String text;
     private final int fieldIndex;
@@ -52,12 +52,13 @@ public class Ref extends AbstractFunction {
         private static final long serialVersionUID = 8153777070911899616L;
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
+            // Ignore
         }
 
         @Override
-        public Object eval() {
-            return null;
+        public Val eval() {
+            return ValNull.INSTANCE;
         }
     }
 
@@ -65,19 +66,22 @@ public class Ref extends AbstractFunction {
         private static final long serialVersionUID = 8153777070911899616L;
 
         private final int fieldIndex;
-        private String current;
+        private Val current;
 
-        public Gen(final int fieldIndex) {
+        Gen(final int fieldIndex) {
             this.fieldIndex = fieldIndex;
         }
 
         @Override
-        public void set(final String[] values) {
+        public void set(final Val[] values) {
             current = values[fieldIndex];
+            if (current == null) {
+                current = ValNull.INSTANCE;
+            }
         }
 
         @Override
-        public Object eval() {
+        public Val eval() {
             return current;
         }
     }
