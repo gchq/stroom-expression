@@ -30,4 +30,6 @@ public interface Val extends Param, Serializable, Appendable, Comparable<Val> {
     String toString();
 
     boolean hasValue();
+
+    String getType();
 }

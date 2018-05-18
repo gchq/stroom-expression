@@ -118,6 +118,7 @@ public class FunctionFactory {
         add(ToInteger.class, ToInteger.NAME);
         add(ToLong.class, ToLong.NAME);
         add(ToString.class, ToString.NAME);
+        add(TypeOf.class, TypeOf.NAME);
     }
 
     private void add(final Class<? extends Function> clazz, final String... names) {

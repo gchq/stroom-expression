@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class ValDouble implements ValNumber {
+    private static final String TYPE = "double";
     private final double value;
 
     private ValDouble(final double value) {
@@ -64,6 +65,11 @@ public class ValDouble implements ValNumber {
     @Override
     public boolean hasValue() {
         return true;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     @Override

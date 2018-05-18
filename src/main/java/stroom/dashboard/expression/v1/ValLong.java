@@ -19,6 +19,7 @@ package stroom.dashboard.expression.v1;
 import java.util.Objects;
 
 public class ValLong implements ValNumber {
+    private static final String TYPE = "long";
     private final long value;
 
     private ValLong(final long value) {
@@ -66,6 +67,11 @@ public class ValLong implements ValNumber {
     @Override
     public boolean hasValue() {
         return true;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     @Override

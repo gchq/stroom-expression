@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+* Issue **#22** : Add `typeOf(...)` function, e.g. `typeOf("abc")` => `string`.
+
 * Issue **#18** : Fix handling of VarErr in `=`; now `(err()=err())` returns `err()`.
 
 * Issue **#21** : Fix handling of division by zero, now returns ValErr.

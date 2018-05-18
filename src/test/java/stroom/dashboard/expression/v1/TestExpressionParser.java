@@ -1959,6 +1959,36 @@ public class TestExpressionParser {
         Assert.assertEquals(ValString.create("100"), gen.eval());
     }
 
+    @Test
+    public void testTypeOf() throws ParseException {
+        ValBoolean vTrue = ValBoolean.TRUE;
+        ValBoolean vFals = ValBoolean.FALSE; // intentional typo to keep var name length consistent
+        ValNull vNull = ValNull.INSTANCE;
+        ValErr vEror = ValErr.create("Expecting an error"); // intentional typo to keep var name length consistent
+        ValLong vLng0 = ValLong.create(0L);
+        ValInteger vInt0 = ValInteger.create(1);
+        ValDouble vDbl0 = ValDouble.create(1.1);
+        ValString vStr1 = ValString.create("abc");
+
+        assertTypeOf(vTrue, "boolean");
+        assertTypeOf(vFals, "boolean");
+        assertTypeOf(vNull, "null");
+        assertTypeOf(vEror, "error");
+        assertTypeOf(vLng0, "long");
+        assertTypeOf(vInt0, "integer");
+        assertTypeOf(vDbl0, "double");
+        assertTypeOf(vStr1, "string");
+
+        assertTypeOf("typeOf(err())", "error");
+        assertTypeOf("typeOf(null())", "null");
+        assertTypeOf("typeOf(true())", "boolean");
+        assertTypeOf("typeOf(1+2)", "double");
+        assertTypeOf("typeOf(concat('a', 'b'))", "string");
+        assertTypeOf("typeOf('xxx')", "string");
+        assertTypeOf("typeOf(1.234)", "double");
+        assertTypeOf("typeOf(2>=1)", "boolean");
+    }
+
     private Generator createGenerator(final String expression) throws ParseException {
         final Expression exp = createExpression(expression);
         final Generator gen = exp.createGenerator();
@@ -2030,5 +2060,44 @@ public class TestExpressionParser {
             Assert.assertEquals(expectedOutput, out);
         }
         Assert.assertEquals(expectedOutput.getClass(), out.getClass());
+    }
+
+    private void assertTypeOf(final String expression, final String expectedType) throws ParseException {
+        final Expression exp = createExpression(expression);
+        final Generator gen = exp.createGenerator();
+        Val out = gen.eval();
+
+        System.out.println(String.format("%s => [%s:%s%s]",
+                expression,
+                out.getClass().getSimpleName(), out.toString(),
+                (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
+
+        // The output type is always wrapped in a ValString
+        Assert.assertEquals("string", out.getType());
+
+        Assert.assertTrue(out instanceof ValString);
+        Assert.assertEquals(expectedType, out.toString());
+
+    }
+
+    private void assertTypeOf(final Val val1, final String expectedType) throws ParseException {
+
+        final String expression = "typeOf(${val})";
+        final Expression exp = createExpression(expression);
+        final Generator gen = exp.createGenerator();
+        gen.set(new Val[]{val1});
+        Val out = gen.eval();
+
+        System.out.println(String.format("%s - [%s:%s] => [%s:%s%s]",
+                expression,
+                val1.getClass().getSimpleName(), val1.toString(),
+                out.getClass().getSimpleName(), out.toString(),
+                (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
+
+        // The output type is always wrapped in a ValString
+        Assert.assertEquals("string", out.getType());
+
+        Assert.assertTrue(out instanceof ValString);
+        Assert.assertEquals(expectedType, out.toString());
     }
 }

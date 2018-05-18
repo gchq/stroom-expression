@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class ValString implements Val {
+    private static final String TYPE = "string";
     static final ValString EMPTY = new ValString("");
 
     private final String value;
@@ -99,6 +100,11 @@ public class ValString implements Val {
     @Override
     public boolean hasValue() {
         return true;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     @Override

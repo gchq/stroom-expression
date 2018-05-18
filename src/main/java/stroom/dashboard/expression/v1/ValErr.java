@@ -19,6 +19,7 @@ package stroom.dashboard.expression.v1;
 import java.util.Objects;
 
 public class ValErr implements Val {
+    private static final String TYPE = "error";
     public static final ValErr INSTANCE = new ValErr("Err");
 
     private final String message;
@@ -64,6 +65,11 @@ public class ValErr implements Val {
     @Override
     public boolean hasValue() {
         return false;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     String getMessage() {

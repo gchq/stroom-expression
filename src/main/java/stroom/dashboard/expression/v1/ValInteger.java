@@ -19,6 +19,7 @@ package stroom.dashboard.expression.v1;
 import java.util.Objects;
 
 public class ValInteger implements ValNumber {
+    private static final String TYPE = "integer";
     private final int value;
 
     private ValInteger(final int value) {
@@ -66,6 +67,11 @@ public class ValInteger implements ValNumber {
     @Override
     public boolean hasValue() {
         return true;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     @Override

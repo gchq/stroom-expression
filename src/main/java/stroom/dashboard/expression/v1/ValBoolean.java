@@ -19,6 +19,7 @@ package stroom.dashboard.expression.v1;
 import java.util.Objects;
 
 public class ValBoolean implements Val {
+    private static final String TYPE = "boolean";
     static final ValBoolean TRUE = new ValBoolean(true);
     static final ValBoolean FALSE = new ValBoolean(false);
 
@@ -68,6 +69,11 @@ public class ValBoolean implements Val {
     @Override
     public boolean hasValue() {
         return true;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     @Override
