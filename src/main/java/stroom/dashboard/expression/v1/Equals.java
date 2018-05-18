@@ -79,6 +79,10 @@ class Equals extends AbstractManyChildFunction {
 
             if (a instanceof ValNull && b instanceof ValNull) {
                 return ValBoolean.TRUE;
+            }
+            if (a instanceof ValErr && b instanceof ValErr) {
+                // treat two ValErr instances regardless of content as the same
+                return ValBoolean.TRUE;
             } else if (a instanceof ValNull || b instanceof ValNull) {
                 // one is null, other is non-null
                 return ValBoolean.FALSE;

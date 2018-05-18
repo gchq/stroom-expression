@@ -991,8 +991,10 @@ public class TestExpressionParser {
         ValString vStrF = ValString.create("false");
         ValString vStr_ = ValString.EMPTY;
 
-        // null, equals
+        // null/error, equals
         assertBooleanExpression(vNull, "=", vNull, vTrue);
+        assertBooleanExpression(vNull, "=", vEror, vFals);
+        assertBooleanExpression(vEror, "=", vEror, vTrue);
 
         // booleans, equals
         assertBooleanExpression(vTrue, "=", vTrue, vTrue);
