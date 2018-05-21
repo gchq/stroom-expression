@@ -19,7 +19,7 @@ apply plugin: 'com.jfrog.bintray'
 
 //if the project has a value for the passed property (i.e from the cmd line via -PpropName=xxx)
 //use that, else use a default value
-ext.getPropertyOrDefault = { propName, defaultValue -> 
+ext.getPropertyOrDefault = { propName, defaultValue ->
     def val;
     if (project.hasProperty(propName) && project.getProperty(propName) != "unspecified" && project.getProperty(propName) != "") {
         val = project.getProperty(propName)
@@ -32,8 +32,8 @@ ext.getPropertyOrDefault = { propName, defaultValue ->
 }
 
 ext.versions = [
-    stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT'),
-    zzDUMMYzz: 'makes sorting this list easier'
+        stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT'),
+        zzDUMMYzz       : 'makes sorting this list easier'
 ]
 
 ext.moduleName = 'stroom.expression'
@@ -48,7 +48,7 @@ repositories {
     mavenLocal()
     jcenter()
     maven {
-        url  "https://dl.bintray.com/stroom/stroom"
+        url "https://dl.bintray.com/stroom/stroom"
     }
 }
 
@@ -70,7 +70,7 @@ def pomConfig = {
         }
     }
     scm {
-       url "https://github.com/stroom/stroom-expression"
+        url "https://github.com/stroom/stroom-expression"
     }
 }
 
@@ -114,6 +114,16 @@ test {
 javadoc {
     options.addStringOption('-module-path', classpath.asPath)
     options.addStringOption('Xdoclint:all,-missing', '-html5')
+}
+
+jar {
+    inputs.property("moduleName", moduleName)
+    manifest {
+        attributes(
+                "Automatic-Module-Name": moduleName,
+        )
+    }
+    version versions.stroomExpression
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -168,7 +178,7 @@ bintray {
         version {
             name = "${versions.stroomExpression}"
             desc = "stroom-expression-${versions.stroomExpression}"
-            released  = new Date()
+            released = new Date()
             vcsTag = "${versions.stroomExpression}"
             gpg {
                 //Bintray will self-sign the files
