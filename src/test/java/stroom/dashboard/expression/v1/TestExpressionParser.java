@@ -911,7 +911,7 @@ public class TestExpressionParser {
         gen.set(getVal(1D, 2D));
 
         final Val out = gen.eval();
-        Assert.assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -951,7 +951,7 @@ public class TestExpressionParser {
         gen.set(getVal(2D, 1D));
 
         final Val out = gen.eval();
-        Assert.assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -961,7 +961,7 @@ public class TestExpressionParser {
         gen.set(getVal(2D, 1D));
 
         final Val out = gen.eval();
-        Assert.assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
@@ -1450,7 +1450,7 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("8/0");
 
         final Val out = gen.eval();
-        Assert.assertTrue(out instanceof ValErr);
+        assertThat(out instanceof ValErr).isTrue();
         System.out.println("Error message: " + ((ValErr) out).getMessage());
     }
 
@@ -2059,9 +2059,9 @@ public class TestExpressionParser {
                 (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
 
         if (!(expectedOutput instanceof ValErr)) {
-            Assert.assertEquals(expectedOutput, out);
+            assertThat(out).isEqualTo(expectedOutput);
         }
-        Assert.assertEquals(expectedOutput.getClass(), out.getClass());
+        assertThat(out.getClass()).isEqualTo(expectedOutput.getClass());
     }
 
     private void assertTypeOf(final String expression, final String expectedType) throws ParseException {
@@ -2075,11 +2075,10 @@ public class TestExpressionParser {
                 (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
 
         // The output type is always wrapped in a ValString
-        Assert.assertEquals("string", out.getType());
+        assertThat(out.getType()).isEqualTo("string");
 
-        Assert.assertTrue(out instanceof ValString);
-        Assert.assertEquals(expectedType, out.toString());
-
+        assertThat(out).isInstanceOf(ValString.class);
+        assertThat(out.toString()).isEqualTo(expectedType);
     }
 
     private void assertTypeOf(final Val val1, final String expectedType) throws ParseException {
@@ -2097,9 +2096,9 @@ public class TestExpressionParser {
                 (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
 
         // The output type is always wrapped in a ValString
-        Assert.assertEquals("string", out.getType());
+        assertThat(out.getType()).isEqualTo("string");
 
-        Assert.assertTrue(out instanceof ValString);
-        Assert.assertEquals(expectedType, out.toString());
+        assertThat(out).isInstanceOf(ValString.class);
+        assertThat(out.toString()).isEqualTo(expectedType);
     }
 }
