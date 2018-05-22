@@ -21,9 +21,12 @@ import java.util.Objects;
 
 public class ValDouble implements ValNumber {
     private static final String TYPE = "double";
-    private final double value;
+    private double value;
 
-    private ValDouble(final double value) {
+    ValDouble() {
+    }
+
+    ValDouble(final double value) {
         this.value = value;
     }
 

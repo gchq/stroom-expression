@@ -22,9 +22,12 @@ public class ValErr implements Val {
     private static final String TYPE = "error";
     public static final ValErr INSTANCE = new ValErr("Err");
 
-    private final String message;
+    private String message;
 
-    private ValErr(final String message) {
+    ValErr() {
+    }
+
+    ValErr(final String message) {
         this.message = message;
     }
 

@@ -65,8 +65,11 @@ class Ref extends AbstractFunction {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private final int fieldIndex;
+        private int fieldIndex;
         private Val current;
+
+        Gen() {
+        }
 
         Gen(final int fieldIndex) {
             this.fieldIndex = fieldIndex;

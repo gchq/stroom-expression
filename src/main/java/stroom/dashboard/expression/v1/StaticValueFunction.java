@@ -60,7 +60,10 @@ public class StaticValueFunction implements Function, Appendable {
     private static class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = -7551073465232523106L;
 
-        private final Val value;
+        private Val value;
+
+        Gen() {
+        }
 
         Gen(final Val value) {
             this.value = value;

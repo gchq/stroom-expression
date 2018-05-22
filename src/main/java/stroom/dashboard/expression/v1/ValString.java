@@ -23,9 +23,12 @@ public class ValString implements Val {
     private static final String TYPE = "string";
     static final ValString EMPTY = new ValString("");
 
-    private final String value;
+    private String value;
 
-    private ValString(final String value) {
+    ValString() {
+    }
+
+    ValString(final String value) {
         this.value = value;
     }
 

@@ -20,9 +20,12 @@ import java.util.Objects;
 
 public class ValInteger implements ValNumber {
     private static final String TYPE = "integer";
-    private final int value;
+    private int value;
 
-    private ValInteger(final int value) {
+    ValInteger() {
+    }
+
+    ValInteger(final int value) {
         this.value = value;
     }
 

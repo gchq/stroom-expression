@@ -20,7 +20,7 @@ public class ValNull implements Val {
     private static final String TYPE = "null";
     public static final ValNull INSTANCE = new ValNull();
 
-    private ValNull() {
+    ValNull() {
         // Use instance only
     }
 

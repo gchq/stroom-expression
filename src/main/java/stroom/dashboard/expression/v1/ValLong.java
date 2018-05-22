@@ -20,9 +20,12 @@ import java.util.Objects;
 
 public class ValLong implements ValNumber {
     private static final String TYPE = "long";
-    private final long value;
+    private long value;
 
-    private ValLong(final long value) {
+    ValLong() {
+    }
+
+    ValLong(final long value) {
         this.value = value;
     }
 
