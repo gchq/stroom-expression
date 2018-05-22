@@ -19,7 +19,7 @@ apply plugin: 'com.jfrog.bintray'
 
 //if the project has a value for the passed property (i.e from the cmd line via -PpropName=xxx)
 //use that, else use a default value
-ext.getPropertyOrDefault = { propName, defaultValue -> 
+ext.getPropertyOrDefault = { propName, defaultValue ->
     def val;
     if (project.hasProperty(propName) && project.getProperty(propName) != "unspecified" && project.getProperty(propName) != "") {
         val = project.getProperty(propName)
@@ -32,28 +32,31 @@ ext.getPropertyOrDefault = { propName, defaultValue ->
 }
 
 ext.versions = [
-    stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT'),
-    zzDUMMYzz: 'makes sorting this list easier'
+        stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT'),
+        zzDUMMYzz       : 'makes sorting this list easier'
 ]
+
+ext.moduleName = 'stroom.expression'
 
 group = 'stroom'
 version = versions.stroomExpression
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.10
+targetCompatibility = 1.10
 
 repositories {
     mavenLocal()
     jcenter()
     maven {
-        url  "https://dl.bintray.com/stroom/stroom"
+        url "https://dl.bintray.com/stroom/stroom"
     }
 }
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
 
-    testCompile 'junit:junit:4.12'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
+    testCompile "org.assertj:assertj-core:3.10.0"
     testCompile 'org.mockito:mockito-core:2.0.2-beta'
     testCompile 'com.caucho:hessian:4.0.38';
 }
@@ -67,8 +70,60 @@ def pomConfig = {
         }
     }
     scm {
-       url "https://github.com/stroom/stroom-expression"
+        url "https://github.com/stroom/stroom-expression"
     }
+}
+
+compileJava {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'slf4j.api',
+        ]
+        classpath = files()
+    }
+}
+
+compileTestJava {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+//                '--add-modules', 'junit',
+//                '--add-reads', "$moduleName=junit",
+                '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+        ]
+        classpath = files()
+    }
+}
+
+test {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        jvmArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'ALL-MODULE-PATH',
+//                '--add-reads', "$moduleName=junit",
+                '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+        ]
+        classpath = files()
+    }
+}
+
+javadoc {
+    options.addStringOption('-module-path', classpath.asPath)
+    options.addStringOption('Xdoclint:all,-missing', '-html5')
+}
+
+jar {
+    inputs.property("moduleName", moduleName)
+    manifest {
+        attributes(
+                "Automatic-Module-Name": moduleName,
+        )
+    }
+    version versions.stroomExpression
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -123,7 +178,7 @@ bintray {
         version {
             name = "${versions.stroomExpression}"
             desc = "stroom-expression-${versions.stroomExpression}"
-            released  = new Date()
+            released = new Date()
             vcsTag = "${versions.stroomExpression}"
             gpg {
                 //Bintray will self-sign the files

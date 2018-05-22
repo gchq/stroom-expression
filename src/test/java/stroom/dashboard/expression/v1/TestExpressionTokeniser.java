@@ -16,11 +16,12 @@
 
 package stroom.dashboard.expression.v1;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestExpressionTokeniser {
     @Test
@@ -100,16 +101,14 @@ public class TestExpressionTokeniser {
         }
 
         // Make sure all the tokens have captured the expression fully.
-        Assert.assertEquals(expression, sb.toString());
+        assertThat(sb.toString()).isEqualTo(expression);
 
         try {
             // Do some basic validation of the tokens.
             final ExpressionValidator expressionValidator = new ExpressionValidator();
             expressionValidator.validate(tokens);
 
-            if (expectValidationFailure) {
-                Assert.fail("Expected failure");
-            }
+            assertThat(expectValidationFailure).withFailMessage("Expected failure").isFalse();
         } catch (final ParseException e) {
             if (!expectValidationFailure) {
                 throw e;
