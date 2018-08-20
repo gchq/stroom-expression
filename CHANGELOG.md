@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+* Issue **#24** : Fixed issue where comparison method was violating its general contract when sorting. Also added caching of some `toDouble` and `toString` conversions to improve sorting performance at the expense of greater memory usage.
 
 ## [v1.4.0] - 2018-05-18
 
