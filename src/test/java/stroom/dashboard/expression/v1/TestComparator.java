@@ -10,7 +10,8 @@ import java.util.List;
 public class TestComparator {
     @Test
     public void test() {
-        for (int j = 0; j < 1000000; j++) {
+        long totalDuration = 0;
+        for (int run = 1; run <= 1000000; run++) {
             final List<Val> list = new ArrayList<>();
 
             for (int i = 0; i < 1000000; i++) {
@@ -44,9 +45,13 @@ public class TestComparator {
                 list.add(val);
             }
 
-            long now = System.currentTimeMillis();
+            final long now = System.currentTimeMillis();
             list.sort(new ValComparator());
-            System.out.println("Time: " + (System.currentTimeMillis() - now) + "ms");
+            final long duration = System.currentTimeMillis() - now;
+            totalDuration += duration;
+            final long average = (long) (((double) totalDuration) / run);
+
+            System.out.println("Average: " + average + "ms \tTime: " + duration + "ms");
         }
     }
 
