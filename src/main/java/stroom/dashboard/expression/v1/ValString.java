@@ -18,12 +18,15 @@ package stroom.dashboard.expression.v1;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ValString implements Val {
     private static final String TYPE = "string";
     static final ValString EMPTY = new ValString("");
 
     private final String value;
+    private transient Optional<Double> optionalDouble;
+    private transient Optional<Long> optionalLong;
 
     private ValString(final String value) {
         this.value = value;
@@ -33,48 +36,49 @@ public class ValString implements Val {
         if ("".equals(value)) {
             return EMPTY;
         }
-
         return new ValString(value);
     }
 
     @Override
     public Integer toInteger() {
-        try {
-            return Integer.valueOf(value);
-        } catch (final RuntimeException e) {
-            // Ignore.
+        Long l = toLong();
+        if (l != null) {
+            return l.intValue();
         }
         return null;
     }
 
     @Override
     public Long toLong() {
-        try {
-            return Long.valueOf(value);
-        } catch (final RuntimeException e) {
-            // Ignore.
+        if (optionalLong == null) {
+            try {
+                optionalLong = Optional.of(Long.valueOf(value));
+            } catch (final RuntimeException e) {
+                try {
+                    optionalLong = Optional.of(DateUtil.parseNormalDateTimeString(value));
+                } catch (final RuntimeException e2) {
+                    optionalLong = Optional.empty();
+                }
+            }
+
         }
-        try {
-            return DateUtil.parseNormalDateTimeString(value);
-        } catch (final RuntimeException e) {
-            // Ignore.
-        }
-        return null;
+        return optionalLong.orElse(null);
     }
 
     @Override
     public Double toDouble() {
-        try {
-            return new BigDecimal(value).doubleValue();
-        } catch (final RuntimeException e) {
-            // Ignore.
+        if (optionalDouble == null) {
+            try {
+                optionalDouble = Optional.of(new BigDecimal(value).doubleValue());
+            } catch (final RuntimeException e) {
+                try {
+                    optionalDouble = Optional.of((double) DateUtil.parseNormalDateTimeString(value));
+                } catch (final RuntimeException e2) {
+                    optionalDouble = Optional.empty();
+                }
+            }
         }
-        try {
-            return (double) DateUtil.parseNormalDateTimeString(value);
-        } catch (final RuntimeException e) {
-            // Ignore.
-        }
-        return null;
+        return optionalDouble.orElse(null);
     }
 
     @Override
