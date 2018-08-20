@@ -18,10 +18,12 @@ package stroom.dashboard.expression.v1;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ValDouble implements ValNumber {
     private static final String TYPE = "double";
     private double value;
+    private transient Optional<String> optionalString;
 
     ValDouble() {
     }
@@ -56,8 +58,16 @@ public class ValDouble implements ValNumber {
 
     @Override
     public String toString() {
-        final BigDecimal bigDecimal = BigDecimal.valueOf(value);
-        return bigDecimal.stripTrailingZeros().toPlainString();
+        if (optionalString == null) {
+            try {
+                final BigDecimal bigDecimal = BigDecimal.valueOf(value);
+                optionalString = Optional.of(bigDecimal.stripTrailingZeros().toPlainString());
+            } catch (final RuntimeException e) {
+                optionalString = Optional.empty();
+            }
+
+        }
+        return optionalString.orElse(null);
     }
 
     @Override
