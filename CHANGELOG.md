@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v1.4.3] - 2018-08-20
+
+* Released to fix CHANGELOG.
+
 ## [v1.4.2] - 2018-08-20
 
 * Issue **#24** : Fixed issue where comparison method was violating its general contract when sorting. Also added caching of some `toDouble` and `toString` conversions to improve sorting performance at the expense of greater memory usage.
@@ -102,7 +106,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.4.2...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.4.3...HEAD
+[v1.4.3]: https://github.com/gchq/stroom-expression/compare/v1.4.2...v1.4.3
 [v1.4.2]: https://github.com/gchq/stroom-expression/compare/v1.4.1...v1.4.2
 [v1.4.1]: https://github.com/gchq/stroom-expression/compare/v1.4.0...v1.4.1
 [v1.4.0]: https://github.com/gchq/stroom-expression/compare/v1.3.2...v1.4.0
