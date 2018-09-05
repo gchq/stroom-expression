@@ -58,7 +58,7 @@ dependencies {
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
     testCompile "org.assertj:assertj-core:3.10.0"
     testCompile 'org.mockito:mockito-core:2.0.2-beta'
-    testCompile 'com.caucho:hessian:4.0.38';
+    testCompile 'com.caucho:hessian:4.0.38'
 }
 
 def pomConfig = {
@@ -133,5 +133,62 @@ bintray {
                 sign = true //Determines whether to GPG sign the files. The default is false
             }
         }
+    }
+}
+
+afterEvaluate {
+    repositories {
+        jcenter()
+    }
+
+//        compileJava {
+//            inputs.property("moduleName", moduleName)
+//            doFirst {
+//                options.compilerArgs = [
+//                        '--module-path', classpath.asPath,
+//                ]
+//                classpath = files()
+//            }
+//        }
+//
+//        compileTestJava {
+//            inputs.property("moduleName", moduleName)
+//            doFirst {
+//                options.compilerArgs = [
+//                        '--module-path', classpath.asPath,
+////                        '--add-modules', 'junit',
+////                        '--add-reads', "$moduleName=junit",
+//                        '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+//                ]
+//                classpath = files()
+//            }
+//        }
+//
+//        test {
+//            inputs.property("moduleName", moduleName)
+//            doFirst {
+//                jvmArgs = [
+//                        '--module-path', classpath.asPath,
+//                        '--add-modules', 'ALL-MODULE-PATH',
+////                        '--add-reads', "$moduleName=junit",
+//                        '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+//                ]
+//                classpath = files()
+//            }
+//        }
+//
+//        javadoc {
+//            options.addStringOption('-module-path', classpath.asPath)
+//            options.addStringOption('Xdoclint:all,-missing', '-html5')
+//        }
+
+    jar {
+        inputs.property("moduleName", moduleName)
+        manifest {
+            attributes(
+                    "Automatic-Module-Name": moduleName,
+            )
+        }
+        version versions.stroomQuery
     }
 }
