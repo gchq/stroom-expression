@@ -189,6 +189,5 @@ afterEvaluate {
                     "Automatic-Module-Name": moduleName,
             )
         }
-        version versions.stroomQuery
     }
 }
