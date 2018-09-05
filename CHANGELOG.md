@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v1.4.4] - 2018-09-05
+
+* Added automatic module name for Java 9+ builds.
+
 ## [v1.4.3] - 2018-08-20
 
 * Released to fix CHANGELOG.
