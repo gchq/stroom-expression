@@ -1,16 +1,16 @@
 package stroom.dashboard.expression.v1;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@Ignore("Used to check comparison works as expected but long running hence ignored by default")
-public class TestComparatorConsistencyChecker {
+@Disabled("Used to check comparison works as expected but long running hence ignored by default")
+class TestComparatorConsistencyChecker {
     @Test
-    public void test() {
+    void test() {
         final List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 10000; i++) {
             list.add((int) (Math.random() * Integer.MAX_VALUE));

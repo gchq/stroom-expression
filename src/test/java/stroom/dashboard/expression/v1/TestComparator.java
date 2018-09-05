@@ -1,15 +1,16 @@
 package stroom.dashboard.expression.v1;
 
-import org.junit.Ignore;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Ignore("Used to check comparison works as expected but long running hence ignored by default")
-public class TestComparator {
+@Disabled("Used to check comparison works as expected but long running hence ignored by default")
+class TestComparator {
     @Test
-    public void test() {
+    void test() {
         long totalDuration = 0;
         for (int run = 1; run <= 1000000; run++) {
             final List<Val> list = new ArrayList<>();
@@ -56,7 +57,7 @@ public class TestComparator {
     }
 
     @Test
-    public void test2() {
+    void test2() {
         List<Val> candidateList = null;
 
         boolean done = false;
@@ -173,7 +174,7 @@ public class TestComparator {
     }
 
     @Test
-    public void test3() {
+    void test3() {
         boolean done = false;
         for (int round = 0; round < 100 && !done; round++) {
             boolean error = false;
