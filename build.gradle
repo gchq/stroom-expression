@@ -41,8 +41,8 @@ ext.moduleName = 'stroom.expression'
 group = 'stroom'
 version = versions.stroomExpression
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_10
+targetCompatibility = JavaVersion.VERSION_1_10
 
 repositories {
     mavenLocal()
