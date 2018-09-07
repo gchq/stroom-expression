@@ -5,8 +5,12 @@ task wrapper(type: Wrapper) {
 buildscript {
     repositories {
         jcenter()
+        maven { url "https://dl.bintray.com/stroom/stroom" }
     }
     dependencies {
+        // A fork of https://github.com/wfhartford/gradle-dependency-analyze that works with Java 10
+        classpath 'stroom:gradle-dependency-analyze:v2.2.2'
+
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
 }
@@ -16,6 +20,7 @@ apply plugin: 'idea'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'ca.cutterslade.analyze'
 
 //if the project has a value for the passed property (i.e from the cmd line via -PpropName=xxx)
 //use that, else use a default value
@@ -57,7 +62,6 @@ dependencies {
 
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
     testCompile "org.assertj:assertj-core:3.10.0"
-    testCompile 'org.mockito:mockito-core:2.0.2-beta'
     testCompile 'com.caucho:hessian:4.0.38'
 }
 
@@ -141,46 +145,43 @@ afterEvaluate {
         jcenter()
     }
 
-//        compileJava {
-//            inputs.property("moduleName", moduleName)
-//            doFirst {
-//                options.compilerArgs = [
-//                        '--module-path', classpath.asPath,
-//                ]
-//                classpath = files()
-//            }
-//        }
-//
-//        compileTestJava {
-//            inputs.property("moduleName", moduleName)
-//            doFirst {
-//                options.compilerArgs = [
-//                        '--module-path', classpath.asPath,
-////                        '--add-modules', 'junit',
-////                        '--add-reads', "$moduleName=junit",
-//                        '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
-//                ]
-//                classpath = files()
-//            }
-//        }
-//
-//        test {
-//            inputs.property("moduleName", moduleName)
-//            doFirst {
-//                jvmArgs = [
-//                        '--module-path', classpath.asPath,
-//                        '--add-modules', 'ALL-MODULE-PATH',
-////                        '--add-reads', "$moduleName=junit",
-//                        '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
-//                ]
-//                classpath = files()
-//            }
-//        }
-//
-//        javadoc {
-//            options.addStringOption('-module-path', classpath.asPath)
-//            options.addStringOption('Xdoclint:all,-missing', '-html5')
-//        }
+        compileJava {
+            inputs.property("moduleName", moduleName)
+            doFirst {
+                options.compilerArgs = [
+                        '--module-path', classpath.asPath,
+                ]
+                classpath = files()
+            }
+        }
+
+        compileTestJava {
+            inputs.property("moduleName", moduleName)
+            doFirst {
+                options.compilerArgs = [
+                        '--module-path', classpath.asPath,
+                        '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+                ]
+                classpath = files()
+            }
+        }
+
+        test {
+            inputs.property("moduleName", moduleName)
+            doFirst {
+                jvmArgs = [
+                        '--module-path', classpath.asPath,
+                        '--add-modules', 'ALL-MODULE-PATH',
+                        '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+                ]
+                classpath = files()
+            }
+        }
+
+        javadoc {
+            options.addStringOption('-module-path', classpath.asPath)
+            options.addStringOption('Xdoclint:all,-missing', '-html5')
+        }
 
     jar {
         inputs.property("moduleName", moduleName)
