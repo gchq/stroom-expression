@@ -106,12 +106,6 @@ public class TestExpressionParser {
         return result;
     }
 
-    private Val[] getNullVal() {
-        final Val[] result = new Val[1];
-                result[0] = ValNull.INSTANCE;
-        return result;
-    }
-
     @Test
     public void testMinUngrouped2() throws ParseException {
         final Generator gen = createGenerator("min(${val}, 100, 30, 8)");
@@ -436,16 +430,6 @@ public class TestExpressionParser {
 
         final Val out = gen.eval();
         Assert.assertEquals("this", out.toString());
-    }
-
-    @Test
-    public void testIf_nullHandling() throws ParseException {
-        final Generator gen = createGenerator("if(${val}=null(), true(), false())");
-
-        gen.set(new Val[]{ValNull.INSTANCE});
-
-        final Val out = gen.eval();
-        Assert.assertEquals(ValBoolean.TRUE, out);
     }
 
     @Test
@@ -840,7 +824,7 @@ public class TestExpressionParser {
     public void testEqualsNull1() throws ParseException {
         final Generator gen = createGenerator("${val1}=null()");
 
-        gen.set(getNullVal());
+        gen.set(new Val[]{ValNull.INSTANCE});
 
         final Val out = gen.eval();
         Assert.assertEquals("true", out.toString());
@@ -870,7 +854,7 @@ public class TestExpressionParser {
     public void testEqualsNull4() throws ParseException {
         final Generator gen = createGenerator("if(${val}=null(), true(), false())");
 
-        gen.set(getNullVal());
+        gen.set(new Val[]{ValNull.INSTANCE});
 
         final Val out = gen.eval();
         Assert.assertEquals("true", out.toString());
