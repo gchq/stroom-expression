@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v2.0.2] - 2018-11-20
+
+* Updated Gradle to 4.10.2.
+
 ## [v2.0.1] - 2018-11-20
 
 * Updated to Java 11.
