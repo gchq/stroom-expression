@@ -22,9 +22,12 @@ public class ValBoolean implements Val {
     static final ValBoolean TRUE = new ValBoolean(true);
     static final ValBoolean FALSE = new ValBoolean(false);
     private static final Type TYPE = new BooleanType();
-    private final boolean value;
+    private boolean value;
 
-    private ValBoolean(final boolean value) {
+    ValBoolean() {
+    }
+
+    ValBoolean(final boolean value) {
         this.value = value;
     }
 

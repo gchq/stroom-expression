@@ -21,7 +21,7 @@ import java.util.Objects;
 public class ValErr implements Val {
     public static final ValErr INSTANCE = new ValErr("Err");
     private static final Type TYPE = new ErrType();
-    private final String message;
+    private String message;
 
     ValErr() {
     }

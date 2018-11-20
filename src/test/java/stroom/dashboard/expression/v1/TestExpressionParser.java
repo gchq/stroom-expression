@@ -34,11 +34,11 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestExpressionParser {
+class TestExpressionParser {
     private final ExpressionParser parser = new ExpressionParser(new FunctionFactory(), new ParamFactory());
 
     @Test
-    public void testBasic() throws ParseException {
+    void testBasic() throws ParseException {
         test("${val}");
         test("min(${val})");
         test("max(${val})");
@@ -76,7 +76,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMin1() throws ParseException {
+    void testMin1() throws ParseException {
         final Generator gen = createGenerator("min(${val})");
 
         gen.set(getVal(300D));
@@ -116,7 +116,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMinUngrouped2() throws ParseException {
+    void testMinUngrouped2() throws ParseException {
         final Generator gen = createGenerator("min(${val}, 100, 30, 8)");
 
         gen.set(getVal(300D));
@@ -126,7 +126,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMinGrouped2() throws ParseException {
+    void testMinGrouped2() throws ParseException {
         final Generator gen = createGenerator("min(min(${val}), 100, 30, 8)");
 
         gen.set(getVal(300D));
@@ -137,7 +137,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMin3() throws ParseException {
+    void testMin3() throws ParseException {
         final Generator gen = createGenerator("min(min(${val}), 100, 30, 8, count(), 55)");
 
         gen.set(getVal(300D));
@@ -154,7 +154,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMax1() throws ParseException {
+    void testMax1() throws ParseException {
         final Generator gen = createGenerator("max(${val})");
 
         gen.set(getVal(300D));
@@ -178,7 +178,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMaxUngrouped2() throws ParseException {
+    void testMaxUngrouped2() throws ParseException {
         final Generator gen = createGenerator("max(${val}, 100, 30, 8)");
 
         gen.set(getVal(10D));
@@ -188,7 +188,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMaxGrouped2() throws ParseException {
+    void testMaxGrouped2() throws ParseException {
         final Generator gen = createGenerator("max(max(${val}), 100, 30, 8)");
 
         gen.set(getVal(10D));
@@ -199,7 +199,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMax3() throws ParseException {
+    void testMax3() throws ParseException {
         final Generator gen = createGenerator("max(max(${val}), count())");
 
         gen.set(getVal(3D));
@@ -216,7 +216,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSum() throws ParseException {
+    void testSum() throws ParseException {
         // This is a bad usage of functions as ${val} will produce the last set
         // value when we evaluate the sum. As we are effectively grouping and we
         // don't have any control over the order that cell values are inserted
@@ -237,7 +237,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSumOfSum() throws ParseException {
+    void testSumOfSum() throws ParseException {
         final Generator gen = createGenerator("sum(sum(${val}), count())");
 
         gen.set(getVal(3D));
@@ -254,7 +254,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testAverageUngrouped() throws ParseException {
+    void testAverageUngrouped() throws ParseException {
         // This is a bad usage of functions as ${val} will produce the last set
         // value when we evaluate the sum. As we are effectively grouping and we
         // don't have any control over the order that cell values are inserted
@@ -275,7 +275,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testAverageGrouped() throws ParseException {
+    void testAverageGrouped() throws ParseException {
         final Generator gen = createGenerator("average(${val})");
 
         gen.set(getVal(3D));
@@ -292,7 +292,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMatch1() throws ParseException {
+    void testMatch1() throws ParseException {
         final Generator gen = createGenerator("match('this', 'this')");
 
         final Val out = gen.eval();
@@ -300,7 +300,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMatch2() throws ParseException {
+    void testMatch2() throws ParseException {
         final Generator gen = createGenerator("match('this', 'that')");
 
         final Val out = gen.eval();
@@ -308,7 +308,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMatch3() throws ParseException {
+    void testMatch3() throws ParseException {
         final Generator gen = createGenerator("match(${val}, 'this')");
 
         gen.set(getVal("this"));
@@ -318,7 +318,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMatch4() throws ParseException {
+    void testMatch4() throws ParseException {
         final Generator gen = createGenerator("match(${val}, 'that')");
 
         gen.set(getVal("this"));
@@ -328,7 +328,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testTrue() throws ParseException {
+    void testTrue() throws ParseException {
         final Generator gen = createGenerator("true()");
 
         final Val out = gen.eval();
@@ -336,7 +336,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testFalse() throws ParseException {
+    void testFalse() throws ParseException {
         final Generator gen = createGenerator("false()");
 
         final Val out = gen.eval();
@@ -344,7 +344,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testNull() throws ParseException {
+    void testNull() throws ParseException {
         final Generator gen = createGenerator("null()");
 
         final Val out = gen.eval();
@@ -352,7 +352,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testErr() throws ParseException {
+    void testErr() throws ParseException {
         final Generator gen = createGenerator("err()");
 
         final Val out = gen.eval();
@@ -360,7 +360,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testNotTrue() throws ParseException {
+    void testNotTrue() throws ParseException {
         final Generator gen = createGenerator("not(true())");
 
         final Val out = gen.eval();
@@ -368,7 +368,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testNotFalse() throws ParseException {
+    void testNotFalse() throws ParseException {
         final Generator gen = createGenerator("not(false())");
 
         final Val out = gen.eval();
@@ -376,7 +376,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIf1() throws ParseException {
+    void testIf1() throws ParseException {
         final Generator gen = createGenerator("if(true(), 'this', 'that')");
 
         final Val out = gen.eval();
@@ -384,7 +384,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIf2() throws ParseException {
+    void testIf2() throws ParseException {
         final Generator gen = createGenerator("if(false(), 'this', 'that')");
 
         final Val out = gen.eval();
@@ -392,7 +392,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIf3() throws ParseException {
+    void testIf3() throws ParseException {
         final Generator gen = createGenerator("if(${val}, 'this', 'that')");
 
         gen.set(getVal("true"));
@@ -402,7 +402,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIf4() throws ParseException {
+    void testIf4() throws ParseException {
         final Generator gen = createGenerator("if(${val}, 'this', 'that')");
 
         gen.set(getVal("false"));
@@ -412,7 +412,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIf5() throws ParseException {
+    void testIf5() throws ParseException {
         final Generator gen = createGenerator("if(match(${val}, 'foo'), 'this', 'that')");
 
         gen.set(getVal("foo"));
@@ -422,7 +422,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIf6() throws ParseException {
+    void testIf6() throws ParseException {
         final Generator gen = createGenerator("if(match(${val}, 'foo'), 'this', 'that')");
 
         gen.set(getVal("bar"));
@@ -432,7 +432,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testNotIf() throws ParseException {
+    void testNotIf() throws ParseException {
         final Generator gen = createGenerator("if(not(${val}), 'this', 'that')");
 
         gen.set(getVal("false"));
@@ -442,17 +442,17 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIf_nullHandling() throws ParseException {
+    void testIf_nullHandling() throws ParseException {
         final Generator gen = createGenerator("if(${val}=null(), true(), false())");
 
         gen.set(new Val[]{ValNull.INSTANCE});
 
         final Val out = gen.eval();
-        Assert.assertTrue(out.type().isError());
+        assertThat(out.type().isError()).isTrue();
     }
 
     @Test
-    public void testReplace1() throws ParseException {
+    void testReplace1() throws ParseException {
         final Generator gen = createGenerator("replace('this', 'is', 'at')");
 
         gen.set(getVal(3D));
@@ -462,7 +462,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testReplace2() throws ParseException {
+    void testReplace2() throws ParseException {
         final Generator gen = createGenerator("replace(${val}, 'is', 'at')");
 
         gen.set(getVal("this"));
@@ -472,7 +472,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testConcat1() throws ParseException {
+    void testConcat1() throws ParseException {
         final Generator gen = createGenerator("concat('this', ' is ', 'it')");
 
         gen.set(getVal(3D));
@@ -482,7 +482,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testConcat2() throws ParseException {
+    void testConcat2() throws ParseException {
         final Generator gen = createGenerator("concat(${val}, ' is ', 'it')");
 
         gen.set(getVal("this"));
@@ -492,7 +492,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testStringLength1() throws ParseException {
+    void testStringLength1() throws ParseException {
         final Generator gen = createGenerator("stringLength(${val})");
 
         gen.set(getVal("this"));
@@ -502,7 +502,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstring1() throws ParseException {
+    void testSubstring1() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, 1, 2)");
 
         gen.set(getVal("this"));
@@ -512,7 +512,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstring3() throws ParseException {
+    void testSubstring3() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, 2, 99)");
 
         gen.set(getVal("his"));
@@ -522,7 +522,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstring4() throws ParseException {
+    void testSubstring4() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, 1+1, 99-1)");
 
         gen.set(getVal("his"));
@@ -532,7 +532,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstring5() throws ParseException {
+    void testSubstring5() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, 2+5, 99-1)");
 
         gen.set(getVal("his"));
@@ -542,7 +542,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstringBefore1() throws ParseException {
+    void testSubstringBefore1() throws ParseException {
         final Generator gen = createGenerator("substringBefore(${val}, '-')");
 
         gen.set(getVal("aa-bb"));
@@ -552,7 +552,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstringBefore2() throws ParseException {
+    void testSubstringBefore2() throws ParseException {
         final Generator gen = createGenerator("substringBefore(${val}, 'a')");
 
         gen.set(getVal("aa-bb"));
@@ -562,7 +562,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstringBefore3() throws ParseException {
+    void testSubstringBefore3() throws ParseException {
         final Generator gen = createGenerator("substringBefore(${val}, 'b')");
 
         gen.set(getVal("aa-bb"));
@@ -572,7 +572,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstringBefore4() throws ParseException {
+    void testSubstringBefore4() throws ParseException {
         final Generator gen = createGenerator("substringBefore(${val}, 'q')");
 
         gen.set(getVal("aa-bb"));
@@ -582,7 +582,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstringAfter1() throws ParseException {
+    void testSubstringAfter1() throws ParseException {
         final Generator gen = createGenerator("substringAfter(${val}, '-')");
 
         gen.set(getVal("aa-bb"));
@@ -592,7 +592,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstringAfter2() throws ParseException {
+    void testSubstringAfter2() throws ParseException {
         final Generator gen = createGenerator("substringAfter(${val}, 'a')");
 
         gen.set(getVal("aa-bb"));
@@ -602,7 +602,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstringAfter3() throws ParseException {
+    void testSubstringAfter3() throws ParseException {
         final Generator gen = createGenerator("substringAfter(${val}, 'b')");
 
         gen.set(getVal("aa-bb"));
@@ -612,7 +612,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstringAfter4() throws ParseException {
+    void testSubstringAfter4() throws ParseException {
         final Generator gen = createGenerator("substringAfter(${val}, 'q')");
 
         gen.set(getVal("aa-bb"));
@@ -622,7 +622,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIndexOf() throws ParseException {
+    void testIndexOf() throws ParseException {
         final Generator gen = createGenerator("indexOf(${val}, '-')");
 
         gen.set(getVal("aa-bb"));
@@ -632,7 +632,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIndexOf1() throws ParseException {
+    void testIndexOf1() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, indexOf(${val}, '-'), stringLength(${val}))");
 
         gen.set(getVal("aa-bb"));
@@ -642,7 +642,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIndexOf2() throws ParseException {
+    void testIndexOf2() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, indexOf(${val}, 'a'), stringLength(${val}))");
 
         gen.set(getVal("aa-bb"));
@@ -652,7 +652,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIndexOf3() throws ParseException {
+    void testIndexOf3() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, indexOf(${val}, 'b'), stringLength(${val}))");
 
         gen.set(getVal("aa-bb"));
@@ -662,17 +662,17 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIndexOf4() throws ParseException {
+    void testIndexOf4() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, indexOf(${val}, 'q'), stringLength(${val}))");
 
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        Assert.assertTrue(out.type().isError());
+        assertThat(out.type().isError()).isTrue();
     }
 
     @Test
-    public void testLastIndexOf1() throws ParseException {
+    void testLastIndexOf1() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, lastIndexOf(${val}, '-'), stringLength(${val}))");
 
         gen.set(getVal("aa-bb"));
@@ -682,7 +682,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLastIndexOf2() throws ParseException {
+    void testLastIndexOf2() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, lastIndexOf(${val}, 'a'), stringLength(${val}))");
 
         gen.set(getVal("aa-bb"));
@@ -692,7 +692,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLastIndexOf3() throws ParseException {
+    void testLastIndexOf3() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, lastIndexOf(${val}, 'b'), stringLength(${val}))");
 
         gen.set(getVal("aa-bb"));
@@ -702,17 +702,17 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLastIndexOf4() throws ParseException {
+    void testLastIndexOf4() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, lastIndexOf(${val}, 'q'), stringLength(${val}))");
 
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        Assert.assertTrue(out.type().isError());
+        assertThat(out.type().isError()).isTrue();
     }
 
     @Test
-    public void testDecode1() throws ParseException {
+    void testDecode1() throws ParseException {
         final Generator gen = createGenerator("decode(${val}, 'hullo', 'hello', 'goodbye')");
 
         gen.set(getVal("hullo"));
@@ -722,7 +722,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testDecode2() throws ParseException {
+    void testDecode2() throws ParseException {
         final Generator gen = createGenerator("decode(${val}, 'h.+o', 'hello', 'goodbye')");
 
         gen.set(getVal("hullo"));
@@ -732,7 +732,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testInclude1() throws ParseException {
+    void testInclude1() throws ParseException {
         final Generator gen = createGenerator("include(${val}, 'this', 'that')");
         gen.set(getVal("this"));
         final Val out = gen.eval();
@@ -740,7 +740,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testInclude2() throws ParseException {
+    void testInclude2() throws ParseException {
         final Generator gen = createGenerator("include(${val}, 'this', 'that')");
         gen.set(getVal("that"));
         final Val out = gen.eval();
@@ -748,7 +748,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testInclude3() throws ParseException {
+    void testInclude3() throws ParseException {
         final Generator gen = createGenerator("include(${val}, 'this', 'that')");
         gen.set(getVal("other"));
         final Val out = gen.eval();
@@ -756,7 +756,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExclude1() throws ParseException {
+    void testExclude1() throws ParseException {
         final Generator gen = createGenerator("exclude(${val}, 'this', 'that')");
         gen.set(getVal("this"));
         final Val out = gen.eval();
@@ -764,7 +764,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExclude2() throws ParseException {
+    void testExclude2() throws ParseException {
         final Generator gen = createGenerator("exclude(${val}, 'this', 'that')");
         gen.set(getVal("that"));
         final Val out = gen.eval();
@@ -772,7 +772,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExclude3() throws ParseException {
+    void testExclude3() throws ParseException {
         final Generator gen = createGenerator("exclude(${val}, 'this', 'that')");
         gen.set(getVal("other"));
         final Val out = gen.eval();
@@ -780,7 +780,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testEquals1() throws ParseException {
+    void testEquals1() throws ParseException {
         final Generator gen = createGenerator("equals(${val}, 'plop')");
 
         gen.set(getVal("plop"));
@@ -790,7 +790,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testEquals2() throws ParseException {
+    void testEquals2() throws ParseException {
         final Generator gen = createGenerator("equals(${val}, ${val})");
 
         gen.set(getVal("plop"));
@@ -800,7 +800,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testEquals3() throws ParseException {
+    void testEquals3() throws ParseException {
         final Generator gen = createGenerator("equals(${val}, 'plip')");
 
         gen.set(getVal("plop"));
@@ -810,7 +810,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testEquals4() throws ParseException {
+    void testEquals4() throws ParseException {
         final Generator gen = createGenerator2("equals(${val1}, ${val2})");
 
         gen.set(getVal("plop", "plip"));
@@ -820,7 +820,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testEquals5() throws ParseException {
+    void testEquals5() throws ParseException {
         final Generator gen = createGenerator2("equals(${val1}, ${val2})");
 
         gen.set(getVal("plop", "plop"));
@@ -830,7 +830,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testEquals6() throws ParseException {
+    void testEquals6() throws ParseException {
         final Generator gen = createGenerator2("${val1}=${val2}");
 
         gen.set(getVal("plop", "plop"));
@@ -840,87 +840,87 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testEqualsNull1() throws ParseException {
+    void testEqualsNull1() throws ParseException {
         final Generator gen = createGenerator("${val1}=null()");
 
         gen.set(new Val[]{ValNull.INSTANCE});
 
         final Val out = gen.eval();
-        Assert.assertTrue(out.type().isError());
+        assertThat(out.type().isError()).isTrue();
     }
 
     @Test
-    public void testEqualsNull2() throws ParseException {
+    void testEqualsNull2() throws ParseException {
         final Generator gen = createGenerator("${val}=null()");
 
         gen.set(getVal("plop"));
 
         final Val out = gen.eval();
-        Assert.assertTrue(out.type().isError());
+        assertThat(out.type().isError()).isTrue();
     }
 
     @Test
-    public void testEqualsNull3() throws ParseException {
+    void testEqualsNull3() throws ParseException {
         final Generator gen = createGenerator("null()=null()");
 
         gen.set(getVal("plop"));
 
         final Val out = gen.eval();
-        Assert.assertTrue(out.type().isError());
+        assertThat(out.type().isError()).isTrue();
     }
 
     @Test
-    public void testEqualsNull4() throws ParseException {
+    void testEqualsNull4() throws ParseException {
         final Generator gen = createGenerator("if(${val}=null(), true(), false())");
 
         gen.set(new Val[]{ValNull.INSTANCE});
 
         final Val out = gen.eval();
-        Assert.assertTrue(out.type().isError());
+        assertThat(out.type().isError()).isTrue();
     }
 
     @Test
-    public void testIsNull1() throws ParseException {
+    void testIsNull1() throws ParseException {
         final Generator gen = createGenerator("isNull(${val1})");
 
         gen.set(new Val[]{ValNull.INSTANCE});
 
         final Val out = gen.eval();
-        Assert.assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
-    public void testIsNull2() throws ParseException {
+    void testIsNull2() throws ParseException {
         final Generator gen = createGenerator("isNull(${val})");
 
         gen.set(getVal("plop"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("false", out.toString());
+        assertThat(out.toString()).isEqualTo("false");
     }
 
     @Test
-    public void testIsNull3() throws ParseException {
+    void testIsNull3() throws ParseException {
         final Generator gen = createGenerator("isNull(null())");
 
         gen.set(getVal("plop"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
-    public void testIsNull4() throws ParseException {
+    void testIsNull4() throws ParseException {
         final Generator gen = createGenerator("if(isNull(${val}), true(), false())");
 
         gen.set(new Val[]{ValNull.INSTANCE});
 
         final Val out = gen.eval();
-        Assert.assertEquals("true", out.toString());
+        assertThat(out.toString()).isEqualTo("true");
     }
 
     @Test
-    public void testLessThan1() throws ParseException {
+    void testLessThan1() throws ParseException {
         final Generator gen = createGenerator2("lessThan(1, 0)");
 
         final Val out = gen.eval();
@@ -928,7 +928,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThan2() throws ParseException {
+    void testLessThan2() throws ParseException {
         final Generator gen = createGenerator2("lessThan(1, 1)");
 
         final Val out = gen.eval();
@@ -936,7 +936,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThan3() throws ParseException {
+    void testLessThan3() throws ParseException {
         final Generator gen = createGenerator2("lessThan(${val1}, ${val2})");
 
         gen.set(getVal(1D, 2D));
@@ -946,7 +946,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThan4() throws ParseException {
+    void testLessThan4() throws ParseException {
         final Generator gen = createGenerator2("lessThan(${val1}, ${val2})");
 
         gen.set(getVal("fred", "fred"));
@@ -956,7 +956,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThan5() throws ParseException {
+    void testLessThan5() throws ParseException {
         final Generator gen = createGenerator2("lessThan(${val1}, ${val2})");
 
         gen.set(getVal("fred", "fred1"));
@@ -966,7 +966,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThan6() throws ParseException {
+    void testLessThan6() throws ParseException {
         final Generator gen = createGenerator2("lessThan(${val1}, ${val2})");
 
         gen.set(getVal("fred1", "fred"));
@@ -976,7 +976,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThanOrEqualTo1() throws ParseException {
+    void testLessThanOrEqualTo1() throws ParseException {
         final Generator gen = createGenerator2("lessThanOrEqualTo(1, 0)");
 
         final Val out = gen.eval();
@@ -984,7 +984,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThanOrEqualTo2() throws ParseException {
+    void testLessThanOrEqualTo2() throws ParseException {
         final Generator gen = createGenerator2("lessThanOrEqualTo(1, 1)");
 
         final Val out = gen.eval();
@@ -992,7 +992,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThanOrEqualTo3() throws ParseException {
+    void testLessThanOrEqualTo3() throws ParseException {
         final Generator gen = createGenerator2("lessThanOrEqualTo(${val1}, ${val2})");
 
         gen.set(getVal(1D, 2D));
@@ -1002,7 +1002,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThanOrEqualTo3_mk2() throws ParseException {
+    void testLessThanOrEqualTo3_mk2() throws ParseException {
         final Generator gen = createGenerator2("(${val1}<=${val2})");
 
         gen.set(getVal(1D, 2D));
@@ -1012,7 +1012,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThanOrEqualTo4() throws ParseException {
+    void testLessThanOrEqualTo4() throws ParseException {
         final Generator gen = createGenerator2("lessThanOrEqualTo(${val1}, ${val2})");
 
         gen.set(getVal("fred", "fred"));
@@ -1022,7 +1022,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThanOrEqualTo5() throws ParseException {
+    void testLessThanOrEqualTo5() throws ParseException {
         final Generator gen = createGenerator2("lessThanOrEqualTo(${val1}, ${val2})");
 
         gen.set(getVal("fred", "fred1"));
@@ -1032,7 +1032,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testLessThanOrEqualTo6() throws ParseException {
+    void testLessThanOrEqualTo6() throws ParseException {
         final Generator gen = createGenerator2("lessThanOrEqualTo(${val1}, ${val2})");
 
         gen.set(getVal("fred1", "fred"));
@@ -1042,7 +1042,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testGreaterThanOrEqualTo1() throws ParseException {
+    void testGreaterThanOrEqualTo1() throws ParseException {
         final Generator gen = createGenerator2("greaterThanOrEqualTo(${val1}, ${val2})");
 
         gen.set(getVal(2D, 1D));
@@ -1052,7 +1052,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testGreaterThanOrEqualTo1_mk2() throws ParseException {
+    void testGreaterThanOrEqualTo1_mk2() throws ParseException {
         final Generator gen = createGenerator2("(${val1}>=${val2})");
 
         gen.set(getVal(2D, 1D));
@@ -1062,7 +1062,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testBooleanExpressions() throws ParseException {
+    void testBooleanExpressions() throws ParseException {
         ValBoolean vTrue = ValBoolean.TRUE;
         ValBoolean vFals = ValBoolean.FALSE; // intentional typo to keep var name length consistent
         ValNull vNull = ValNull.INSTANCE;
@@ -1331,7 +1331,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubstring2() throws ParseException {
+    void testSubstring2() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, 0, 99)");
 
         gen.set(getVal("this"));
@@ -1341,7 +1341,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testHash1() throws ParseException {
+    void testHash1() throws ParseException {
         final Generator gen = createGenerator("hash(${val})");
 
         gen.set(getVal("test"));
@@ -1351,7 +1351,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testHash2() throws ParseException {
+    void testHash2() throws ParseException {
         final Generator gen = createGenerator("hash(${val}, 'SHA-512')");
 
         gen.set(getVal("test"));
@@ -1361,7 +1361,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testHash3() throws ParseException {
+    void testHash3() throws ParseException {
         final Generator gen = createGenerator("hash(${val}, 'SHA-512', 'mysalt')");
 
         gen.set(getVal("test"));
@@ -1371,7 +1371,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testCount() throws ParseException {
+    void testCount() throws ParseException {
         final Generator gen = createGenerator("count()");
 
         gen.set(getVal(122D));
@@ -1388,7 +1388,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testCountUnique() throws ParseException {
+    void testCountUnique() throws ParseException {
         final Generator gen = createGenerator("countUnique(${val})");
 
         gen.set(getVal(122D));
@@ -1405,7 +1405,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testCountUniqueStaticValue() throws ParseException {
+    void testCountUniqueStaticValue() throws ParseException {
         final Generator gen = createGenerator("countUnique('test')");
 
         gen.set(getVal(122D));
@@ -1422,7 +1422,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testAdd1() throws ParseException {
+    void testAdd1() throws ParseException {
         final Generator gen = createGenerator("3+4");
 
         gen.set(getVal(1D));
@@ -1432,7 +1432,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testAdd2() throws ParseException {
+    void testAdd2() throws ParseException {
         final Generator gen = createGenerator("3+4+5");
 
         gen.set(getVal(1D));
@@ -1442,7 +1442,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testAdd3() throws ParseException {
+    void testAdd3() throws ParseException {
         final Generator gen = createGenerator("2+count()");
 
         gen.set(getVal(1D));
@@ -1459,7 +1459,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubtract1() throws ParseException {
+    void testSubtract1() throws ParseException {
         final Generator gen = createGenerator("3-4");
 
         gen.set(getVal(1D));
@@ -1469,7 +1469,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testSubtract2() throws ParseException {
+    void testSubtract2() throws ParseException {
         final Generator gen = createGenerator("2-count()");
 
         gen.set(getVal(1D));
@@ -1486,7 +1486,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMultiply1() throws ParseException {
+    void testMultiply1() throws ParseException {
         final Generator gen = createGenerator("3*4");
 
         gen.set(getVal(1D));
@@ -1496,7 +1496,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testMultiply2() throws ParseException {
+    void testMultiply2() throws ParseException {
         final Generator gen = createGenerator("2*count()");
 
         gen.set(getVal(1D));
@@ -1513,7 +1513,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testDivide1() throws ParseException {
+    void testDivide1() throws ParseException {
         final Generator gen = createGenerator("8/4");
 
 //        gen.set(getVal(1D));
@@ -1523,7 +1523,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testDivide2() throws ParseException {
+    void testDivide2() throws ParseException {
         final Generator gen = createGenerator("8/count()");
 
         gen.set(getVal(1D));
@@ -1540,7 +1540,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testDivide_byZero() throws ParseException {
+    void testDivide_byZero() throws ParseException {
         final Generator gen = createGenerator("8/0");
 
         final Val out = gen.eval();
@@ -1549,7 +1549,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testFloorNum1() throws ParseException {
+    void testFloorNum1() throws ParseException {
         final Generator gen = createGenerator("floor(8.4234)");
 
         gen.set(getVal(1D));
@@ -1559,7 +1559,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testFloorNum2() throws ParseException {
+    void testFloorNum2() throws ParseException {
         final Generator gen = createGenerator("floor(8.5234)");
 
         gen.set(getVal(1D));
@@ -1569,7 +1569,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testFloorNum3() throws ParseException {
+    void testFloorNum3() throws ParseException {
         final Generator gen = createGenerator("floor(${val})");
 
         gen.set(getVal(1.34D));
@@ -1579,7 +1579,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testFloorNum4() throws ParseException {
+    void testFloorNum4() throws ParseException {
         final Generator gen = createGenerator("floor(${val}+count())");
 
         gen.set(getVal(1.34D));
@@ -1590,7 +1590,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testFloorNum5() throws ParseException {
+    void testFloorNum5() throws ParseException {
         final Generator gen = createGenerator("floor(${val}+count(), 1)");
 
         gen.set(getVal(1.34D));
@@ -1601,7 +1601,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testFloorNum6() throws ParseException {
+    void testFloorNum6() throws ParseException {
         final Generator gen = createGenerator("floor(${val}+count(), 2)");
 
         gen.set(getVal(1.34D));
@@ -1612,7 +1612,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testCeilNum1() throws ParseException {
+    void testCeilNum1() throws ParseException {
         final Generator gen = createGenerator("ceiling(8.4234)");
 
         gen.set(getVal(1D));
@@ -1622,7 +1622,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testCeilNum2() throws ParseException {
+    void testCeilNum2() throws ParseException {
         final Generator gen = createGenerator("ceiling(8.5234)");
 
         gen.set(getVal(1D));
@@ -1632,7 +1632,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testCeilNum3() throws ParseException {
+    void testCeilNum3() throws ParseException {
         final Generator gen = createGenerator("ceiling(${val})");
 
         gen.set(getVal(1.34D));
@@ -1642,7 +1642,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testCeilNum4() throws ParseException {
+    void testCeilNum4() throws ParseException {
         final Generator gen = createGenerator("ceiling(${val}+count())");
 
         gen.set(getVal(1.34D));
@@ -1653,7 +1653,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testCeilNum5() throws ParseException {
+    void testCeilNum5() throws ParseException {
         final Generator gen = createGenerator("ceiling(${val}+count(), 1)");
 
         gen.set(getVal(1.34D));
@@ -1664,7 +1664,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testCeilNum6() throws ParseException {
+    void testCeilNum6() throws ParseException {
         final Generator gen = createGenerator("ceiling(${val}+count(), 2)");
 
         gen.set(getVal(1.34D));
@@ -1675,7 +1675,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testRoundNum1() throws ParseException {
+    void testRoundNum1() throws ParseException {
         final Generator gen = createGenerator("round(8.4234)");
 
         gen.set(getVal(1D));
@@ -1685,7 +1685,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testRoundNum2() throws ParseException {
+    void testRoundNum2() throws ParseException {
         final Generator gen = createGenerator("round(8.5234)");
 
         gen.set(getVal(1D));
@@ -1695,7 +1695,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testRoundNum3() throws ParseException {
+    void testRoundNum3() throws ParseException {
         final Generator gen = createGenerator("round(${val})");
 
         gen.set(getVal(1.34D));
@@ -1705,7 +1705,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testRoundNum4() throws ParseException {
+    void testRoundNum4() throws ParseException {
         final Generator gen = createGenerator("round(${val}+count())");
 
         gen.set(getVal(1.34D));
@@ -1716,7 +1716,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testRoundNum5() throws ParseException {
+    void testRoundNum5() throws ParseException {
         final Generator gen = createGenerator("round(${val}+count(), 1)");
 
         gen.set(getVal(1.34D));
@@ -1727,7 +1727,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testRoundNum6() throws ParseException {
+    void testRoundNum6() throws ParseException {
         final Generator gen = createGenerator("round(${val}+count(), 2)");
 
         gen.set(getVal(1.34D));
@@ -1738,7 +1738,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testTime() throws ParseException {
+    void testTime() throws ParseException {
         testTime("floorSecond", "2014-02-22T12:12:12.888Z", "2014-02-22T12:12:12.000Z");
         testTime("floorMinute", "2014-02-22T12:12:12.888Z", "2014-02-22T12:12:00.000Z");
         testTime("floorHour", "2014-02-22T12:12:12.888Z", "2014-02-22T12:00:00.000Z");
@@ -1772,7 +1772,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testBODMAS1() throws ParseException {
+    void testBODMAS1() throws ParseException {
         final Generator gen = createGenerator("4+4/2+2");
 
         final Val out = gen.eval();
@@ -1782,7 +1782,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testBODMAS2() throws ParseException {
+    void testBODMAS2() throws ParseException {
         final Generator gen = createGenerator("(4+4)/2+2");
 
         final Val out = gen.eval();
@@ -1792,7 +1792,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testBODMAS3() throws ParseException {
+    void testBODMAS3() throws ParseException {
         final Generator gen = createGenerator("(4+4)/(2+2)");
 
         final Val out = gen.eval();
@@ -1802,7 +1802,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testBODMAS4() throws ParseException {
+    void testBODMAS4() throws ParseException {
         final Generator gen = createGenerator("4+4/2+2*3");
 
         final Val out = gen.eval();
@@ -1812,7 +1812,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExtractAuthorityFromUri() throws ParseException {
+    void testExtractAuthorityFromUri() throws ParseException {
         final Generator gen = createGenerator("extractAuthorityFromUri(${val})");
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
@@ -1821,7 +1821,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExtractFragmentFromUri() throws ParseException {
+    void testExtractFragmentFromUri() throws ParseException {
         final Generator gen = createGenerator("extractFragmentFromUri(${val})");
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path#frag"));
@@ -1830,7 +1830,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExtractHostFromUri() throws ParseException {
+    void testExtractHostFromUri() throws ParseException {
         final Generator gen = createGenerator("extractHostFromUri(${val})");
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
@@ -1839,7 +1839,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExtractPathFromUri() throws ParseException {
+    void testExtractPathFromUri() throws ParseException {
         final Generator gen = createGenerator("extractPathFromUri(${val})");
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
@@ -1848,7 +1848,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExtractPortFromUri() throws ParseException {
+    void testExtractPortFromUri() throws ParseException {
         final Generator gen = createGenerator("extractPortFromUri(${val})");
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
@@ -1857,7 +1857,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExtractQueryFromUri() throws ParseException {
+    void testExtractQueryFromUri() throws ParseException {
         final Generator gen = createGenerator("extractQueryFromUri(${val})");
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path?this=that&foo=bar"));
@@ -1866,7 +1866,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExtractSchemeFromUri() throws ParseException {
+    void testExtractSchemeFromUri() throws ParseException {
         final Generator gen = createGenerator("extractSchemeFromUri(${val})");
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
@@ -1875,7 +1875,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExtractSchemeSpecificPartFromUri() throws ParseException {
+    void testExtractSchemeSpecificPartFromUri() throws ParseException {
         final Generator gen = createGenerator("extractSchemeSpecificPartFromUri(${val})");
 
         gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
@@ -1884,7 +1884,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testExtractUserInfoFromUri() throws ParseException {
+    void testExtractUserInfoFromUri() throws ParseException {
         final Generator gen = createGenerator("extractUserInfoFromUri(${val})");
 
         gen.set(getVal("http://john:doe@example.com:81/"));
@@ -1893,7 +1893,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testParseDate1() throws ParseException {
+    void testParseDate1() throws ParseException {
         final Generator gen = createGenerator("parseDate(${val})");
 
         gen.set(getVal("2014-02-22T12:12:12.888Z"));
@@ -1902,7 +1902,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testParseDate2() throws ParseException {
+    void testParseDate2() throws ParseException {
         final Generator gen = createGenerator("parseDate(${val}, 'yyyy MM dd')");
 
         gen.set(getVal("2014 02 22"));
@@ -1911,7 +1911,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testParseDate3() throws ParseException {
+    void testParseDate3() throws ParseException {
         final Generator gen = createGenerator("parseDate(${val}, 'yyyy MM dd', '+0400')");
 
         gen.set(getVal("2014 02 22"));
@@ -1920,7 +1920,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testFormatDate1() throws ParseException {
+    void testFormatDate1() throws ParseException {
         final Generator gen = createGenerator("formatDate(${val})");
 
         gen.set(getVal(1393071132888L));
@@ -1929,7 +1929,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testFormatDate2() throws ParseException {
+    void testFormatDate2() throws ParseException {
         final Generator gen = createGenerator("formatDate(${val}, 'yyyy MM dd')");
 
         gen.set(getVal(1393071132888L));
@@ -1938,7 +1938,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testFormatDate3() throws ParseException {
+    void testFormatDate3() throws ParseException {
         final Generator gen = createGenerator("formatDate(${val}, 'yyyy MM dd', '+1200')");
 
         gen.set(getVal(1393071132888L));
@@ -1947,7 +1947,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testVariance1() throws ParseException {
+    void testVariance1() throws ParseException {
         final Generator gen = createGenerator("variance(600, 470, 170, 430, 300)");
 
         Val out = gen.eval();
@@ -1955,7 +1955,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testVariance2() throws ParseException {
+    void testVariance2() throws ParseException {
         final Generator gen = createGenerator("variance(${val})");
 
         gen.set(getVal(600));
@@ -1969,7 +1969,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testStDev1() throws ParseException {
+    void testStDev1() throws ParseException {
         final Generator gen = createGenerator("round(stDev(600, 470, 170, 430, 300))");
 
         Val out = gen.eval();
@@ -1977,7 +1977,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testStDev2() throws ParseException {
+    void testStDev2() throws ParseException {
         final Generator gen = createGenerator("round(stDev(${val}))");
 
         gen.set(getVal(600));
@@ -1991,72 +1991,72 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testToBoolean1() throws ParseException {
+    void testToBoolean1() throws ParseException {
         final Generator gen = createGenerator("toBoolean('true')");
         assertThat(gen.eval()).isEqualTo(ValBoolean.TRUE);
     }
 
     @Test
-    public void testToBoolean2() throws ParseException {
+    void testToBoolean2() throws ParseException {
         final Generator gen = createGenerator("toBoolean(${val})");
         gen.set(getVal("true"));
         assertThat(gen.eval()).isEqualTo(ValBoolean.TRUE);
     }
 
     @Test
-    public void testToDouble1() throws ParseException {
+    void testToDouble1() throws ParseException {
         final Generator gen = createGenerator("toDouble('100')");
         assertThat(gen.eval()).isEqualTo(ValDouble.create(100));
     }
 
     @Test
-    public void testToDouble2() throws ParseException {
+    void testToDouble2() throws ParseException {
         final Generator gen = createGenerator("toDouble(${val})");
         gen.set(getVal("100"));
         assertThat(gen.eval()).isEqualTo(ValDouble.create(100));
     }
 
     @Test
-    public void testToInteger1() throws ParseException {
+    void testToInteger1() throws ParseException {
         final Generator gen = createGenerator("toInteger('100')");
         assertThat(gen.eval()).isEqualTo(ValInteger.create(100));
     }
 
     @Test
-    public void testToInteger2() throws ParseException {
+    void testToInteger2() throws ParseException {
         final Generator gen = createGenerator("toInteger(${val})");
         gen.set(getVal("100"));
         assertThat(gen.eval()).isEqualTo(ValInteger.create(100));
     }
 
     @Test
-    public void testToLong1() throws ParseException {
+    void testToLong1() throws ParseException {
         final Generator gen = createGenerator("toLong('100')");
         assertThat(gen.eval()).isEqualTo(ValLong.create(100));
     }
 
     @Test
-    public void testToLong2() throws ParseException {
+    void testToLong2() throws ParseException {
         final Generator gen = createGenerator("toLong(${val})");
         gen.set(getVal("100"));
         assertThat(gen.eval()).isEqualTo(ValLong.create(100));
     }
 
     @Test
-    public void testToString1() throws ParseException {
+    void testToString1() throws ParseException {
         final Generator gen = createGenerator("toString('100')");
         assertThat(gen.eval()).isEqualTo(ValString.create("100"));
     }
 
     @Test
-    public void testToString2() throws ParseException {
+    void testToString2() throws ParseException {
         final Generator gen = createGenerator("toString(${val})");
         gen.set(getVal("100"));
         assertThat(gen.eval()).isEqualTo(ValString.create("100"));
     }
 
     @Test
-    public void testErrorHandling1() throws ParseException {
+    void testErrorHandling1() throws ParseException {
         ValLong valLong = ValLong.create(10);
         assertThatItEvaluatesToValErr("(${val}=err())", valLong);
         assertThatItEvaluatesToValErr("(err()=${val})", valLong);
@@ -2102,11 +2102,11 @@ public class TestExpressionParser {
                 out.getClass().getSimpleName() + ": " +
                 out.toString() +
                 (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : ""));
-        Assert.assertTrue(out instanceof ValErr);
+        assertThat(out).isInstanceOf(ValErr.class);
     }
 
     @Test
-    public void testTypeOf() throws ParseException {
+    void testTypeOf() throws ParseException {
         ValBoolean vTrue = ValBoolean.TRUE;
         ValBoolean vFals = ValBoolean.FALSE; // intentional typo to keep var name length consistent
         ValNull vNull = ValNull.INSTANCE;
@@ -2136,7 +2136,7 @@ public class TestExpressionParser {
     }
 
     @Test
-    public void testIsExpressions() {
+    void testIsExpressions() {
         final ValBoolean vTrue = ValBoolean.TRUE;
         final ValBoolean vFals = ValBoolean.FALSE; // intentional typo to keep var name length consistent
         final ValNull vNull = ValNull.INSTANCE;
@@ -2245,7 +2245,7 @@ public class TestExpressionParser {
                 (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
 
         // The output type is always wrapped in a ValString
-        Assert.assertEquals("string", out.type().toString());
+        assertThat(out.type().toString()).isEqualTo("string");
 
         assertThat(out).isInstanceOf(ValString.class);
         assertThat(out.toString()).isEqualTo(expectedType);
@@ -2266,7 +2266,7 @@ public class TestExpressionParser {
                 (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
 
         // The output type is always wrapped in a ValString
-        Assert.assertEquals("string", out.type().toString());
+        assertThat(out.type().toString()).isEqualTo("string");
 
         assertThat(out).isInstanceOf(ValString.class);
         assertThat(out.toString()).isEqualTo(expectedType);
@@ -2287,9 +2287,9 @@ public class TestExpressionParser {
                     (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
 
             if (!(expectedOutput instanceof ValErr)) {
-                Assert.assertEquals(expectedOutput, out);
+                assertThat(out).isEqualTo(expectedOutput);
             }
-            Assert.assertEquals(expectedOutput.getClass(), out.getClass());
+            assertThat(out.getClass()).isEqualTo(expectedOutput.getClass());
         } catch (final ParseException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

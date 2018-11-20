@@ -23,9 +23,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestExpressionTokeniser {
+ class TestExpressionTokeniser {
     @Test
-    public void testBasic() throws ParseException {
+     void testBasic() throws ParseException {
         // Test string tokenisation.
         test("");
 

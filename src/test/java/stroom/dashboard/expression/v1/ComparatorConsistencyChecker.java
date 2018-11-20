@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class ComparatorConsistencyChecker<T> {
+class ComparatorConsistencyChecker<T> {
     @SuppressWarnings("unchecked")
-    public void check(final List<T> list, final Comparator<T> comparator) {
+    void check(final List<T> list, final Comparator<T> comparator) {
         final Obj<T>[] objs = new Obj[list.size()];
         for (int i = 0; i < list.size(); i++) {
             objs[i] = new Obj<>(i, list.get(i));

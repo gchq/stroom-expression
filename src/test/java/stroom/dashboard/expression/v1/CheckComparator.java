@@ -8,12 +8,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class CheckComparator {
+class CheckComparator {
     /**
      * @param dailyReports
      * @param comparator
      */
-    public static <T> void checkConsitency(final List<T> dailyReports, final Comparator<T> comparator) {
+    static <T> void checkConsitency(final List<T> dailyReports, final Comparator<T> comparator) {
         final Map<T, List<T>> objectMapSmallerOnes = new HashMap<>();
 
         iterateDistinctPairs(dailyReports.iterator(), new IPairIteratorCallback<T>() {

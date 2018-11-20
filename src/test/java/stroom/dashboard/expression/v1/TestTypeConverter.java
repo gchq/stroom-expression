@@ -20,9 +20,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestTypeConverter {
+class TestTypeConverter {
     @Test
-    public void testDoubleToString() {
+    void testDoubleToString() {
         test("123456789", 123456789D);
         test("123456789000000000000", 123456789000000000000D);
         test("123456789", 123456789.0D);
