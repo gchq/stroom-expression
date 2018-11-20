@@ -98,7 +98,11 @@ abstract class AbstractAggregateFunction extends AbstractManyChildFunction imple
         public Val eval() {
             Val value = ValNull.INSTANCE;
             for (final Generator gen : childGenerators) {
-                value = calculator.calc(value, gen.eval());
+                final Val val = gen.eval();
+                if (!val.type().isValue()) {
+                    return val;
+                }
+                value = calculator.calc(value, val);
             }
             return value;
         }

@@ -16,86 +16,42 @@
 
 package stroom.dashboard.expression.v1;
 
-class LessThan extends AbstractManyChildFunction {
+class LessThan extends AbstractEqualityFunction {
     static final String NAME = "<";
     static final String ALIAS = "lessThan";
-    private final boolean usingOperator;
+    private static final LessThanEvaluator EVALUATOR = new LessThanEvaluator();
 
     public LessThan(final String name) {
-        super(name, 2, 2);
-        usingOperator = name.length() == 1;
-
+        super(name, NAME);
     }
 
     @Override
-    protected Generator createGenerator(final Generator[] childGenerators) {
-        return new Gen(childGenerators);
+    Evaluator createEvaluator() {
+        return EVALUATOR;
     }
 
-    @Override
-    public void appendString(final StringBuilder sb) {
-        if (usingOperator) {
-            appendParams(sb);
-        } else {
-            super.appendString(sb);
-        }
-    }
-
-    @Override
-    protected void appendParams(final StringBuilder sb) {
-        if (usingOperator) {
-            if (params != null) {
-                for (int i = 0; i < params.length; i++) {
-                    final Param param = params[i];
-                    appendParam(sb, param);
-                    if (i < params.length - 1) {
-                        sb.append(name);
-                    }
+    private static class LessThanEvaluator extends Evaluator {
+        @Override
+        protected Val evaluate(final Val a, final Val b) {
+            if (a.getClass().equals(b.getClass())) {
+                if (a instanceof ValInteger) {
+                    return ValBoolean.create(a.toInteger() < b.toInteger());
                 }
-            }
-        } else {
-            super.appendParams(sb);
-        }
-    }
-
-    private static class Gen extends AbstractManyChildGenerator {
-        private static final long serialVersionUID = 217968020285584214L;
-
-        Gen(final Generator[] childGenerators) {
-            super(childGenerators);
-        }
-
-        @Override
-        public void set(final Val[] values) {
-            for (final Generator generator : childGenerators) {
-                generator.set(values);
-            }
-        }
-
-        @Override
-        public Val eval() {
-            final Val a = childGenerators[0].eval();
-            final Val b = childGenerators[1].eval();
-            Val retVal = ValBoolean.FALSE;
-
-            if (!a.hasValue() || !b.hasValue()) {
-                retVal = ValErr.create(String.format("Both values must have a value [%s] [%s]", a, b));
+                if (a instanceof ValLong) {
+                    return ValBoolean.create(a.toLong() < b.toLong());
+                }
+                if (a instanceof ValBoolean) {
+                    return ValBoolean.create(a.toBoolean().compareTo(b.toBoolean()) < 0);
+                }
             } else {
                 final Double da = a.toDouble();
                 final Double db = b.toDouble();
-                if (da == null || db == null) {
-                    int ret = a.toString().compareTo(b.toString());
-                    if (ret < 0) {
-                        retVal = ValBoolean.TRUE;
-                    }
-                } else {
-                    if (da < db) {
-                        retVal = ValBoolean.TRUE;
-                    }
+                if (da != null && db != null) {
+                    return ValBoolean.create(da < db);
                 }
             }
 
-            return retVal;
+            return ValBoolean.create(a.toString().compareTo(b.toString()) < 0);
         }
     }
 }

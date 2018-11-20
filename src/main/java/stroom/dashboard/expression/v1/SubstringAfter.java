@@ -99,37 +99,39 @@ class SubstringAfter extends AbstractFunction implements Serializable {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private final Generator afterGenerator;
+        private final Generator stringGenerator;
 
-        Gen(final Generator childGenerator, final Generator afterGenerator) {
+        Gen(final Generator childGenerator, final Generator stringGenerator) {
             super(childGenerator);
-            this.afterGenerator = afterGenerator;
+            this.stringGenerator = stringGenerator;
         }
 
         @Override
         public void set(final Val[] values) {
             childGenerator.set(values);
-            afterGenerator.set(values);
+            stringGenerator.set(values);
         }
 
         @Override
         public Val eval() {
-            final String value = childGenerator.eval().toString();
-            if (value != null) {
-                final String after = afterGenerator.eval().toString();
-                if (after == null) {
-                    return ValString.EMPTY;
-                }
+            final Val val = childGenerator.eval();
+            if (!val.type().isValue()) {
+                return ValErr.wrap(val);
+            }
+            final String value = val.toString();
 
-                final int index = value.indexOf(after);
-                if (index < 0) {
-                    return ValString.EMPTY;
-                }
+            final Val strVal = stringGenerator.eval();
+            if (!strVal.type().isValue()) {
+                return ValErr.wrap(strVal);
+            }
+            final String str = strVal.toString();
 
-                return ValString.create(value.substring(index + after.length()));
+            final int index = value.indexOf(str);
+            if (index < 0) {
+                return ValString.EMPTY;
             }
 
-            return ValNull.INSTANCE;
+            return ValString.create(value.substring(index + str.length()));
         }
     }
 }

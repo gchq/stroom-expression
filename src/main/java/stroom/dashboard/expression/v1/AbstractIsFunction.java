@@ -19,14 +19,13 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-class Not extends AbstractFunction implements Serializable {
-    static final String NAME = "not";
-    private static final long serialVersionUID = -305845496003936297L;
+abstract class AbstractIsFunction extends AbstractFunction implements Serializable {
+    private static final long serialVersionUID = -305145496413936297L;
     private Generator gen;
     private Function function;
     private boolean hasAggregate;
 
-    public Not(final String name) {
+    AbstractIsFunction(final String name) {
         super(name, 1, 1);
     }
 
@@ -38,13 +37,11 @@ class Not extends AbstractFunction implements Serializable {
         if (param instanceof Function) {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
-        } else {
-            final Boolean condition = ((Val) params[0]).toBoolean();
-            if (condition == null) {
-                throw new ParseException("Expecting a condition for first argument of '" + name + "' function", 0);
-            }
+        } else if (param instanceof Val) {
             // Static computation.
-            gen = new StaticValueFunction(ValBoolean.create(!condition)).createGenerator();
+            gen = new StaticValueFunction(getTest().test((Val) param)).createGenerator();
+        } else {
+            throw new RuntimeException("Unexpected type [" + param.getClass().getSimpleName() + "]");
         }
     }
 
@@ -55,20 +52,28 @@ class Not extends AbstractFunction implements Serializable {
         }
 
         final Generator childGenerator = function.createGenerator();
-        return new Gen(childGenerator);
+        return new Gen(childGenerator, getTest());
     }
+
+    abstract Test getTest();
 
     @Override
     public boolean hasAggregate() {
         return hasAggregate;
     }
 
+    interface Test extends Serializable {
+        Val test(Val val);
+    }
+
     private static class Gen extends AbstractSingleChildGenerator {
-        private static final long serialVersionUID = 8153777070911899616L;
+        private static final long serialVersionUID = 8153777070911893616L;
 
+        private final Test test;
 
-        Gen(final Generator childGenerator) {
+        Gen(final Generator childGenerator, final Test test) {
             super(childGenerator);
+            this.test = test;
         }
 
         @Override
@@ -78,20 +83,7 @@ class Not extends AbstractFunction implements Serializable {
 
         @Override
         public Val eval() {
-            final Val val = childGenerator.eval();
-            if (!val.type().isValue()) {
-                return val;
-            }
-
-            try {
-                final Boolean condition = val.toBoolean();
-                if (condition == null) {
-                    return ValErr.create("Expecting a condition");
-                }
-                return ValBoolean.create(!condition);
-            } catch (final RuntimeException e) {
-                return ValErr.create(e.getMessage());
-            }
+            return test.test(childGenerator.eval());
         }
     }
 }

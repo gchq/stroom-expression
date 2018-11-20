@@ -18,33 +18,24 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 
-class ToDouble extends AbstractCast implements Serializable {
-    static final String NAME = "toDouble";
-    private static final long serialVersionUID = -305845496003936297L;
-    private static final ValErr ERROR = ValErr.create("Unable to cast to a double");
-    private static final Cast CAST = new Cast();
+class IsValue extends AbstractIsFunction implements Serializable {
+    static final String NAME = "isValue";
+    private static final long serialVersionUID = -305145496413936297L;
+    private static final ValueTest TEST = new ValueTest();
 
-    public ToDouble(final String name) {
+    public IsValue(final String name) {
         super(name);
     }
 
     @Override
-    AbstractCaster getCaster() {
-        return CAST;
+    Test getTest() {
+        return TEST;
     }
 
-    private static class Cast extends AbstractCaster {
+    private static class ValueTest implements Test {
         @Override
-        Val cast(final Val val) {
-            if (!val.type().isValue()) {
-                return val;
-            }
-
-            final Double value = val.toDouble();
-            if (value != null) {
-                return ValDouble.create(value);
-            }
-            return ERROR;
+        public Val test(final Val val) {
+            return ValBoolean.create(val.type().isValue());
         }
     }
 }

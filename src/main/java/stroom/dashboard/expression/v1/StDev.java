@@ -121,7 +121,11 @@ class StDev extends AbstractManyChildFunction implements AggregateFunction {
         public Val eval() {
             final List<Double> list = new ArrayList<>(childGenerators.length);
             for (final Generator gen : childGenerators) {
-                Double value = gen.eval().toDouble();
+                final Val val = gen.eval();
+                if (!val.type().isValue()) {
+                    return val;
+                }
+                final Double value = val.toDouble();
                 if (value != null) {
                     list.add(value);
                 }

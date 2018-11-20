@@ -19,7 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.util.Objects;
 
 public class ValInteger implements ValNumber {
-    private static final String TYPE = "integer";
+    private static final Type TYPE = new IntegerType();
+
     private int value;
 
     ValInteger() {
@@ -68,12 +69,7 @@ public class ValInteger implements ValNumber {
     }
 
     @Override
-    public boolean hasValue() {
-        return true;
-    }
-
-    @Override
-    public String getType() {
+    public Type type() {
         return TYPE;
     }
 
@@ -104,6 +100,35 @@ public class ValInteger implements ValNumber {
         }
 
         private ValIntegerCache() {
+        }
+    }
+
+    private static class IntegerType implements Type {
+        private static final String NAME = "integer";
+
+        @Override
+        public boolean isValue() {
+            return true;
+        }
+
+        @Override
+        public boolean isNumber() {
+            return true;
+        }
+
+        @Override
+        public boolean isError() {
+            return false;
+        }
+
+        @Override
+        public boolean isNull() {
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return NAME;
         }
     }
 }

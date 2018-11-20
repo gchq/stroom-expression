@@ -107,14 +107,22 @@ class Replace extends AbstractManyChildFunction implements Serializable {
         @Override
         public Val eval() {
             final Val val = childGenerators[0].eval();
-            if (!val.hasValue()) {
+            if (!val.type().isValue()) {
                 return val;
+            }
+            final Val valRegex = childGenerators[1].eval();
+            if (!valRegex.type().isValue()) {
+                return ValErr.wrap(valRegex);
+            }
+            final Val valReplacement = childGenerators[2].eval();
+            if (!valReplacement.type().isValue()) {
+                return ValErr.wrap(valReplacement);
             }
 
             try {
                 final String value = val.toString();
-                final String regex = childGenerators[1].eval().toString();
-                final String replacement = childGenerators[2].eval().toString();
+                final String regex = valRegex.toString();
+                final String replacement = valReplacement.toString();
                 final Pattern pattern = PatternCache.get(regex);
                 return ValString.create(pattern.matcher(value).replaceAll(replacement));
 

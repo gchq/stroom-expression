@@ -118,7 +118,18 @@ public class FunctionFactory {
         add(ToInteger.class, ToInteger.NAME);
         add(ToLong.class, ToLong.NAME);
         add(ToString.class, ToString.NAME);
+
+        // Type Checking
         add(TypeOf.class, TypeOf.NAME);
+        add(IsBoolean.class, IsBoolean.NAME);
+        add(IsDouble.class, IsDouble.NAME);
+        add(IsInteger.class, IsInteger.NAME);
+        add(IsLong.class, IsLong.NAME);
+        add(IsString.class, IsString.NAME);
+        add(IsNumber.class, IsNumber.NAME);
+        add(IsValue.class, IsValue.NAME);
+        add(IsNull.class, IsNull.NAME);
+        add(IsError.class, IsError.NAME);
     }
 
     private void add(final Class<? extends Function> clazz, final String... names) {

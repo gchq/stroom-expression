@@ -69,8 +69,12 @@ class Average extends AbstractManyChildFunction implements AggregateFunction {
 
         @Override
         public Val eval() {
-            if (!current.hasValue() || count == 0) {
-                return ValNull.INSTANCE;
+            if (!current.type().isValue() || count == 0) {
+                if (current.type().isError()) {
+                    return current;
+                } else {
+                    return ValNull.INSTANCE;
+                }
             }
             return ValDouble.create(current.toDouble() / count);
         }
@@ -106,9 +110,13 @@ class Average extends AbstractManyChildFunction implements AggregateFunction {
         public Val eval() {
             Val value = ValNull.INSTANCE;
             for (final Generator gen : childGenerators) {
-                value = calculator.calc(value, gen.eval());
+                final Val val = gen.eval();
+                if (!val.type().isValue()) {
+                    return val;
+                }
+                value = calculator.calc(value, val);
             }
-            if (!value.hasValue()) {
+            if (!value.type().isValue()) {
                 return value;
             }
             return ValDouble.create(value.toDouble() / childGenerators.length);

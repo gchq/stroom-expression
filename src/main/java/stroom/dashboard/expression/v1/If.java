@@ -98,7 +98,7 @@ class If extends AbstractManyChildFunction implements Serializable {
         @Override
         public Val eval() {
             final Val val = childGenerators[0].eval();
-            if (!val.hasValue()) {
+            if (!val.type().isValue()) {
                 return val;
             }
 

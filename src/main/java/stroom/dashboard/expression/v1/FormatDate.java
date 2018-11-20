@@ -109,7 +109,11 @@ class FormatDate extends AbstractFunction implements Serializable {
 
         @Override
         public Val eval() {
-            final Long millis = childGenerator.eval().toLong();
+            final Val val = childGenerator.eval();
+            if (!val.type().isValue()) {
+                return val;
+            }
+            final Long millis = val.toLong();
             if (millis == null) {
                 return ValErr.create("Unable to convert argument to long");
             }

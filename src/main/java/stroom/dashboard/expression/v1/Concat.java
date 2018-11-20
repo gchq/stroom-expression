@@ -46,9 +46,13 @@ class Concat extends AbstractManyChildFunction {
         public Val eval() {
             final StringBuilder sb = new StringBuilder();
             for (final Generator gen : childGenerators) {
-                final String value = gen.eval().toString();
-                if (value != null) {
-                    sb.append(value);
+                final Val val = gen.eval();
+                if (val.type().isError()) {
+                    return val;
+                }
+                final String string = val.toString();
+                if (string != null) {
+                    sb.append(string);
                 }
             }
             return ValString.create(sb.toString());

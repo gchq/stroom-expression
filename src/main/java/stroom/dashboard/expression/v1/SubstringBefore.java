@@ -99,37 +99,39 @@ class SubstringBefore extends AbstractFunction implements Serializable {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private final Generator beforeGenerator;
+        private final Generator stringGenerator;
 
-        Gen(final Generator childGenerator, final Generator beforeGenerator) {
+        Gen(final Generator childGenerator, final Generator stringGenerator) {
             super(childGenerator);
-            this.beforeGenerator = beforeGenerator;
+            this.stringGenerator = stringGenerator;
         }
 
         @Override
         public void set(final Val[] values) {
             childGenerator.set(values);
-            beforeGenerator.set(values);
+            stringGenerator.set(values);
         }
 
         @Override
         public Val eval() {
-            final String value = childGenerator.eval().toString();
-            if (value != null) {
-                final String before = beforeGenerator.eval().toString();
-                if (before == null) {
-                    return ValString.EMPTY;
-                }
+            final Val val = childGenerator.eval();
+            if (!val.type().isValue()) {
+                return ValErr.wrap(val);
+            }
+            final String value = val.toString();
 
-                final int index = value.indexOf(before);
-                if (index < 0) {
-                    return ValString.EMPTY;
-                }
+            final Val strVal = stringGenerator.eval();
+            if (!strVal.type().isValue()) {
+                return ValErr.wrap(strVal);
+            }
+            final String str = strVal.toString();
 
-                return ValString.create(value.substring(0, index));
+            final int index = value.indexOf(str);
+            if (index < 0) {
+                return ValString.EMPTY;
             }
 
-            return ValNull.INSTANCE;
+            return ValString.create(value.substring(0, index));
         }
     }
 }

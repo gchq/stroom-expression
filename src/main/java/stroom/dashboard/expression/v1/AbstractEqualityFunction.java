@@ -16,20 +16,23 @@
 
 package stroom.dashboard.expression.v1;
 
-public abstract class NumericFunction extends AbstractManyChildFunction {
+abstract class AbstractEqualityFunction extends AbstractManyChildFunction {
+    private static final ValErr CHILD_ERROR = ValErr.create("Error evaluating child generator");
+    private static final ValErr MISSING_VALUE = ValErr.create("Both values must have a value to test equality");
+
     private final boolean usingOperator;
 
-    public NumericFunction(final String name, final int minParams, final int maxParams) {
-        super(name, minParams, maxParams);
-        usingOperator = name.length() == 1;
+    AbstractEqualityFunction(final String name, final String operator) {
+        super(name, 2, 2);
+        usingOperator = operator.equals(name);
     }
 
     @Override
     protected Generator createGenerator(final Generator[] childGenerators) {
-        return new Gen(childGenerators, getCalculator());
+        return new Gen(childGenerators, createEvaluator());
     }
 
-    protected abstract Calculator getCalculator();
+    abstract Evaluator createEvaluator();
 
     @Override
     public void appendString(final StringBuilder sb) {
@@ -60,11 +63,11 @@ public abstract class NumericFunction extends AbstractManyChildFunction {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 217968020285584214L;
 
-        private final Calculator calculator;
+        private final Evaluator evaluator;
 
-        Gen(final Generator[] childGenerators, final Calculator calculator) {
+        Gen(final Generator[] childGenerators, final Evaluator evaluator) {
             super(childGenerators);
-            this.calculator = calculator;
+            this.evaluator = evaluator;
         }
 
         @Override
@@ -76,15 +79,24 @@ public abstract class NumericFunction extends AbstractManyChildFunction {
 
         @Override
         public Val eval() {
-            Val value = ValNull.INSTANCE;
-            for (final Generator gen : childGenerators) {
-                final Val val = gen.eval();
-                if (!val.type().isValue()) {
-                    return val;
+            final Val[] values = new Val[childGenerators.length];
+
+            for (int i = 0; i < childGenerators.length; i++) {
+                Val val;
+                try {
+                    val = childGenerators[i].eval();
+                } catch (final RuntimeException e) {
+                    return CHILD_ERROR;
                 }
-                value = calculator.calc(value, val);
+
+                if (!val.type().isValue()) {
+                    return ValErr.wrap(val, MISSING_VALUE);
+                }
+
+                values[i] = val;
             }
-            return value;
+
+            return evaluator.evaluate(values[0], values[1]);
         }
     }
 }

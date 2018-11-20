@@ -22,16 +22,21 @@ abstract class Calculator implements Serializable {
     private static final long serialVersionUID = 7429374303179048909L;
 
     Val calc(final Val current, final Val value) {
-        final Double cur = current.toDouble();
-        final Double val = value.toDouble();
-        if (val == null) {
-            return current;
-        }
-        if (cur == null) {
-            return value;
-        }
         try {
+            if (value.type().isError()) {
+                return value;
+            }
+
+            final Double cur = current.toDouble();
+            final Double val = value.toDouble();
+            if (val == null) {
+                return current;
+            }
+            if (cur == null) {
+                return value;
+            }
             return ValDouble.create(op(cur, val));
+
         } catch (RuntimeException e) {
             return ValErr.create(e.getMessage());
         }

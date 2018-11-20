@@ -119,7 +119,7 @@ abstract class AbstractIncludeExclude extends AbstractManyChildFunction implemen
         @Override
         public Val eval() {
             final Val val = childGenerators[0].eval();
-            if (!val.hasValue()) {
+            if (!val.type().isValue()) {
                 return val;
             }
 
@@ -128,11 +128,14 @@ abstract class AbstractIncludeExclude extends AbstractManyChildFunction implemen
 
                 boolean found = false;
                 for (int i = 1; i < childGenerators.length && !found; i++) {
-                    final String regex = childGenerators[i].eval().toString();
-                    if (regex != null && regex.length() > 0) {
-                        final Pattern pattern = PatternCache.get(regex);
-                        if (pattern.matcher(value).matches()) {
-                            found = true;
+                    final Val v = childGenerators[i].eval();
+                    if (v.type().isValue()) {
+                        final String regex = v.toString();
+                        if (regex.length() > 0) {
+                            final Pattern pattern = PatternCache.get(regex);
+                            if (pattern.matcher(value).matches()) {
+                                found = true;
+                            }
                         }
                     }
                 }

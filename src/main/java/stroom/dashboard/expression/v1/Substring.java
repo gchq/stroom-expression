@@ -130,32 +130,41 @@ class Substring extends AbstractFunction implements Serializable {
 
         @Override
         public Val eval() {
-            final String value = childGenerator.eval().toString();
-            if (value != null) {
-                Integer startPos = startPosGenerator.eval().toInteger();
-                Integer endPos = endPosGenerator.eval().toInteger();
-                if (startPos == null || endPos == null) {
-                    return ValString.EMPTY;
-                }
-
-                int start = startPos;
-                int end = endPos;
-
-                if (start < 0) {
-                    start = 0;
-                }
-
-                if (end < 0 || end < start || start >= value.length()) {
-                    return ValString.EMPTY;
-                }
-
-                if (end >= value.length()) {
-                    return ValString.create(value.substring(start));
-                }
-                return ValString.create(value.substring(start, end));
+            final Val val = childGenerator.eval();
+            if (!val.type().isValue()) {
+                return ValErr.wrap(val);
+            }
+            final Val startVal = startPosGenerator.eval();
+            if (!startVal.type().isValue()) {
+                return ValErr.wrap(startVal);
+            }
+            final Val endVal = endPosGenerator.eval();
+            if (!endVal.type().isValue()) {
+                return ValErr.wrap(endVal);
             }
 
-            return ValNull.INSTANCE;
+            final String value = val.toString();
+            final Integer startPos = startVal.toInteger();
+            final Integer endPos = endVal.toInteger();
+            if (startPos == null || endPos == null) {
+                return ValErr.INSTANCE;
+            }
+
+            int start = startPos;
+            int end = endPos;
+
+            if (start < 0) {
+                start = 0;
+            }
+
+            if (end < 0 || end < start || start >= value.length()) {
+                return ValString.EMPTY;
+            }
+
+            if (end >= value.length()) {
+                return ValString.create(value.substring(start));
+            }
+            return ValString.create(value.substring(start, end));
         }
     }
 }

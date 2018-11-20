@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 class ToLong extends AbstractCast implements Serializable {
     static final String NAME = "toLong";
+    private static final ValErr ERROR = ValErr.create("Unable to cast to a long");
     private static final long serialVersionUID = -305845496003936297L;
     private static final Cast CAST = new Cast();
 
@@ -35,7 +36,7 @@ class ToLong extends AbstractCast implements Serializable {
     private static class Cast extends AbstractCaster {
         @Override
         Val cast(final Val val) {
-            if (!val.hasValue()) {
+            if (!val.type().isValue()) {
                 return val;
             }
 
@@ -43,7 +44,7 @@ class ToLong extends AbstractCast implements Serializable {
             if (value != null) {
                 return ValLong.create(value);
             }
-            return ValErr.INSTANCE;
+            return ERROR;
         }
     }
 }

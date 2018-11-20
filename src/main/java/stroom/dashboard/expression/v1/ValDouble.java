@@ -16,19 +16,18 @@
 
 package stroom.dashboard.expression.v1;
 
+import javax.xml.bind.annotation.XmlTransient;
+import java.beans.Transient;
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Optional;
 
 public class ValDouble implements ValNumber {
-    private static final String TYPE = "double";
-    private double value;
+    private static final Type TYPE = new DoubleType();
+    private final double value;
     private transient Optional<String> optionalString;
 
-    ValDouble() {
-    }
-
-    ValDouble(final double value) {
+    private ValDouble(final double value) {
         this.value = value;
     }
 
@@ -76,12 +75,9 @@ public class ValDouble implements ValNumber {
     }
 
     @Override
-    public boolean hasValue() {
-        return true;
-    }
-
-    @Override
-    public String getType() {
+    @Transient
+    @XmlTransient
+    public Type type() {
         return TYPE;
     }
 
@@ -101,5 +97,34 @@ public class ValDouble implements ValNumber {
     @Override
     public int compareTo(final Val o) {
         return Double.compare(value, ((ValDouble) o).value);
+    }
+
+    private static class DoubleType implements Type {
+        private static final String NAME = "double";
+
+        @Override
+        public boolean isValue() {
+            return true;
+        }
+
+        @Override
+        public boolean isNumber() {
+            return true;
+        }
+
+        @Override
+        public boolean isError() {
+            return false;
+        }
+
+        @Override
+        public boolean isNull() {
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return NAME;
+        }
     }
 }

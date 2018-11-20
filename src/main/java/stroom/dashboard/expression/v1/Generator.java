@@ -38,7 +38,7 @@ public interface Generator extends Serializable, Comparable<Generator> {
      * Evaluate this generator by applying the function that this generator
      * performs to the values supplied by set().
      *
-     * @return The result of applying this function to the suppled values.
+     * @return The result of applying this function to the supplied values.
      */
     Val eval();
 
