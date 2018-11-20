@@ -62,6 +62,10 @@ abstract class AbstractIsFunction extends AbstractFunction implements Serializab
         return hasAggregate;
     }
 
+    interface Test extends Serializable {
+        Val test(Val val);
+    }
+
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911893616L;
 
@@ -81,9 +85,5 @@ abstract class AbstractIsFunction extends AbstractFunction implements Serializab
         public Val eval() {
             return test.test(childGenerator.eval());
         }
-    }
-
-    interface Test extends Serializable {
-        Val test(Val val);
     }
 }

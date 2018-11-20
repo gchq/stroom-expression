@@ -17,10 +17,9 @@
 package stroom.dashboard.expression.v1;
 
 class Equals extends AbstractEqualityFunction {
-    private static final EqualsEvaluator EVALUATOR = new EqualsEvaluator();
-
     static final String NAME = "=";
     static final String ALIAS = "equals";
+    private static final EqualsEvaluator EVALUATOR = new EqualsEvaluator();
 
     public Equals(final String name) {
         super(name, NAME);

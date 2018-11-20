@@ -19,9 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 
 class ToInteger extends AbstractCast implements Serializable {
-    private static final ValErr ERROR = ValErr.create("Unable to cast to an integer");
-
     static final String NAME = "toInteger";
+    private static final ValErr ERROR = ValErr.create("Unable to cast to an integer");
     private static final long serialVersionUID = -305845496003936297L;
     private static final Cast CAST = new Cast();
 

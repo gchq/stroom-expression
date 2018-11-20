@@ -17,10 +17,9 @@
 package stroom.dashboard.expression.v1;
 
 class LessThanOrEqualTo extends AbstractEqualityFunction {
-    private static final LessThanOrEqualToEvaluator EVALUATOR = new LessThanOrEqualToEvaluator();
-
     static final String NAME = "<=";
     static final String ALIAS = "lessThanOrEqualTo";
+    private static final LessThanOrEqualToEvaluator EVALUATOR = new LessThanOrEqualToEvaluator();
 
     public LessThanOrEqualTo(final String name) {
         super(name, NAME);

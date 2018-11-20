@@ -19,10 +19,9 @@ package stroom.dashboard.expression.v1;
 import java.util.Objects;
 
 public class ValBoolean implements Val {
-    private static final Type TYPE = new BooleanType();
     static final ValBoolean TRUE = new ValBoolean(true);
     static final ValBoolean FALSE = new ValBoolean(false);
-
+    private static final Type TYPE = new BooleanType();
     private final boolean value;
 
     private ValBoolean(final boolean value) {

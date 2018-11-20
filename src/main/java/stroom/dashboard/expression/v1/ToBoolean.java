@@ -19,9 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 
 class ToBoolean extends AbstractCast implements Serializable {
-    private static final ValErr ERROR = ValErr.create("Unable to cast to a boolean");
-
     static final String NAME = "toBoolean";
+    private static final ValErr ERROR = ValErr.create("Unable to cast to a boolean");
     private static final long serialVersionUID = -305845496003936297L;
     private static final Cast CAST = new Cast();
 

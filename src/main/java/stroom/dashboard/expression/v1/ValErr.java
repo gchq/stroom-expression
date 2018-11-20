@@ -19,9 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.util.Objects;
 
 public class ValErr implements Val {
-    private static final Type TYPE = new ErrType();
     public static final ValErr INSTANCE = new ValErr("Err");
-
+    private static final Type TYPE = new ErrType();
     private final String message;
 
     private ValErr(final String message) {

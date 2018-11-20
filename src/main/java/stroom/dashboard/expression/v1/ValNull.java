@@ -17,8 +17,8 @@
 package stroom.dashboard.expression.v1;
 
 public class ValNull implements Val {
-    private static final Type TYPE = new NullType();
     public static final ValNull INSTANCE = new ValNull();
+    private static final Type TYPE = new NullType();
 
     private ValNull() {
         // Use instance only

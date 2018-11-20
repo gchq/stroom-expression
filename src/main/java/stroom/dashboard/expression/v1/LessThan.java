@@ -17,10 +17,9 @@
 package stroom.dashboard.expression.v1;
 
 class LessThan extends AbstractEqualityFunction {
-    private static final LessThanEvaluator EVALUATOR = new LessThanEvaluator();
-
     static final String NAME = "<";
     static final String ALIAS = "lessThan";
+    private static final LessThanEvaluator EVALUATOR = new LessThanEvaluator();
 
     public LessThan(final String name) {
         super(name, NAME);

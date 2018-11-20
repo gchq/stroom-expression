@@ -19,9 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 
 class ToLong extends AbstractCast implements Serializable {
-    private static final ValErr ERROR = ValErr.create("Unable to cast to a long");
-
     static final String NAME = "toLong";
+    private static final ValErr ERROR = ValErr.create("Unable to cast to a long");
     private static final long serialVersionUID = -305845496003936297L;
     private static final Cast CAST = new Cast();
 

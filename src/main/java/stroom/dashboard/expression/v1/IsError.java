@@ -17,7 +17,6 @@
 package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
-import java.text.ParseException;
 
 class IsError extends AbstractIsFunction implements Serializable {
     static final String NAME = "isError";

@@ -17,10 +17,9 @@
 package stroom.dashboard.expression.v1;
 
 class GreaterThan extends AbstractEqualityFunction {
-    private static final GreaterThanEvaluator EVALUATOR = new GreaterThanEvaluator();
-
     static final String NAME = ">";
     static final String ALIAS = "greaterThan";
+    private static final GreaterThanEvaluator EVALUATOR = new GreaterThanEvaluator();
 
     public GreaterThan(final String name) {
         super(name, NAME);
