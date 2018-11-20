@@ -4,15 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v2.0.0] - 2018-11-20
+
+* Added automatic module name for Java 9+ builds.
+
 ## [v1.4.12] - 2018-11-20
 
 * Issue **#22** : Added additional type checking functions `isBoolean()`, `isDouble()`, `isError()`, `isInteger()`, `isLong()`, `isNull()`, `isNumber()`, `isString()`, `isValue()`. Testing equality of null with `x=null()` is no longer valid and must be replaced with `isNull(x)`.
 
 * Issue **#19** : Fix handling of `err()` in multi child generators
-
-## [v1.4.4] - 2018-09-05
-
-* Added automatic module name for Java 9+ builds.
 
 ## [v1.4.3] - 2018-08-20
 
