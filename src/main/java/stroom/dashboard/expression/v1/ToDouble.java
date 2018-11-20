@@ -43,7 +43,7 @@ class ToDouble extends AbstractCast implements Serializable {
             if (value != null) {
                 return ValDouble.create(value);
             }
-            return ValErr.INSTANCE;
+            return ValErr.create(String.format("Unable to cast %s to a double", val));
         }
     }
 }

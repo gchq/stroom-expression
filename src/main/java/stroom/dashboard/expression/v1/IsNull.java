@@ -18,32 +18,24 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 
-class ToInteger extends AbstractCast implements Serializable {
-    static final String NAME = "toInteger";
-    private static final long serialVersionUID = -305845496003936297L;
-    private static final Cast CAST = new Cast();
+class IsNull extends AbstractIsFunction implements Serializable {
+    static final String NAME = "isNull";
+    private static final long serialVersionUID = -305845496413936297L;
+    private static final NullTest TEST = new NullTest();
 
-    public ToInteger(final String name) {
+    public IsNull(final String name) {
         super(name);
     }
 
     @Override
-    AbstractCaster getCaster() {
-        return CAST;
+    Test getTest() {
+        return TEST;
     }
 
-    private static class Cast extends AbstractCaster {
+    private static class NullTest implements Test {
         @Override
-        Val cast(final Val val) {
-            if (!val.hasValue()) {
-                return val;
-            }
-
-            final Integer value = val.toInteger();
-            if (value != null) {
-                return ValInteger.create(value);
-            }
-            return ValErr.create(String.format("Unable to cast %s to a integer", val));
+        public Val test(final Val val) {
+            return ValBoolean.create(val.type().isNull());
         }
     }
 }

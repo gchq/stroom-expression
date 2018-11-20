@@ -16,23 +16,23 @@
 
 package stroom.dashboard.expression.v1;
 
-import java.util.Optional;
+abstract class AbstractEqualityFunction extends AbstractManyChildFunction {
+    private static final ValErr CHILD_ERROR = ValErr.create("Error evaluating child generator");
+    private static final ValErr MISSING_VALUE = ValErr.create("Both values must have a value to test equality");
 
-class LessThan extends AbstractManyChildFunction {
-    static final String NAME = "<";
-    static final String ALIAS = "lessThan";
     private final boolean usingOperator;
 
-    public LessThan(final String name) {
+    AbstractEqualityFunction(final String name, final String operator) {
         super(name, 2, 2);
-        usingOperator = name.length() == 1;
-
+        usingOperator = operator.equals(name);
     }
 
     @Override
     protected Generator createGenerator(final Generator[] childGenerators) {
-        return new Gen(childGenerators);
+        return new Gen(childGenerators, createEvaluator());
     }
+
+    abstract Evaluator createEvaluator();
 
     @Override
     public void appendString(final StringBuilder sb) {
@@ -63,14 +63,11 @@ class LessThan extends AbstractManyChildFunction {
     private static class Gen extends AbstractManyChildGenerator {
         private static final long serialVersionUID = 217968020285584214L;
 
-        private static final Evaluator EVALUATOR = Evaluator.builder(NAME)
-                .addReturnErrorOnFirstErrorValue()
-                .addReturnErrorOnFirstNullValue()
-                .addEvaluationFunction(Gen::doEval)
-                .build();
+        private final Evaluator evaluator;
 
-        Gen(final Generator[] childGenerators) {
+        Gen(final Generator[] childGenerators, final Evaluator evaluator) {
             super(childGenerators);
+            this.evaluator = evaluator;
         }
 
         @Override
@@ -82,29 +79,24 @@ class LessThan extends AbstractManyChildFunction {
 
         @Override
         public Val eval() {
-            return EVALUATOR.evaluate(childGenerators);
-        }
+            final Val[] values = new Val[childGenerators.length];
 
-        private static Optional<Val> doEval(Val... values) {
-            final Val a = values[0];
-            final Val b = values[1];
-
-            Optional<Val> retVal = Evaluator.OPT_FALSE_VALUE;
-
-            final Double da = a.toDouble();
-            final Double db = b.toDouble();
-            if (da == null || db == null) {
-                int ret = a.toString().compareTo(b.toString());
-                if (ret < 0) {
-                    retVal = Evaluator.OPT_TRUE_VALUE;
+            for (int i = 0; i < childGenerators.length; i++) {
+                Val val;
+                try {
+                    val = childGenerators[i].eval();
+                } catch (final RuntimeException e) {
+                    return CHILD_ERROR;
                 }
-            } else {
-                if (da < db) {
-                    retVal = Evaluator.OPT_TRUE_VALUE;
+
+                if (!val.type().isValue()) {
+                    return ValErr.wrap(val, MISSING_VALUE);
                 }
+
+                values[i] = val;
             }
 
-            return retVal;
+            return evaluator.evaluate(values[0], values[1]);
         }
     }
 }

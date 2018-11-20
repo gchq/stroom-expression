@@ -119,22 +119,36 @@ class Decode extends AbstractManyChildFunction implements Serializable {
         @Override
         public Val eval() {
             final Val val = childGenerators[0].eval();
-            if (!val.hasValue()) {
+            if (!val.type().isValue()) {
                 return val;
             }
 
             try {
                 final String value = val.toString();
-                String newValue = childGenerators[childGenerators.length - 1].eval().toString();
+                Val newVal = childGenerators[childGenerators.length - 1].eval();
+                if (!newVal.type().isValue()) {
+                    return ValErr.wrap(newVal);
+                }
+                String newValue = newVal.toString();
+
                 for (int i = 1; i < childGenerators.length - 1; i += 2) {
-                    final String regex = childGenerators[i].eval().toString();
-                    if (regex == null || regex.length() == 0) {
-                        throw new ParseException("Empty regex", 0);
+                    final Val valRegex = childGenerators[i].eval();
+                    if (!valRegex.type().isValue()) {
+                        return ValErr.wrap(valRegex);
+                    }
+
+                    final String regex = valRegex.toString();
+                    if (regex.length() == 0) {
+                        return ValErr.create("Empty regex");
                     }
 
                     final Pattern pattern = PatternCache.get(regex);
                     if (pattern.matcher(value).matches()) {
-                        newValue = childGenerators[i + 1].eval().toString();
+                        newVal = childGenerators[i + 1].eval();
+                        if (!newVal.type().isValue()) {
+                            return ValErr.wrap(newVal);
+                        }
+                        newValue = newVal.toString();
                         break;
                     }
                 }
@@ -145,7 +159,7 @@ class Decode extends AbstractManyChildFunction implements Serializable {
 
                 return ValString.create(newValue);
 
-            } catch (final ParseException | RuntimeException e) {
+            } catch (final RuntimeException e) {
                 return ValErr.create(e.getMessage());
             }
         }

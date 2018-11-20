@@ -33,10 +33,10 @@ class ExtractionGenerator extends AbstractSingleChildGenerator {
 
     @Override
     public Val eval() {
-        final String string = childGenerator.eval().toString();
-        if (string != null) {
-            return ValString.create(extractor.extract(string));
+        final Val val = childGenerator.eval();
+        if (!val.type().isValue()) {
+            return val;
         }
-        return ValNull.INSTANCE;
+        return ValString.create(extractor.extract(val.toString()));
     }
 }

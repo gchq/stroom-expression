@@ -43,7 +43,7 @@ class ToBoolean extends AbstractCast implements Serializable {
             if (value != null) {
                 return ValBoolean.create(value);
             }
-            return ValErr.INSTANCE;
+            return ValErr.create(String.format("Unable to cast %s to a boolean", val));
         }
     }
 }

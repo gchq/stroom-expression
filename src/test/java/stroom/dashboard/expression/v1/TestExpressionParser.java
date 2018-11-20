@@ -433,6 +433,16 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testIf_nullHandling() throws ParseException {
+        final Generator gen = createGenerator("if(${val}=null(), true(), false())");
+
+        gen.set(new Val[]{ValNull.INSTANCE});
+
+        final Val out = gen.eval();
+        Assert.assertEquals(ValBoolean.TRUE, out);
+    }
+
+    @Test
     public void testReplace1() throws ParseException {
         final Generator gen = createGenerator("replace('this', 'is', 'at')");
 
@@ -1273,7 +1283,6 @@ public class TestExpressionParser {
 
     }
 
-
     @Test
     public void testSubstring2() throws ParseException {
         final Generator gen = createGenerator("substring(${val}, 0, 99)");
@@ -1460,7 +1469,7 @@ public class TestExpressionParser {
     public void testDivide1() throws ParseException {
         final Generator gen = createGenerator("8/4");
 
-        gen.set(getVal(1D));
+//        gen.set(getVal(1D));
 
         final Val out = gen.eval();
         Assert.assertEquals(2D, out.toDouble(), 0);
@@ -1997,6 +2006,56 @@ public class TestExpressionParser {
         final Generator gen = createGenerator("toString(${val})");
         gen.set(getVal("100"));
         Assert.assertEquals(ValString.create("100"), gen.eval());
+    }
+
+    @Test
+    public void testErrorHandling1() throws ParseException {
+        ValLong valLong = ValLong.create(10);
+        assertThatItEvaluatesToValErr("(${val}=err())", valLong);
+        assertThatItEvaluatesToValErr("(err()=${val})", valLong);
+        assertThatItEvaluatesToValErr("(err()=null())", valLong);
+        assertThatItEvaluatesToValErr("(null()=err())", valLong);
+        assertThatItEvaluatesToValErr("(null()=${val})", valLong);
+        assertThatItEvaluatesToValErr("(${val}=null())", valLong);
+
+        assertThatItEvaluatesToValErr("(${val}>=err())", valLong);
+        assertThatItEvaluatesToValErr("(err()>=${val})", valLong);
+        assertThatItEvaluatesToValErr("(err()>=null())", valLong);
+        assertThatItEvaluatesToValErr("(null()>=err())", valLong);
+        assertThatItEvaluatesToValErr("(null()>=${val})", valLong);
+        assertThatItEvaluatesToValErr("(${val}>=null())", valLong);
+
+        assertThatItEvaluatesToValErr("(${val}>err())", valLong);
+        assertThatItEvaluatesToValErr("(err()>${val})", valLong);
+        assertThatItEvaluatesToValErr("(err()>null())", valLong);
+        assertThatItEvaluatesToValErr("(null()>err())", valLong);
+        assertThatItEvaluatesToValErr("(null()>${val})", valLong);
+        assertThatItEvaluatesToValErr("(${val}>null())", valLong);
+
+        assertThatItEvaluatesToValErr("(${val}<=err())", valLong);
+        assertThatItEvaluatesToValErr("(err()<=${val})", valLong);
+        assertThatItEvaluatesToValErr("(err()<=null())", valLong);
+        assertThatItEvaluatesToValErr("(null()<=err())", valLong);
+        assertThatItEvaluatesToValErr("(null()<=${val})", valLong);
+        assertThatItEvaluatesToValErr("(${val}<=null())", valLong);
+
+        assertThatItEvaluatesToValErr("(${val}<err())", valLong);
+        assertThatItEvaluatesToValErr("(err()<${val})", valLong);
+        assertThatItEvaluatesToValErr("(err()<null())", valLong);
+        assertThatItEvaluatesToValErr("(null()<err())", valLong);
+        assertThatItEvaluatesToValErr("(null()<${val})", valLong);
+        assertThatItEvaluatesToValErr("(${val}<null())", valLong);
+    }
+
+    private void assertThatItEvaluatesToValErr(final String expression, final Val... values) throws ParseException {
+        Generator gen = createGenerator(expression);
+        gen.set(values);
+        Val out = gen.eval();
+        System.out.println(expression + " - " +
+                out.getClass().getSimpleName() + ": " +
+                out.toString() +
+                (out instanceof ValErr ? (" - " + ((ValErr)out).getMessage()) : ""));
+        Assert.assertTrue(out instanceof ValErr);
     }
 
     @Test

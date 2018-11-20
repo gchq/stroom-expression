@@ -19,14 +19,14 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-class LowerCase extends AbstractFunction implements Serializable {
-    static final String NAME = "lowerCase";
-    private static final long serialVersionUID = -305845496003936297L;
+class IsNull extends AbstractFunction implements Serializable {
+    static final String NAME = "isNull";
+    private static final long serialVersionUID = -305845496413936297L;
     private Generator gen;
     private Function function;
     private boolean hasAggregate;
 
-    public LowerCase(final String name) {
+    public IsNull(final String name) {
         super(name, 1, 1);
     }
 
@@ -39,9 +39,8 @@ class LowerCase extends AbstractFunction implements Serializable {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
         } else {
-            // Optimise replacement of static input in case user does something stupid.
-            gen = new StaticValueFunction(ValString.create(param.toString().toLowerCase())).createGenerator();
-            hasAggregate = false;
+            // Static computation.
+            gen = new StaticValueFunction(ValBoolean.create(params[0] instanceof ValNull)).createGenerator();
         }
     }
 
@@ -61,12 +60,8 @@ class LowerCase extends AbstractFunction implements Serializable {
     }
 
     private static class Gen extends AbstractSingleChildGenerator {
-        private static final long serialVersionUID = 8153777070911899616L;
+        private static final long serialVersionUID = 8153777070911893616L;
 
-        private static final Evaluator EVALUATOR = Evaluator.builder(NAME)
-                .addReturnErrorOnFirstErrorValue()
-                .addStringMapper(String::toLowerCase, true, false)
-                .build();
 
         Gen(final Generator childGenerator) {
             super(childGenerator);
@@ -79,7 +74,16 @@ class LowerCase extends AbstractFunction implements Serializable {
 
         @Override
         public Val eval() {
-            return EVALUATOR.evaluate(childGenerator);
+            final Val val = childGenerator.eval();
+            if (!val.type().isValue()) {
+                if (val.type().isError()) {
+                    return val;
+                }
+                if (val.type().isNull()) {
+                    return ValBoolean.TRUE;
+                }
+            }
+            return ValBoolean.FALSE;
         }
     }
 }

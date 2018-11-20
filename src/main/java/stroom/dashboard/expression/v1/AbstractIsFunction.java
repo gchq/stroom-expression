@@ -19,14 +19,13 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 import java.text.ParseException;
 
-class LowerCase extends AbstractFunction implements Serializable {
-    static final String NAME = "lowerCase";
-    private static final long serialVersionUID = -305845496003936297L;
+abstract class AbstractIsFunction extends AbstractFunction implements Serializable {
+    private static final long serialVersionUID = -305145496413936297L;
     private Generator gen;
     private Function function;
     private boolean hasAggregate;
 
-    public LowerCase(final String name) {
+    AbstractIsFunction(final String name) {
         super(name, 1, 1);
     }
 
@@ -38,10 +37,11 @@ class LowerCase extends AbstractFunction implements Serializable {
         if (param instanceof Function) {
             function = (Function) param;
             hasAggregate = function.hasAggregate();
+        } else if (param instanceof Val) {
+            // Static computation.
+            gen = new StaticValueFunction(getTest().test((Val) param)).createGenerator();
         } else {
-            // Optimise replacement of static input in case user does something stupid.
-            gen = new StaticValueFunction(ValString.create(param.toString().toLowerCase())).createGenerator();
-            hasAggregate = false;
+            throw new RuntimeException("Unexpected type [" + param.getClass().getSimpleName() + "]");
         }
     }
 
@@ -52,8 +52,10 @@ class LowerCase extends AbstractFunction implements Serializable {
         }
 
         final Generator childGenerator = function.createGenerator();
-        return new Gen(childGenerator);
+        return new Gen(childGenerator, getTest());
     }
+
+    abstract Test getTest();
 
     @Override
     public boolean hasAggregate() {
@@ -61,15 +63,13 @@ class LowerCase extends AbstractFunction implements Serializable {
     }
 
     private static class Gen extends AbstractSingleChildGenerator {
-        private static final long serialVersionUID = 8153777070911899616L;
+        private static final long serialVersionUID = 8153777070911893616L;
 
-        private static final Evaluator EVALUATOR = Evaluator.builder(NAME)
-                .addReturnErrorOnFirstErrorValue()
-                .addStringMapper(String::toLowerCase, true, false)
-                .build();
+        private final Test test;
 
-        Gen(final Generator childGenerator) {
+        Gen(final Generator childGenerator, final Test test) {
             super(childGenerator);
+            this.test = test;
         }
 
         @Override
@@ -79,7 +79,11 @@ class LowerCase extends AbstractFunction implements Serializable {
 
         @Override
         public Val eval() {
-            return EVALUATOR.evaluate(childGenerator);
+            return test.test(childGenerator.eval());
         }
+    }
+
+    interface Test extends Serializable {
+        Val test(Val val);
     }
 }

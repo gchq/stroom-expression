@@ -123,13 +123,13 @@ class Hash extends AbstractFunction implements Serializable {
 
         @Override
         public Val eval() {
-            final String string = childGenerator.eval().toString();
-            if (string == null) {
-                return ValErr.create("Unable to convert argument to string");
+            final Val val = childGenerator.eval();
+            if (!val.type().isValue()) {
+                return ValErr.wrap(val, "Unable to convert argument to string");
             }
 
             try {
-                return ValString.create(hash(string, algorithm, salt));
+                return ValString.create(hash(val.toString(), algorithm, salt));
             } catch (final NoSuchAlgorithmException | RuntimeException e) {
                 return ValErr.create(e.getMessage());
             }

@@ -16,77 +16,25 @@
 
 package stroom.dashboard.expression.v1;
 
-class Equals extends AbstractManyChildFunction {
+class Equals extends AbstractEqualityFunction {
+    private static final EqualsEvaluator EVALUATOR = new EqualsEvaluator();
+
     static final String NAME = "=";
     static final String ALIAS = "equals";
-    private final boolean usingOperator;
 
     public Equals(final String name) {
-        super(name, 2, 2);
-        usingOperator = name.length() == 1;
-
+        super(name, NAME);
     }
 
     @Override
-    protected Generator createGenerator(final Generator[] childGenerators) {
-        return new Gen(childGenerators);
+    Evaluator createEvaluator() {
+        return EVALUATOR;
     }
 
-    @Override
-    public void appendString(final StringBuilder sb) {
-        if (usingOperator) {
-            appendParams(sb);
-        } else {
-            super.appendString(sb);
-        }
-    }
-
-    @Override
-    protected void appendParams(final StringBuilder sb) {
-        if (usingOperator) {
-            if (params != null) {
-                for (int i = 0; i < params.length; i++) {
-                    final Param param = params[i];
-                    appendParam(sb, param);
-                    if (i < params.length - 1) {
-                        sb.append(name);
-                    }
-                }
-            }
-        } else {
-            super.appendParams(sb);
-        }
-    }
-
-    private static class Gen extends AbstractManyChildGenerator {
-        private static final long serialVersionUID = 217968020285584214L;
-
-        Gen(final Generator[] childGenerators) {
-            super(childGenerators);
-        }
-
+    private static class EqualsEvaluator extends Evaluator {
         @Override
-        public void set(final Val[] values) {
-            for (final Generator generator : childGenerators) {
-                generator.set(values);
-            }
-        }
-
-        @Override
-        public Val eval() {
-            final Val a = childGenerators[0].eval();
-            final Val b = childGenerators[1].eval();
-
-            if (a instanceof ValNull && b instanceof ValNull) {
-                return ValBoolean.TRUE;
-            }
-            if (a instanceof ValErr && b instanceof ValErr) {
-                // treat two ValErr instances regardless of content as the same
-                return ValBoolean.TRUE;
-            } else if (a instanceof ValNull || b instanceof ValNull) {
-                // one is null, other is non-null
-                return ValBoolean.FALSE;
-            } else if (a.getClass().equals(b.getClass())) {
+        protected Val evaluate(final Val a, final Val b) {
+            if (a.getClass().equals(b.getClass())) {
                 if (a instanceof ValInteger) {
                     return ValBoolean.create(a.toInteger().equals(b.toInteger()));
                 }

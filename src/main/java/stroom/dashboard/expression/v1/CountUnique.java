@@ -84,7 +84,7 @@ class CountUnique extends AbstractFunction {
         public void set(final Val[] values) {
             childGenerator.set(values);
             final Val value = childGenerator.eval();
-            if (value.hasValue()) {
+            if (value.type().isValue()) {
                 uniqueValues.add(value);
             }
         }

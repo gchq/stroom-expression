@@ -43,7 +43,7 @@ class ToLong extends AbstractCast implements Serializable {
             if (value != null) {
                 return ValLong.create(value);
             }
-            return ValErr.INSTANCE;
+            return ValErr.create(String.format("Unable to cast %s to a long", val));
         }
     }
 }
