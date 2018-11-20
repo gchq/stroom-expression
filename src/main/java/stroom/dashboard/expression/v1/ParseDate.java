@@ -113,16 +113,16 @@ class ParseDate extends AbstractFunction implements Serializable {
 
         @Override
         public Val eval() {
-            final String value = childGenerator.eval().toString();
-            if (value != null) {
-                try {
-                    return ValLong.create(FormatterCache.parse(value, pattern, timeZone));
-                } catch (final RuntimeException e) {
-                    return ValErr.create(e.getMessage());
-                }
+            final Val val = childGenerator.eval();
+            if (!val.type().isValue()) {
+                return val;
             }
 
-            return ValNull.INSTANCE;
+            try {
+                return ValLong.create(FormatterCache.parse(val.toString(), pattern, timeZone));
+            } catch (final RuntimeException e) {
+                return ValErr.create(e.getMessage());
+            }
         }
     }
 }

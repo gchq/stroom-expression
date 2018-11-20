@@ -106,13 +106,17 @@ class Match extends AbstractManyChildFunction implements Serializable {
         @Override
         public Val eval() {
             final Val val = childGenerators[0].eval();
-            if (!val.hasValue()) {
+            if (!val.type().isValue()) {
                 return val;
+            }
+            final Val valRegex = childGenerators[1].eval();
+            if (!valRegex.type().isValue()) {
+                return ValErr.wrap(valRegex);
             }
 
             try {
                 final String value = val.toString();
-                final String regex = childGenerators[1].eval().toString();
+                final String regex = valRegex.toString();
                 final Pattern pattern = PatternCache.get(regex);
                 return ValBoolean.create(pattern.matcher(value).matches());
 

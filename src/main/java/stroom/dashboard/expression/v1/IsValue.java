@@ -17,73 +17,25 @@
 package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
-import java.text.ParseException;
 
-class IsNull extends AbstractFunction implements Serializable {
-    static final String NAME = "isNull";
-    private static final long serialVersionUID = -305845496413936297L;
-    private Generator gen;
-    private Function function;
-    private boolean hasAggregate;
+class IsValue extends AbstractIsFunction implements Serializable {
+    static final String NAME = "isValue";
+    private static final long serialVersionUID = -305145496413936297L;
+    private static final ValueTest TEST = new ValueTest();
 
-    public IsNull(final String name) {
-        super(name, 1, 1);
+    public IsValue(final String name) {
+        super(name);
     }
 
     @Override
-    public void setParams(final Param[] params) throws ParseException {
-        super.setParams(params);
-
-        final Param param = params[0];
-        if (param instanceof Function) {
-            function = (Function) param;
-            hasAggregate = function.hasAggregate();
-        } else {
-            // Static computation.
-            gen = new StaticValueFunction(ValBoolean.create(params[0] instanceof ValNull)).createGenerator();
-        }
+    Test getTest() {
+        return TEST;
     }
 
-    @Override
-    public Generator createGenerator() {
-        if (gen != null) {
-            return gen;
-        }
-
-        final Generator childGenerator = function.createGenerator();
-        return new Gen(childGenerator);
-    }
-
-    @Override
-    public boolean hasAggregate() {
-        return hasAggregate;
-    }
-
-    private static class Gen extends AbstractSingleChildGenerator {
-        private static final long serialVersionUID = 8153777070911893616L;
-
-
-        Gen(final Generator childGenerator) {
-            super(childGenerator);
-        }
-
+    private static class ValueTest implements Test {
         @Override
-        public void set(final Val[] values) {
-            childGenerator.set(values);
-        }
-
-        @Override
-        public Val eval() {
-            final Val val = childGenerator.eval();
-            if (!val.type().isValue()) {
-                if (val.type().isError()) {
-                    return val;
-                }
-                if (val.type().isNull()) {
-                    return ValBoolean.TRUE;
-                }
-            }
-            return ValBoolean.FALSE;
+        public Val test(final Val val) {
+            return ValBoolean.create(val.type().isValue());
         }
     }
 }

@@ -63,11 +63,6 @@ class LowerCase extends AbstractFunction implements Serializable {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private static final Evaluator EVALUATOR = Evaluator.builder(NAME)
-                .addReturnErrorOnFirstErrorValue()
-                .addStringMapper(String::toLowerCase, true, false)
-                .build();
-
         Gen(final Generator childGenerator) {
             super(childGenerator);
         }
@@ -79,7 +74,12 @@ class LowerCase extends AbstractFunction implements Serializable {
 
         @Override
         public Val eval() {
-            return EVALUATOR.evaluate(childGenerator);
+            final Val val = childGenerator.eval();
+            if (!val.type().isValue()) {
+                return val;
+            }
+
+            return ValString.create(val.toString().toLowerCase());
         }
     }
 }

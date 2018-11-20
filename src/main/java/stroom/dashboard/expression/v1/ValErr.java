@@ -19,7 +19,7 @@ package stroom.dashboard.expression.v1;
 import java.util.Objects;
 
 public class ValErr implements Val {
-    private static final String TYPE = "error";
+    private static final Type TYPE = new ErrType();
     public static final ValErr INSTANCE = new ValErr("Err");
 
     private final String message;
@@ -30,6 +30,30 @@ public class ValErr implements Val {
 
     public static ValErr create(final String message) {
         return new ValErr(message);
+    }
+
+    public static Val wrap(final Val val) {
+        if (val.type().isError()) {
+            return val;
+        } else {
+            return ValErr.INSTANCE;
+        }
+    }
+
+    public static Val wrap(final Val val, final String message) {
+        if (val.type().isError()) {
+            return val;
+        } else {
+            return create(message);
+        }
+    }
+
+    public static Val wrap(final Val val, final ValErr alternative) {
+        if (val.type().isError()) {
+            return val;
+        } else {
+            return alternative;
+        }
     }
 
     @Override
@@ -63,12 +87,7 @@ public class ValErr implements Val {
     }
 
     @Override
-    public boolean hasValue() {
-        return false;
-    }
-
-    @Override
-    public String getType() {
+    public Type type() {
         return TYPE;
     }
 
@@ -92,5 +111,34 @@ public class ValErr implements Val {
     @Override
     public int compareTo(final Val o) {
         return 0;
+    }
+
+    private static class ErrType implements Type {
+        private static final String NAME = "error";
+
+        @Override
+        public boolean isValue() {
+            return false;
+        }
+
+        @Override
+        public boolean isNumber() {
+            return false;
+        }
+
+        @Override
+        public boolean isError() {
+            return true;
+        }
+
+        @Override
+        public boolean isNull() {
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return NAME;
+        }
     }
 }

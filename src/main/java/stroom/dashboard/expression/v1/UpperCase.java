@@ -62,12 +62,6 @@ class UpperCase extends AbstractFunction implements Serializable {
     private static class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
-        private static final Evaluator EVALUATOR = Evaluator.builder(NAME)
-                .addReturnErrorOnFirstErrorValue()
-                .addStringMapper(String::toUpperCase, true, false)
-                .build();
-
-
         Gen(final Generator childGenerator) {
             super(childGenerator);
         }
@@ -80,11 +74,11 @@ class UpperCase extends AbstractFunction implements Serializable {
         @Override
         public Val eval() {
             final Val val = childGenerator.eval();
-            final String string = val.toString();
-            if (string != null) {
-                return ValString.create(string.toUpperCase());
+            if (!val.type().isValue()) {
+                return val;
             }
-            return ValErr.create(String.format("Unable to convert %s to upper case", val));
+
+            return ValString.create(val.toString().toUpperCase());
         }
     }
 }

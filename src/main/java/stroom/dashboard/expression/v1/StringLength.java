@@ -69,7 +69,6 @@ class StringLength extends AbstractFunction implements Serializable {
 
         Gen(final Generator childGenerator) {
             super(childGenerator);
-
         }
 
         @Override
@@ -79,12 +78,12 @@ class StringLength extends AbstractFunction implements Serializable {
 
         @Override
         public Val eval() {
-            final String val = childGenerator.eval().toString();
-            if (val != null) {
-                return ValInteger.create(val.length());
+            final Val val = childGenerator.eval();
+            if (!val.type().isValue()) {
+                return ValErr.wrap(val);
             }
 
-            return ValNull.INSTANCE;
+            return ValInteger.create(val.toString().length());
         }
     }
 }

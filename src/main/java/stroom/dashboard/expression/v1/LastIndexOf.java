@@ -114,16 +114,19 @@ class LastIndexOf extends AbstractFunction implements Serializable {
         @Override
         public Val eval() {
             final Val val = childGenerator.eval();
+            if (!val.type().isValue()) {
+                return ValErr.wrap(val);
+            }
             final String value = val.toString();
+            final Val strVal = stringGenerator.eval();
+            if (!strVal.type().isValue()) {
+                return ValErr.wrap(strVal);
+            }
+            final String str = strVal.toString();
 
-            if (value != null) {
-                final String string = stringGenerator.eval().toString();
-                if (string != null) {
-                    final int index = value.lastIndexOf(string);
-                    if (index >= 0) {
-                        return ValInteger.create(index);
-                    }
-                }
+            final int index = value.lastIndexOf(str);
+            if (index >= 0) {
+                return ValInteger.create(index);
             }
 
             return ValNull.INSTANCE;

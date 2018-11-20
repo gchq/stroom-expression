@@ -24,6 +24,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TestExpressionParser {
     private final ExpressionParser parser = new ExpressionParser(new FunctionFactory(), new ParamFactory());
@@ -439,7 +446,7 @@ public class TestExpressionParser {
         gen.set(new Val[]{ValNull.INSTANCE});
 
         final Val out = gen.eval();
-        Assert.assertEquals(ValBoolean.TRUE, out);
+        Assert.assertTrue(out.type().isError());
     }
 
     @Test
@@ -659,7 +666,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("", out.toString());
+        Assert.assertTrue(out.type().isError());
     }
 
     @Test
@@ -699,7 +706,7 @@ public class TestExpressionParser {
         gen.set(getVal("aa-bb"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("", out.toString());
+        Assert.assertTrue(out.type().isError());
     }
 
     @Test
@@ -837,7 +844,7 @@ public class TestExpressionParser {
         gen.set(new Val[]{ValNull.INSTANCE});
 
         final Val out = gen.eval();
-        Assert.assertEquals("true", out.toString());
+        Assert.assertTrue(out.type().isError());
     }
 
     @Test
@@ -847,7 +854,7 @@ public class TestExpressionParser {
         gen.set(getVal("plop"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("false", out.toString());
+        Assert.assertTrue(out.type().isError());
     }
 
     @Test
@@ -857,12 +864,52 @@ public class TestExpressionParser {
         gen.set(getVal("plop"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("true", out.toString());
+        Assert.assertTrue(out.type().isError());
     }
 
     @Test
     public void testEqualsNull4() throws ParseException {
         final Generator gen = createGenerator("if(${val}=null(), true(), false())");
+
+        gen.set(new Val[]{ValNull.INSTANCE});
+
+        final Val out = gen.eval();
+        Assert.assertTrue(out.type().isError());
+    }
+
+    @Test
+    public void testIsNull1() throws ParseException {
+        final Generator gen = createGenerator("isNull(${val1})");
+
+        gen.set(new Val[]{ValNull.INSTANCE});
+
+        final Val out = gen.eval();
+        Assert.assertEquals("true", out.toString());
+    }
+
+    @Test
+    public void testIsNull2() throws ParseException {
+        final Generator gen = createGenerator("isNull(${val})");
+
+        gen.set(getVal("plop"));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("false", out.toString());
+    }
+
+    @Test
+    public void testIsNull3() throws ParseException {
+        final Generator gen = createGenerator("isNull(null())");
+
+        gen.set(getVal("plop"));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("true", out.toString());
+    }
+
+    @Test
+    public void testIsNull4() throws ParseException {
+        final Generator gen = createGenerator("if(isNull(${val}), true(), false())");
 
         gen.set(new Val[]{ValNull.INSTANCE});
 
@@ -1014,7 +1061,6 @@ public class TestExpressionParser {
 
     @Test
     public void testBooleanExpressions() throws ParseException {
-
         ValBoolean vTrue = ValBoolean.TRUE;
         ValBoolean vFals = ValBoolean.FALSE; // intentional typo to keep var name length consistent
         ValNull vNull = ValNull.INSTANCE;
@@ -1042,9 +1088,9 @@ public class TestExpressionParser {
         ValString vStr_ = ValString.EMPTY;
 
         // null/error, equals
-        assertBooleanExpression(vNull, "=", vNull, vTrue);
-        assertBooleanExpression(vNull, "=", vEror, vFals);
-        assertBooleanExpression(vEror, "=", vEror, vTrue);
+        assertBooleanExpression(vNull, "=", vNull, vEror);
+        assertBooleanExpression(vNull, "=", vEror, vEror);
+        assertBooleanExpression(vEror, "=", vEror, vEror);
 
         // booleans, equals
         assertBooleanExpression(vTrue, "=", vTrue, vTrue);
@@ -1052,32 +1098,32 @@ public class TestExpressionParser {
         assertBooleanExpression(vTrue, "=", vFals, vFals);
 
         // longs, equals
-        assertBooleanExpression(vLng1, "=", vNull, vFals);
-        assertBooleanExpression(vNull, "=", vLng1, vFals);
+        assertBooleanExpression(vLng1, "=", vNull, vEror);
+        assertBooleanExpression(vNull, "=", vLng1, vEror);
         assertBooleanExpression(vLng1, "=", vLng1, vTrue);
         assertBooleanExpression(vLng1, "=", vLng2, vFals);
         assertBooleanExpression(vLng1, "=", vTrue, vTrue); // true() cast to 1
         assertBooleanExpression(vLng1, "=", vFals, vFals);
 
         // integers, equals
-        assertBooleanExpression(vInt1, "=", vNull, vFals);
-        assertBooleanExpression(vNull, "=", vInt1, vFals);
+        assertBooleanExpression(vInt1, "=", vNull, vEror);
+        assertBooleanExpression(vNull, "=", vInt1, vEror);
         assertBooleanExpression(vInt1, "=", vInt1, vTrue);
         assertBooleanExpression(vInt1, "=", vInt2, vFals);
         assertBooleanExpression(vInt1, "=", vTrue, vTrue); // true() cast to 1
         assertBooleanExpression(vInt1, "=", vFals, vFals);
 
         // doubles, equals
-        assertBooleanExpression(vDbl1, "=", vNull, vFals);
-        assertBooleanExpression(vNull, "=", vDbl1, vFals);
+        assertBooleanExpression(vDbl1, "=", vNull, vEror);
+        assertBooleanExpression(vNull, "=", vDbl1, vEror);
         assertBooleanExpression(vDbl1, "=", vDbl1, vTrue);
         assertBooleanExpression(vDbl1, "=", vDbl2, vFals);
         assertBooleanExpression(vDbl1, "=", vTrue, vTrue); // true() cast to 1
         assertBooleanExpression(vDbl1, "=", vFals, vFals);
 
         // strings, equals
-        assertBooleanExpression(vStrA, "=", vNull, vFals);
-        assertBooleanExpression(vNull, "=", vStrA, vFals);
+        assertBooleanExpression(vStrA, "=", vNull, vEror);
+        assertBooleanExpression(vNull, "=", vStrA, vEror);
         assertBooleanExpression(vStrA, "=", vStrA, vTrue);
         assertBooleanExpression(vStrA, "=", vStrB, vFals);
         assertBooleanExpression(vStrA, "=", vTrue, vFals);
@@ -1280,7 +1326,6 @@ public class TestExpressionParser {
         assertBooleanExpression(vStrA, "<=", vStr_, vFals);
         assertBooleanExpression(vStrA, "<=", vStr1, vFals);
         assertBooleanExpression(vStrA, "<=", vNull, vEror);
-
     }
 
     @Test
@@ -2054,7 +2099,7 @@ public class TestExpressionParser {
         System.out.println(expression + " - " +
                 out.getClass().getSimpleName() + ": " +
                 out.toString() +
-                (out instanceof ValErr ? (" - " + ((ValErr)out).getMessage()) : ""));
+                (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : ""));
         Assert.assertTrue(out instanceof ValErr);
     }
 
@@ -2086,6 +2131,32 @@ public class TestExpressionParser {
         assertTypeOf("typeOf('xxx')", "string");
         assertTypeOf("typeOf(1.234)", "double");
         assertTypeOf("typeOf(2>=1)", "boolean");
+    }
+
+    @Test
+    public void testIsExpressions() {
+        final ValBoolean vTrue = ValBoolean.TRUE;
+        final ValBoolean vFals = ValBoolean.FALSE; // intentional typo to keep var name length consistent
+        final ValNull vNull = ValNull.INSTANCE;
+        final ValErr vError = ValErr.create("Expecting an error"); // intentional typo to keep var name length consistent
+        final ValLong vLong = ValLong.create(0L);
+        final ValInteger vInt = ValInteger.create(0);
+        final ValDouble vDbl = ValDouble.create(0);
+        final ValString vString = ValString.create("1");
+
+        final Map<String, Set<Val>> testMap = new HashMap<>();
+        testMap.computeIfAbsent("isBoolean", k -> new HashSet<>(Arrays.asList(vFals, vTrue)));
+        testMap.computeIfAbsent("isDouble", k -> new HashSet<>(Collections.singletonList(vDbl)));
+        testMap.computeIfAbsent("isInteger", k -> new HashSet<>(Collections.singletonList(vInt)));
+        testMap.computeIfAbsent("isLong", k -> new HashSet<>(Collections.singletonList(vLong)));
+        testMap.computeIfAbsent("isString", k -> new HashSet<>(Collections.singletonList(vString)));
+        testMap.computeIfAbsent("isNumber", k -> new HashSet<>(Arrays.asList(vDbl, vInt, vLong)));
+        testMap.computeIfAbsent("isValue", k -> new HashSet<>(Arrays.asList(vFals, vTrue, vDbl, vInt, vLong, vString)));
+        testMap.computeIfAbsent("isNull", k -> new HashSet<>(Collections.singletonList(vNull)));
+        testMap.computeIfAbsent("isError", k -> new HashSet<>(Collections.singletonList(vError)));
+
+        final List<Val> types = Arrays.asList(vTrue, vFals, vNull, vError, vLong, vInt, vDbl, vString);
+        testMap.forEach((k, v) -> types.forEach(type -> assertIsExpression(type, k, ValBoolean.create(v.contains(type)))));
     }
 
     private Generator createGenerator(final String expression) throws ParseException {
@@ -2172,7 +2243,7 @@ public class TestExpressionParser {
                 (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
 
         // The output type is always wrapped in a ValString
-        Assert.assertEquals("string", out.getType());
+        Assert.assertEquals("string", out.type().toString());
 
         Assert.assertTrue(out instanceof ValString);
         Assert.assertEquals(expectedType, out.toString());
@@ -2194,9 +2265,32 @@ public class TestExpressionParser {
                 (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
 
         // The output type is always wrapped in a ValString
-        Assert.assertEquals("string", out.getType());
+        Assert.assertEquals("string", out.type().toString());
 
         Assert.assertTrue(out instanceof ValString);
         Assert.assertEquals(expectedType, out.toString());
+    }
+
+    private void assertIsExpression(final Val val1, final String function, final Val expectedOutput) {
+        try {
+            final String expression = String.format("%s(${val1})", function);
+            final Expression exp = createExpression2(expression);
+            final Generator gen = exp.createGenerator();
+            gen.set(new Val[]{val1});
+            Val out = gen.eval();
+
+            System.out.println(String.format("%s([%s: %s]) => [%s: %s%s]",
+                    function,
+                    val1.getClass().getSimpleName(), val1.toString(),
+                    out.getClass().getSimpleName(), out.toString(),
+                    (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
+
+            if (!(expectedOutput instanceof ValErr)) {
+                Assert.assertEquals(expectedOutput, out);
+            }
+            Assert.assertEquals(expectedOutput.getClass(), out.getClass());
+        } catch (final ParseException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 }

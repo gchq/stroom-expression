@@ -33,6 +33,10 @@ class RoundGenerator extends AbstractSingleChildGenerator {
 
     @Override
     public Val eval() {
-        return calculator.calc(childGenerator.eval());
+        final Val val = childGenerator.eval();
+        if (!val.type().isValue()) {
+            return val;
+        }
+        return calculator.calc(val);
     }
 }

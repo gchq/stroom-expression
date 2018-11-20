@@ -21,6 +21,7 @@ import java.io.Serializable;
 class ToDouble extends AbstractCast implements Serializable {
     static final String NAME = "toDouble";
     private static final long serialVersionUID = -305845496003936297L;
+    private static final ValErr ERROR = ValErr.create("Unable to cast to a double");
     private static final Cast CAST = new Cast();
 
     public ToDouble(final String name) {
@@ -35,7 +36,7 @@ class ToDouble extends AbstractCast implements Serializable {
     private static class Cast extends AbstractCaster {
         @Override
         Val cast(final Val val) {
-            if (!val.hasValue()) {
+            if (!val.type().isValue()) {
                 return val;
             }
 
@@ -43,7 +44,7 @@ class ToDouble extends AbstractCast implements Serializable {
             if (value != null) {
                 return ValDouble.create(value);
             }
-            return ValErr.create(String.format("Unable to cast %s to a double", val));
+            return ERROR;
         }
     }
 }

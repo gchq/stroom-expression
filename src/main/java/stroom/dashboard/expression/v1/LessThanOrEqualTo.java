@@ -16,95 +16,43 @@
 
 package stroom.dashboard.expression.v1;
 
-import java.util.Optional;
+class LessThanOrEqualTo extends AbstractEqualityFunction {
+    private static final LessThanOrEqualToEvaluator EVALUATOR = new LessThanOrEqualToEvaluator();
 
-class LessThanOrEqualTo extends AbstractManyChildFunction {
     static final String NAME = "<=";
     static final String ALIAS = "lessThanOrEqualTo";
-    private final boolean usingOperator;
 
     public LessThanOrEqualTo(final String name) {
-        super(name, 2, 2);
-        usingOperator = name.length() == 2;
-
+        super(name, NAME);
     }
 
     @Override
-    protected Generator createGenerator(final Generator[] childGenerators) {
-        return new Gen(childGenerators);
+    Evaluator createEvaluator() {
+        return EVALUATOR;
     }
 
-    @Override
-    public void appendString(final StringBuilder sb) {
-        if (usingOperator) {
-            appendParams(sb);
-        } else {
-            super.appendString(sb);
-        }
-    }
-
-    @Override
-    protected void appendParams(final StringBuilder sb) {
-        if (usingOperator) {
-            if (params != null) {
-                for (int i = 0; i < params.length; i++) {
-                    final Param param = params[i];
-                    appendParam(sb, param);
-                    if (i < params.length - 1) {
-                        sb.append(name);
-                    }
+    private static class LessThanOrEqualToEvaluator extends Evaluator {
+        @Override
+        protected Val evaluate(final Val a, final Val b) {
+            if (a.getClass().equals(b.getClass())) {
+                if (a instanceof ValInteger) {
+                    return ValBoolean.create(a.toInteger() <= b.toInteger());
                 }
-            }
-        } else {
-            super.appendParams(sb);
-        }
-    }
-
-    private static class Gen extends AbstractManyChildGenerator {
-        private static final long serialVersionUID = 217968020285584214L;
-
-        private static final Evaluator EVALUATOR = Evaluator.builder(NAME)
-                .addReturnErrorOnFirstErrorValue()
-                .addReturnErrorOnFirstNullValue()
-                .addEvaluationFunction(Gen::doEval)
-                .build();
-
-        Gen(final Generator[] childGenerators) {
-            super(childGenerators);
-        }
-
-        @Override
-        public void set(final Val[] values) {
-            for (final Generator generator : childGenerators) {
-                generator.set(values);
-            }
-        }
-
-        @Override
-        public Val eval() {
-            return EVALUATOR.evaluate(childGenerators);
-        }
-
-        private static Optional<Val> doEval(Val... values) {
-            final Val a = values[0];
-            final Val b = values[1];
-
-            Optional<Val> retVal = Evaluator.OPT_FALSE_VALUE;
-
-            final Double da = a.toDouble();
-            final Double db = b.toDouble();
-            if (da == null || db == null) {
-                int ret = a.toString().compareTo(b.toString());
-                if (ret <= 0) {
-                    retVal = Evaluator.OPT_TRUE_VALUE;
+                if (a instanceof ValLong) {
+                    return ValBoolean.create(a.toLong() <= b.toLong());
+                }
+                if (a instanceof ValBoolean) {
+                    return ValBoolean.create(a.toBoolean().compareTo(b.toBoolean()) <= 0);
                 }
             } else {
-                if (da <= db) {
-                    retVal = Evaluator.OPT_TRUE_VALUE;
+                final Double da = a.toDouble();
+                final Double db = b.toDouble();
+                if (da != null && db != null) {
+                    return ValBoolean.create(da <= db);
                 }
             }
 
-            return retVal;
+            return ValBoolean.create(a.toString().compareTo(b.toString()) <= 0);
         }
     }
 }

@@ -79,7 +79,7 @@ class Not extends AbstractFunction implements Serializable {
         @Override
         public Val eval() {
             final Val val = childGenerator.eval();
-            if (!val.hasValue()) {
+            if (!val.type().isValue()) {
                 return val;
             }
 

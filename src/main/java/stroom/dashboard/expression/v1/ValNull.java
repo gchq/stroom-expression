@@ -17,7 +17,7 @@
 package stroom.dashboard.expression.v1;
 
 public class ValNull implements Val {
-    private static final String TYPE = "null";
+    private static final Type TYPE = new NullType();
     public static final ValNull INSTANCE = new ValNull();
 
     private ValNull() {
@@ -55,12 +55,7 @@ public class ValNull implements Val {
     }
 
     @Override
-    public boolean hasValue() {
-        return false;
-    }
-
-    @Override
-    public String getType() {
+    public Type type() {
         return TYPE;
     }
 
@@ -78,5 +73,34 @@ public class ValNull implements Val {
     @Override
     public int compareTo(final Val o) {
         return 0;
+    }
+
+    private static class NullType implements Type {
+        private static final String NAME = "null";
+
+        @Override
+        public boolean isValue() {
+            return false;
+        }
+
+        @Override
+        public boolean isNumber() {
+            return false;
+        }
+
+        @Override
+        public boolean isError() {
+            return false;
+        }
+
+        @Override
+        public boolean isNull() {
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return NAME;
+        }
     }
 }

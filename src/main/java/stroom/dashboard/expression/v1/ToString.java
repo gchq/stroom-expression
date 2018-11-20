@@ -19,6 +19,8 @@ package stroom.dashboard.expression.v1;
 import java.io.Serializable;
 
 class ToString extends AbstractCast implements Serializable {
+    private static final ValErr ERROR = ValErr.create("Unable to cast to a string");
+
     static final String NAME = "toString";
     private static final long serialVersionUID = -305845496003936297L;
     private static final Cast CAST = new Cast();
@@ -35,7 +37,7 @@ class ToString extends AbstractCast implements Serializable {
     private static class Cast extends AbstractCaster {
         @Override
         Val cast(final Val val) {
-            if (!val.hasValue()) {
+            if (!val.type().isValue()) {
                 return val;
             }
 
@@ -43,7 +45,7 @@ class ToString extends AbstractCast implements Serializable {
             if (value != null) {
                 return ValString.create(value);
             }
-            return ValErr.create(String.format("Unable to cast %s to a string", val));
+            return ERROR;
         }
     }
 }

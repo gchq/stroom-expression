@@ -44,7 +44,6 @@ class TypeOf extends AbstractFunction implements Serializable {
             hasAggregate = false;
         } else {
             throw new RuntimeException("Unexpected type [" + param.getClass().getSimpleName() + "]");
-
         }
     }
 
@@ -79,7 +78,7 @@ class TypeOf extends AbstractFunction implements Serializable {
         @Override
         public Val eval() {
             final Val val = childGenerator.eval();
-            final String type = val.getType();
+            final String type = val.type().toString();
             if (type != null) {
                 return ValString.create(type);
             }
