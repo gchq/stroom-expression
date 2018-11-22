@@ -9,7 +9,7 @@ buildscript {
     }
     dependencies {
         // A fork of https://github.com/wfhartford/gradle-dependency-analyze that works with Java 10
-        classpath 'stroom:gradle-dependency-analyze:v2.2.2'
+        classpath 'stroom:gradle-dependency-analyze:v2.2.5'
 
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
@@ -46,8 +46,8 @@ ext.moduleName = 'stroom.expression'
 group = 'stroom'
 version = versions.stroomExpression
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = JavaVersion.VERSION_1_10
+targetCompatibility = JavaVersion.VERSION_1_10
 
 repositories {
     mavenLocal()
