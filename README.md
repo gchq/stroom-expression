@@ -8,6 +8,8 @@ See the full documentation for all functions [here](https://github.com/gchq/stro
 
 Internally an expression function will create a generator to produce values for a cell based on the expression definition. Each generator is supplied with an array of values for the row it belongs to (multiple sets of array values if a row is an aggregated grouping of multiple rows).
 
+The arguments to functions can either be other functions, literal values, or they can refer to fields on the input data using the ${} syntax.
+
 A FieldIndexMap is used to map named fields to the index of the appropriate value within the supplied row value array.
 
 Example:
