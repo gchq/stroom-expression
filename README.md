@@ -4,13 +4,13 @@
 
 This library provides Stroom with the functions for manipulating data on Stroom Dashboards.
 
-See the full documentation for all functions [here](https://github.com/gchq/stroom-docs/blob/master/user-guide/dashboards/expressions.md)
+See the full documentation for all functions [here](https://github.com/gchq/stroom-docs/blob/master/user-guide/dashboards/expressions.md).
 
 Internally an expression function will create a generator to produce values for a cell based on the expression definition. Each generator is supplied with an array of values for the row it belongs to (multiple sets of array values if a row is an aggregated grouping of multiple rows).
 
-A FieldIndexMap is used to map named fields to the index of the appropriate value within the supplied row value array
+A FieldIndexMap is used to map named fields to the index of the appropriate value within the supplied row value array.
 
-Example
+Example:
 ``` java
 FieldIndexMap fim = FieldIndexMap.forFields("name", "age", "occupation")
 Generator g = parseExpression("concat(${name}, ${age})")
@@ -24,7 +24,7 @@ g.eval
 > JDoe45
 ```
 
-Example showing multiple values supplied to generator due to some external grouping
+Example showing multiple values supplied to generator due to some external grouping:
 ``` java
 FieldIndexMap fim = FieldIndexMap.forFields("name", "age", "occupation")
 Generator g = parseExpression("count()")
@@ -41,7 +41,7 @@ g.eval
 > 4
 ```
 
-Example showing multiple values supplied to generator due to some external grouping
+Example showing multiple values supplied to generator due to some external grouping:
 ``` java
 FieldIndexMap fim = FieldIndexMap.forFields("name", "age", "occupation")
 Generator g = parseExpression("countUnique(${name})")
