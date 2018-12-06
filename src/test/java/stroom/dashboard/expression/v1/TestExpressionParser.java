@@ -494,53 +494,53 @@ class TestExpressionParser {
     }
 
     @Test
-    public void testConcatSingle1() throws ParseException {
+    void testConcatSingle1() throws ParseException {
         final Generator gen = createGenerator("concat(${val})");
 
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("this", out.toString());
+        assertThat(out.toString()).isEqualTo("this");
     }
 
     @Test
-    public void testConcatSingle2() throws ParseException {
+    void testConcatSingle2() throws ParseException {
         final Generator gen = createGenerator("concat('hello')");
 
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("hello", out.toString());
+        assertThat(out.toString()).isEqualTo("hello");
     }
 
     @Test
-    public void testLink() throws ParseException {
+    void testLink() throws ParseException {
         final Generator gen = createGenerator("link('Title', 'http://www.somehost.com', '/somepath')");
 
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("[Title](http://www.somehost.com/somepath){BROWSER_TAB}", out.toString());
+        assertThat(out.toString()).isEqualTo("[Title](http://www.somehost.com/somepath){BROWSER_TAB}");
     }
 
     @Test
-    public void testStaticString() throws ParseException {
+    void testStaticString() throws ParseException {
         final Generator gen = createGenerator("'hello'");
 
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("hello", out.toString());
+        assertThat(out.toString()).isEqualTo("hello");
     }
 
     @Test
-    public void testStaticNumber() throws ParseException {
+    void testStaticNumber() throws ParseException {
         final Generator gen = createGenerator("50");
 
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        Assert.assertEquals("50", out.toString());
+        assertThat(out.toString()).isEqualTo("50");
     }
 
     @Test
