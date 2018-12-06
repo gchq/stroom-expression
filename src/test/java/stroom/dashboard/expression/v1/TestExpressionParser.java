@@ -54,6 +54,7 @@ public class TestExpressionParser {
         test("concat('this is', 'it')");
         test("concat('it''s a string', 'with a quote')");
         test("'it''s a string'");
+        test("50");
         test("stringLength('it''s a string')");
         test("upperCase('it''s a string')");
         test("lowerCase('it''s a string')");
@@ -487,6 +488,46 @@ public class TestExpressionParser {
 
         final Val out = gen.eval();
         Assert.assertEquals("this is it", out.toString());
+    }
+
+    @Test
+    public void testConcatSingle1() throws ParseException {
+        final Generator gen = createGenerator("concat(${val})");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("this", out.toString());
+    }
+
+    @Test
+    public void testConcatSingle2() throws ParseException {
+        final Generator gen = createGenerator("concat('hello')");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("hello", out.toString());
+    }
+
+    @Test
+    public void testStaticString() throws ParseException {
+        final Generator gen = createGenerator("'hello'");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("hello", out.toString());
+    }
+
+    @Test
+    public void testStaticNumber() throws ParseException {
+        final Generator gen = createGenerator("50");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("50", out.toString());
     }
 
     @Test

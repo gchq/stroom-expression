@@ -20,7 +20,7 @@ class Concat extends AbstractManyChildFunction {
     static final String NAME = "concat";
 
     public Concat(final String name) {
-        super(name, 2, Integer.MAX_VALUE);
+        super(name, 1, Integer.MAX_VALUE);
     }
 
     @Override
