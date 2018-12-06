@@ -56,6 +56,7 @@ class TestExpressionParser {
         test("concat('this is', 'it')");
         test("concat('it''s a string', 'with a quote')");
         test("'it''s a string'");
+        test("50");
         test("stringLength('it''s a string')");
         test("upperCase('it''s a string')");
         test("lowerCase('it''s a string')");
@@ -68,6 +69,7 @@ class TestExpressionParser {
         test("1=0");
         test("decode('fred', 'fr.+', 'freda', 'freddy')");
         test("extractHostFromUri('http://www.example.com:1234/this/is/a/path')");
+        test("link('title', 'http://www.somehost.com', 'somepath', 'target')");
     }
 
     private void test(final String expression) throws ParseException {
@@ -489,6 +491,56 @@ class TestExpressionParser {
 
         final Val out = gen.eval();
         assertThat(out.toString()).isEqualTo("this is it");
+    }
+
+    @Test
+    void testConcatSingle1() throws ParseException {
+        final Generator gen = createGenerator("concat(${val})");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        assertThat(out.toString()).isEqualTo("this");
+    }
+
+    @Test
+    void testConcatSingle2() throws ParseException {
+        final Generator gen = createGenerator("concat('hello')");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        assertThat(out.toString()).isEqualTo("hello");
+    }
+
+    @Test
+    void testLink() throws ParseException {
+        final Generator gen = createGenerator("link('Title', 'http://www.somehost.com', '/somepath')");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        assertThat(out.toString()).isEqualTo("[Title](http://www.somehost.com/somepath){BROWSER_TAB}");
+    }
+
+    @Test
+    void testStaticString() throws ParseException {
+        final Generator gen = createGenerator("'hello'");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        assertThat(out.toString()).isEqualTo("hello");
+    }
+
+    @Test
+    void testStaticNumber() throws ParseException {
+        final Generator gen = createGenerator("50");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        assertThat(out.toString()).isEqualTo("50");
     }
 
     @Test
