@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+* Issue **#stroom#989** : Added `link` function.
+
 * Issue **#stroom#991** : Concat now supports a single parameter.
 
 ## [v1.4.12] - 2018-11-20
