@@ -524,13 +524,23 @@ class TestExpressionParser {
     }
 
     @Test
-    void testStaticString() throws ParseException {
+    void testStaticString1() throws ParseException {
         final Generator gen = createGenerator("'hello'");
 
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
         assertThat(out.toString()).isEqualTo("hello");
+    }
+
+    @Test
+    void testStaticString2() throws ParseException {
+        final Generator gen = createGenerator("'[Click Here](http://www.somehost.com/somepath){DIALOG}'");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        assertThat(out.toString()).isEqualTo("[Click Here](http://www.somehost.com/somepath){DIALOG}");
     }
 
     @Test
