@@ -69,7 +69,7 @@ class TestExpressionParser {
         test("1=0");
         test("decode('fred', 'fr.+', 'freda', 'freddy')");
         test("extractHostFromUri('http://www.example.com:1234/this/is/a/path')");
-        test("link('title', 'http://www.somehost.com', 'somepath', 'target')");
+        test("link('title', 'http://www.somehost.com/somepath', 'target')");
     }
 
     private void test(final String expression) throws ParseException {
@@ -514,13 +514,23 @@ class TestExpressionParser {
     }
 
     @Test
-    void testLink() throws ParseException {
-        final Generator gen = createGenerator("link('Title', 'http://www.somehost.com', '/somepath')");
+    public void testLink1() throws ParseException {
+        final Generator gen = createGenerator("link('Title', 'http://www.somehost.com/somepath')");
 
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        assertThat(out.toString()).isEqualTo("[Title](http://www.somehost.com/somepath){BROWSER_TAB}");
+        assertThat(out.toString()).isEqualTo("[Title](http://www.somehost.com/somepath)");
+    }
+
+    @Test
+    public void testLink2() throws ParseException {
+        final Generator gen = createGenerator("link('Title', 'http://www.somehost.com/somepath', 'browser')");
+
+        gen.set(getVal("this"));
+
+        final Val out = gen.eval();
+        assertThat(out.toString()).isEqualTo("[Title](http://www.somehost.com/somepath){browser}");
     }
 
     @Test
