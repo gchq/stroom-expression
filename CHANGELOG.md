@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.4.14] - 2018-12-13
+
 * Issue **#stroom#989** : Improved the `link` function to only use 3 parameters.
 
 ## [v1.4.13] - 2018-12-06
@@ -122,7 +124,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.4.3...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.4.14...HEAD
+[v1.4.14]: https://github.com/gchq/stroom-expression/compare/v1.4.13...v1.4.14
+[v1.4.13]: https://github.com/gchq/stroom-expression/compare/v1.4.12...v1.4.13
+[v1.4.12]: https://github.com/gchq/stroom-expression/compare/v1.4.11...v1.4.12
+[v1.4.11]: https://github.com/gchq/stroom-expression/compare/v1.4.10...v1.4.11
+[v1.4.10]: https://github.com/gchq/stroom-expression/compare/v1.4.9...v1.4.10
+[v1.4.9]: https://github.com/gchq/stroom-expression/compare/v1.4.8...v1.4.9
+[v1.4.8]: https://github.com/gchq/stroom-expression/compare/v1.4.7...v1.4.8
+[v1.4.7]: https://github.com/gchq/stroom-expression/compare/v1.4.6...v1.4.7
+[v1.4.6]: https://github.com/gchq/stroom-expression/compare/v1.4.5...v1.4.6
+[v1.4.5]: https://github.com/gchq/stroom-expression/compare/v1.4.4...v1.4.5
+[v1.4.4]: https://github.com/gchq/stroom-expression/compare/v1.4.3...v1.4.4
 [v1.4.3]: https://github.com/gchq/stroom-expression/compare/v1.4.2...v1.4.3
 [v1.4.2]: https://github.com/gchq/stroom-expression/compare/v1.4.1...v1.4.2
 [v1.4.1]: https://github.com/gchq/stroom-expression/compare/v1.4.0...v1.4.1
