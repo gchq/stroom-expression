@@ -19,10 +19,8 @@ package stroom.dashboard.expression.v1;
 class Link extends AbstractManyChildFunction {
     static final String NAME = "link";
 
-    private static final Val DEFAULT_TARGET = ValString.create("BROWSER_TAB");
-
     public Link(final String name) {
-        super(name, 1, 4);
+        super(name, 1, 3);
     }
 
     @Override
@@ -50,50 +48,43 @@ class Link extends AbstractManyChildFunction {
 
             if (childGenerators.length == 1) {
                 final Val url = childGenerators[0].eval();
-                link = makeLink(url, url, ValString.EMPTY, DEFAULT_TARGET);
+                link = makeLink(url, url, ValNull.INSTANCE);
             } else if (childGenerators.length == 2) {
-                final Val title = childGenerators[0].eval();
+                final Val text = childGenerators[0].eval();
                 final Val url = childGenerators[1].eval();
-                link = makeLink(title, url, ValString.EMPTY, DEFAULT_TARGET);
+                link = makeLink(text, url, ValNull.INSTANCE);
             } else if (childGenerators.length == 3) {
-                final Val title = childGenerators[0].eval();
-                final Val host = childGenerators[1].eval();
-                final Val path = childGenerators[2].eval();
-                link = makeLink(title, host, path, DEFAULT_TARGET);
-            } else if (childGenerators.length == 4) {
-                final Val title = childGenerators[0].eval();
-                final Val host = childGenerators[1].eval();
-                final Val path = childGenerators[2].eval();
-                final Val target = childGenerators[3].eval();
-                link = makeLink(title, host, path, target);
+                final Val text = childGenerators[0].eval();
+                final Val url = childGenerators[1].eval();
+                final Val type = childGenerators[2].eval();
+                link = makeLink(text, url, type);
             }
 
             return link;
         }
 
-        private Val makeLink(final Val title, final Val host, final Val path, final Val target) {
-            if (title.type().isError()) {
-                return title;
+        private Val makeLink(final Val text, final Val url, final Val type) {
+            if (text.type().isError()) {
+                return text;
             }
-            if (host.type().isError()) {
-                return host;
+            if (url.type().isError()) {
+                return url;
             }
-            if (path.type().isError()) {
-                return path;
-            }
-            if (target.type().isError()) {
-                return target;
+            if (type.type().isError()) {
+                return type;
             }
 
             final StringBuilder sb = new StringBuilder();
             sb.append("[");
-            append(sb, title);
+            append(sb, text);
             sb.append("](");
-            append(sb, host);
-            append(sb, path);
-            sb.append("){");
-            append(sb, target);
-            sb.append("}");
+            append(sb, url);
+            sb.append(")");
+            if (type.type().isValue()) {
+                sb.append("{");
+                append(sb, type);
+                sb.append("}");
+            }
 
             return ValString.create(sb.toString());
         }
