@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#27** : Strings can now be concatenated with the use of `+`.
+
 ## [v1.4.14] - 2018-12-13
 
 * Issue **#stroom#989** : Improved the `link` function to only use 3 parameters.

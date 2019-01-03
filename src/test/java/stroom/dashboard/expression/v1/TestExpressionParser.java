@@ -481,6 +481,17 @@ public class TestExpressionParser {
         Assert.assertEquals("this is it", out.toString());
     }
 
+
+    @Test
+    public void testConcat1Plus() throws ParseException {
+        final Generator gen = createGenerator("'this'+' is '+'it'");
+
+        gen.set(getVal(3D));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("this is it", out.toString());
+    }
+
     @Test
     public void testConcat2() throws ParseException {
         final Generator gen = createGenerator("concat(${val}, ' is ', 'it')");
