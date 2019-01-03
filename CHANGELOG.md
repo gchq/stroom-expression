@@ -6,9 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v2.0.4] - 2019-01-03
+
 * Issue **#27** : Strings can now be concatenated with the use of `+`.
 
 * Issue **#stroom#989** : Improved the `link` function to only use 3 parameters.
+
+## [v2.0.3] - 2018-11-22
+
+* Downgrade to Java 10.
 
 ## [v2.0.2] - 2018-11-20
 
