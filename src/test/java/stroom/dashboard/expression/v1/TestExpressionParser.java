@@ -491,7 +491,7 @@ class TestExpressionParser {
         gen.set(getVal(3D));
 
         final Val out = gen.eval();
-        Assert.assertEquals("this is it", out.toString());
+        assertThat(out.toString()).isEqualTo("this is it");
     }
 
     @Test
