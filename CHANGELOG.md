@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+* Issue **#27** : Strings can now be concatenated with the use of `+`.
+
 * Issue **#stroom#989** : Improved the `link` function to only use 3 parameters.
 
 ## [v2.0.2] - 2018-11-20

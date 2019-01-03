@@ -26,6 +26,11 @@ class Add extends NumericFunction {
     }
 
     @Override
+    protected Generator createGenerator(final Generator[] childGenerators) {
+        return new Gen(childGenerators, getCalculator());
+    }
+
+    @Override
     protected Calculator getCalculator() {
         return CALC;
     }
@@ -36,6 +41,60 @@ class Add extends NumericFunction {
         @Override
         protected double op(final double cur, final double val) {
             return cur + val;
+        }
+    }
+
+    private static class Gen extends AbstractManyChildGenerator {
+        private static final long serialVersionUID = 217968020285584214L;
+
+        private final Calculator calculator;
+
+        Gen(final Generator[] childGenerators, final Calculator calculator) {
+            super(childGenerators);
+            this.calculator = calculator;
+        }
+
+        @Override
+        public void set(final Val[] values) {
+            for (final Generator generator : childGenerators) {
+                generator.set(values);
+            }
+        }
+
+        @Override
+        public Val eval() {
+            boolean hasStrings = false;
+            final Val[] vals = new Val[childGenerators.length];
+            for (int i = 0; i < vals.length; i++) {
+                final Val val = childGenerators[i].eval();
+
+                if (!val.type().isValue()) {
+                    return val;
+                } else if (val instanceof ValString) {
+                    hasStrings = true;
+                } else if (!val.type().isNumber()) {
+                    return ValErr.INSTANCE;
+                }
+
+                vals[i] = val;
+            }
+
+            // If any of the input values are strings then concatenate them all.
+            if (hasStrings) {
+                final StringBuilder sb = new StringBuilder();
+                for (final Val val : vals) {
+                    if (val.type().isValue()) {
+                        sb.append(val.toString());
+                    }
+                }
+                return ValString.create(sb.toString());
+            }
+
+            Val value = ValNull.INSTANCE;
+            for (final Val val : vals) {
+                value = calculator.calc(value, val);
+            }
+            return value;
         }
     }
 }
