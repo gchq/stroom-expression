@@ -76,12 +76,21 @@ public abstract class NumericFunction extends AbstractManyChildFunction {
 
         @Override
         public Val eval() {
-            Val value = ValNull.INSTANCE;
-            for (final Generator gen : childGenerators) {
-                final Val val = gen.eval();
+            final Val[] vals = new Val[childGenerators.length];
+            for (int i = 0; i < vals.length; i++) {
+                final Val val = childGenerators[i].eval();
+
                 if (!val.type().isValue()) {
                     return val;
+                } else if (!val.type().isNumber()) {
+                    return ValErr.INSTANCE;
                 }
+
+                vals[i] = val;
+            }
+
+            Val value = ValNull.INSTANCE;
+            for (final Val val : vals) {
                 value = calculator.calc(value, val);
             }
             return value;
