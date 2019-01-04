@@ -2291,6 +2291,8 @@ class TestExpressionParser {
             out.close();
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
+        } catch (final Throwable e) {
+            e.printStackTrace();
         }
     }
 
