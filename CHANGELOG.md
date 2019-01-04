@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v2.0.6] - 2019-01-04
+
 * Migrated to `java-library` plugin.
 
 ## [v2.0.5] - 2019-01-04
