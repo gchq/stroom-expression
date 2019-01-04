@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v2.0.5] - 2019-01-04
+
+* Fix for Junit 5 testing.
+
 ## [v2.0.4] - 2019-01-03
 
 * Issue **#27** : Strings can now be concatenated with the use of `+`.
