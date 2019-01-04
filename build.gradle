@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'idea'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
@@ -54,11 +54,11 @@ repositories {
 }
 
 dependencies {
-    compile "org.slf4j:slf4j-api:1.7.25"
+    implementation "org.slf4j:slf4j-api:1.7.25"
 
     testCompileOnly "org.junit.jupiter:junit-jupiter-api:5.3.2"
-    testCompile "org.assertj:assertj-core:3.10.0"
-    testCompile "com.caucho:hessian:4.0.51"
+    testImplementation "org.assertj:assertj-core:3.10.0"
+    testImplementation "com.caucho:hessian:4.0.51"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.2"
     testRuntimeOnly "org.slf4j:slf4j-nop:1.7.25"
