@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.4.15] - 2019-05-24
+
 * Issue **#28** : Added `encodeUrl` and `decodeUrl` functions.
 
 * Issue **#29** : The `link` function now encodes title, url and type to ensure these values don't break the link format.
@@ -130,7 +132,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.4.14...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.4.15...HEAD
+[v1.4.15]: https://github.com/gchq/stroom-expression/compare/v1.4.14...v1.4.15
 [v1.4.14]: https://github.com/gchq/stroom-expression/compare/v1.4.13...v1.4.14
 [v1.4.13]: https://github.com/gchq/stroom-expression/compare/v1.4.12...v1.4.13
 [v1.4.12]: https://github.com/gchq/stroom-expression/compare/v1.4.11...v1.4.12
