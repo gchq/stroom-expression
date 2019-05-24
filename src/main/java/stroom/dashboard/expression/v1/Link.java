@@ -16,7 +16,12 @@
 
 package stroom.dashboard.expression.v1;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 class Link extends AbstractManyChildFunction {
+    private static final String UTF_8 = "UTF-8";
+
     static final String NAME = "link";
 
     public Link(final String name) {
@@ -74,24 +79,28 @@ class Link extends AbstractManyChildFunction {
                 return type;
             }
 
-            final StringBuilder sb = new StringBuilder();
-            sb.append("[");
-            append(sb, text);
-            sb.append("](");
-            append(sb, url);
-            sb.append(")");
-            if (type.type().isValue()) {
-                sb.append("{");
-                append(sb, type);
-                sb.append("}");
-            }
+            try {
+                final StringBuilder sb = new StringBuilder();
+                sb.append("[");
+                append(sb, text);
+                sb.append("](");
+                append(sb, url);
+                sb.append(")");
+                if (type.type().isValue()) {
+                    sb.append("{");
+                    append(sb, type);
+                    sb.append("}");
+                }
 
-            return ValString.create(sb.toString());
+                return ValString.create(sb.toString());
+            } catch (final UnsupportedEncodingException e) {
+                return ValErr.create(e.getMessage());
+            }
         }
 
-        private void append(final StringBuilder sb, final Val val) {
+        private void append(final StringBuilder sb, final Val val) throws UnsupportedEncodingException {
             if (val.type().isValue()) {
-                sb.append(val.toString());
+                sb.append(URLEncoder.encode(val.toString(), UTF_8));
             }
         }
     }

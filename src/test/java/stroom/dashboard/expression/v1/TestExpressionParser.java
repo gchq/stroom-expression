@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,6 +62,8 @@ class TestExpressionParser {
         test("stringLength('it''s a string')");
         test("upperCase('it''s a string')");
         test("lowerCase('it''s a string')");
+        test("encodeUrl('http://www.example.com')");
+        test("decodeUrl('http://www.example.com')");
         test("substring('Hello', 0, 1)");
         test("equals(${val}, ${val})");
         test("greaterThan(1, 0)");
@@ -525,23 +529,69 @@ class TestExpressionParser {
     }
 
     @Test
-    public void testLink1() throws ParseException {
+    public void testLink1() throws ParseException, UnsupportedEncodingException {
         final Generator gen = createGenerator("link('Title', 'http://www.somehost.com/somepath')");
+
+        final String expectedText =  "Title";
+        final String expectedUrl =  "http://www.somehost.com/somepath";
 
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        assertThat(out.toString()).isEqualTo("[Title](http://www.somehost.com/somepath)");
+        final String str = out.toString();
+        assertThat(str).isEqualTo("[Title](http%3A%2F%2Fwww.somehost.com%2Fsomepath)");
+
+        final String text = str.substring(str.indexOf("[") + 1, str.indexOf("]"));
+        final String url = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+
+        assertThat(URLDecoder.decode(text, "UTF-8")).isEqualTo(expectedText);
+        assertThat(URLDecoder.decode(url, "UTF-8")).isEqualTo(expectedUrl);
     }
 
     @Test
-    public void testLink2() throws ParseException {
+    public void testLink2() throws ParseException, UnsupportedEncodingException {
         final Generator gen = createGenerator("link('Title', 'http://www.somehost.com/somepath', 'browser')");
+
+        final String expectedText =  "Title";
+        final String expectedUrl =  "http://www.somehost.com/somepath";
+        final String expectedType = "browser";
 
         gen.set(getVal("this"));
 
         final Val out = gen.eval();
-        assertThat(out.toString()).isEqualTo("[Title](http://www.somehost.com/somepath){browser}");
+        final String str = out.toString();
+        assertThat(str).isEqualTo("[Title](http%3A%2F%2Fwww.somehost.com%2Fsomepath){browser}");
+
+        final String text = str.substring(str.indexOf("[") + 1, str.indexOf("]"));
+        final String url = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+        final String type = str.substring(str.indexOf("{") + 1, str.indexOf("}"));
+
+        assertThat(URLDecoder.decode(text, "UTF-8")).isEqualTo(expectedText);
+        assertThat( URLDecoder.decode(url, "UTF-8")).isEqualTo(expectedUrl);
+        assertThat(URLDecoder.decode(type, "UTF-8")).isEqualTo(expectedType);
+    }
+
+    @Test
+    public void testLink3() throws ParseException, UnsupportedEncodingException {
+        final Generator gen = createGenerator2("link(${val1}, ${val2}, 'browser')");
+
+        final String expectedText =  "t}his [is] a tit(le w{it}h (brack[ets)";
+        final String expectedUrl =  "http://www.somehost.com/somepath?k1=v1&k[2]={v2}";
+        final String expectedType = "browser";
+
+        gen.set(getVal(expectedText,expectedUrl));
+
+        final Val out = gen.eval();
+        final String str = out.toString();
+        assertThat(str).isEqualTo("[t%7Dhis+%5Bis%5D+a+tit%28le+w%7Bit%7Dh+%28brack%5Bets%29](http%3A%2F%2Fwww.somehost.com%2Fsomepath%3Fk1%3Dv1%26k%5B2%5D%3D%7Bv2%7D){browser}");
+
+        final String text = str.substring(str.indexOf("[") + 1, str.indexOf("]"));
+        final String url = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+        final String type = str.substring(str.indexOf("{") + 1, str.indexOf("}"));
+
+        assertThat(URLDecoder.decode(text, "UTF-8")).isEqualTo(expectedText);
+        assertThat(URLDecoder.decode(url, "UTF-8")).isEqualTo(expectedUrl);
+        assertThat(URLDecoder.decode(type, "UTF-8")).isEqualTo(expectedType );
     }
 
     @Test

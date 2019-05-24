@@ -17,69 +17,19 @@
 package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
-import java.text.ParseException;
 
-class LowerCase extends AbstractFunction implements Serializable {
+class LowerCase extends AbstractStringFunction implements Serializable {
     static final String NAME = "lowerCase";
     private static final long serialVersionUID = -305845496003936297L;
-    private Generator gen;
-    private Function function;
-    private boolean hasAggregate;
+
+    private static final Operation OPERATION = (Operation) String::toLowerCase;
 
     public LowerCase(final String name) {
-        super(name, 1, 1);
+        super(name);
     }
 
     @Override
-    public void setParams(final Param[] params) throws ParseException {
-        super.setParams(params);
-
-        final Param param = params[0];
-        if (param instanceof Function) {
-            function = (Function) param;
-            hasAggregate = function.hasAggregate();
-        } else {
-            // Optimise replacement of static input in case user does something stupid.
-            gen = new StaticValueFunction(ValString.create(param.toString().toLowerCase())).createGenerator();
-            hasAggregate = false;
-        }
-    }
-
-    @Override
-    public Generator createGenerator() {
-        if (gen != null) {
-            return gen;
-        }
-
-        final Generator childGenerator = function.createGenerator();
-        return new Gen(childGenerator);
-    }
-
-    @Override
-    public boolean hasAggregate() {
-        return hasAggregate;
-    }
-
-    private static class Gen extends AbstractSingleChildGenerator {
-        private static final long serialVersionUID = 8153777070911899616L;
-
-        Gen(final Generator childGenerator) {
-            super(childGenerator);
-        }
-
-        @Override
-        public void set(final Val[] values) {
-            childGenerator.set(values);
-        }
-
-        @Override
-        public Val eval() {
-            final Val val = childGenerator.eval();
-            if (!val.type().isValue()) {
-                return val;
-            }
-
-            return ValString.create(val.toString().toLowerCase());
-        }
+    Operation getOperation() {
+        return OPERATION;
     }
 }
