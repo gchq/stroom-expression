@@ -74,6 +74,8 @@ public class FunctionFactory {
         add(StringLength.class, StringLength.NAME);
         add(UpperCase.class, UpperCase.NAME);
         add(LowerCase.class, LowerCase.NAME);
+        add(EncodeUrl.class, EncodeUrl.NAME);
+        add(DecodeUrl.class, DecodeUrl.NAME);
         add(IndexOf.class, IndexOf.NAME);
         add(LastIndexOf.class, LastIndexOf.NAME);
         add(Substring.class, Substring.NAME);

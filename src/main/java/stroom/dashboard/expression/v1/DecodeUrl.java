@@ -18,13 +18,13 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 
-class UpperCase extends AbstractStringFunction implements Serializable {
-    static final String NAME = "upperCase";
+class DecodeUrl extends AbstractStringFunction implements Serializable {
+    static final String NAME = "decodeUrl";
     private static final long serialVersionUID = -305845496003936297L;
 
-    private static final Operation OPERATION = (Operation) String::toUpperCase;
+    private static final Operation OPERATION = (Operation) EncodingUtil::decodeUrl;
 
-    public UpperCase(final String name) {
+    public DecodeUrl(final String name) {
         super(name);
     }
 

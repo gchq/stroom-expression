@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#28** : Added `encodeUrl` and `decodeUrl` functions.
+
 * Issue **#29** : The `link` function now encodes title, url and type to ensure these values don't break the link format.
 
 * Issue **#27** : Strings can now be concatenated with the use of `+`.
