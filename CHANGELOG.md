@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.4.16] - 2019-05-28
+
 * Issue **#26** : Added `dashboard` linking helper function.
 
 ## [v1.4.15] - 2019-05-24
@@ -134,7 +136,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.4.15...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.4.16...HEAD
+[v1.4.16]: https://github.com/gchq/stroom-expression/compare/v1.4.15...v1.4.16
 [v1.4.15]: https://github.com/gchq/stroom-expression/compare/v1.4.14...v1.4.15
 [v1.4.14]: https://github.com/gchq/stroom-expression/compare/v1.4.13...v1.4.14
 [v1.4.13]: https://github.com/gchq/stroom-expression/compare/v1.4.12...v1.4.13
