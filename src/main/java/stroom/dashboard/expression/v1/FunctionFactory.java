@@ -70,6 +70,7 @@ public class FunctionFactory {
         add(Replace.class, Replace.NAME);
         add(Concat.class, Concat.NAME);
         add(Link.class, Link.NAME);
+        add(Dashboard.class, Dashboard.NAME);
 
         add(StringLength.class, StringLength.NAME);
         add(UpperCase.class, UpperCase.NAME);

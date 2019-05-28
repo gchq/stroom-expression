@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#26** : Added `dashboard` linking helper function.
+
 ## [v1.4.15] - 2019-05-24
 
 * Issue **#28** : Added `encodeUrl` and `decodeUrl` functions.

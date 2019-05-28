@@ -72,6 +72,7 @@ public class TestExpressionParser {
         test("decode('fred', 'fr.+', 'freda', 'freddy')");
         test("extractHostFromUri('http://www.example.com:1234/this/is/a/path')");
         test("link('title', 'http://www.somehost.com/somepath', 'target')");
+        test("dashboard('title', 'someuuid', 'param1=value1')");
     }
 
     private void test(final String expression) throws ParseException {
