@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1143** : Added mechanism to inject statically mapped values so that dashboard parameters can be echoed by expressions to create dashboard links.
+
 ## [v1.4.16] - 2019-05-28
 
 * Issue **#26** : Added `dashboard` linking helper function.

@@ -2178,6 +2178,20 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testMappedValues1() throws ParseException {
+        final Generator gen = createGenerator("param('testkey')");
+        gen.set(getVal("100"));
+        Assert.assertEquals(ValString.create("testvalue"), gen.eval());
+    }
+
+    @Test
+    public void testMappedValues2() throws ParseException {
+        final Generator gen = createGenerator("params()");
+        gen.set(getVal("100"));
+        Assert.assertEquals(ValString.create("testkey=\"testvalue\""), gen.eval());
+    }
+
+    @Test
     public void testErrorHandling1() throws ParseException {
         ValLong valLong = ValLong.create(10);
         assertThatItEvaluatesToValErr("(${val}=err())", valLong);
@@ -2295,6 +2309,11 @@ public class TestExpressionParser {
         fieldIndexMap.create("val", true);
 
         final Expression exp = parser.parse(fieldIndexMap, expression);
+
+        final Map<String, String> mappedValues = new HashMap<>();
+        mappedValues.put("testkey", "testvalue");
+        exp.setStaticMappedValues(mappedValues);
+
         final String actual = exp.toString();
         Assert.assertEquals(expression, actual);
 

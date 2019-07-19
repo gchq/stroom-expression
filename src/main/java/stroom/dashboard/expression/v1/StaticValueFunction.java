@@ -16,17 +16,24 @@
 
 package stroom.dashboard.expression.v1;
 
-public class StaticValueFunction implements Function, Appendable {
+import java.util.Map;
+
+class StaticValueFunction implements Function, Appendable {
     private final Val value;
     private final Generator gen;
 
-    public StaticValueFunction(final Val value) {
+    StaticValueFunction(final Val value) {
         this.value = value;
         this.gen = new Gen(value);
     }
 
     @Override
     public void setParams(final Param[] params) {
+        // Ignore
+    }
+
+    @Override
+    public void setStaticMappedValues(final Map<String, String> staticMappedValues) {
         // Ignore
     }
 

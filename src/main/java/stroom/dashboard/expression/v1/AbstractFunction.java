@@ -17,6 +17,7 @@
 package stroom.dashboard.expression.v1;
 
 import java.text.ParseException;
+import java.util.Map;
 
 abstract class AbstractFunction implements Function, Appendable {
     final String name;
@@ -38,6 +39,17 @@ abstract class AbstractFunction implements Function, Appendable {
         }
 
         this.params = params;
+    }
+
+    @Override
+    public void setStaticMappedValues(final Map<String, String> staticMappedValues) {
+        if (params != null) {
+            for (final Param param : params) {
+                if (param instanceof Function) {
+                    ((Function) param).setStaticMappedValues(staticMappedValues);
+                }
+            }
+        }
     }
 
     @Override

@@ -16,6 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
+import java.util.Map;
+
 abstract class AbstractStaticFunction implements Function, Appendable {
     private final String name;
     private final Generator gen;
@@ -27,6 +29,11 @@ abstract class AbstractStaticFunction implements Function, Appendable {
 
     @Override
     public void setParams(final Param[] params) {
+        // Ignore
+    }
+
+    @Override
+    public void setStaticMappedValues(final Map<String, String> staticMappedValues) {
         // Ignore
     }
 
@@ -72,5 +79,4 @@ abstract class AbstractStaticFunction implements Function, Appendable {
             return value;
         }
     }
-
 }

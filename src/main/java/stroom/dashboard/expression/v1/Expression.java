@@ -16,6 +16,8 @@
 
 package stroom.dashboard.expression.v1;
 
+import java.util.Map;
+
 public class Expression implements Function {
     private Function function;
     private boolean hasAggregate;
@@ -30,6 +32,13 @@ public class Expression implements Function {
         }
 
         this.hasAggregate = function.hasAggregate();
+    }
+
+    @Override
+    public void setStaticMappedValues(final Map<String, String> staticMappedValues) {
+        if (function != null) {
+            function.setStaticMappedValues(staticMappedValues);
+        }
     }
 
     @Override
