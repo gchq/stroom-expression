@@ -18,11 +18,11 @@ package stroom.dashboard.expression.v1;
 
 import java.util.Map;
 
-class StaticValueFunction implements Function, Appendable {
+public class StaticValueFunction implements Function, Appendable {
     private final Val value;
     private final Generator gen;
 
-    StaticValueFunction(final Val value) {
+    public StaticValueFunction(final Val value) {
         this.value = value;
         this.gen = new Gen(value);
     }
