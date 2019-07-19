@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.5.1] - 2019-07-19
+
 * Issue **#stroom#1143** : Fix visibility of StaticValueFunction class.
 
 ## [v1.5.0] - 2019-07-19
@@ -142,7 +144,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.1...HEAD
+[v1.5.1]: https://github.com/gchq/stroom-expression/compare/v1.5.0...v1.5.1
 [v1.5.0]: https://github.com/gchq/stroom-expression/compare/v1.4.16...v1.5.0
 [v1.4.16]: https://github.com/gchq/stroom-expression/compare/v1.4.15...v1.4.16
 [v1.4.15]: https://github.com/gchq/stroom-expression/compare/v1.4.14...v1.4.15
