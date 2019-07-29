@@ -2190,17 +2190,17 @@ class TestExpressionParser {
     }
 
     @Test
-    public void testMappedValues1() throws ParseException {
+    void testMappedValues1() throws ParseException {
         final Generator gen = createGenerator("param('testkey')");
         gen.set(getVal("100"));
-        Assert.assertEquals(ValString.create("testvalue"), gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValString.create("testvalue"));
     }
 
     @Test
-    public void testMappedValues2() throws ParseException {
+    void testMappedValues2() throws ParseException {
         final Generator gen = createGenerator("params()");
         gen.set(getVal("100"));
-        Assert.assertEquals(ValString.create("testkey=\"testvalue\""), gen.eval());
+        assertThat(gen.eval()).isEqualTo(ValString.create("testkey=\"testvalue\""));
     }
 
     @Test
