@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v2.0.8] - 2019-07-29
+
 * Issue **#stroom#1143** : Fix visibility of StaticValueFunction class.
 
 * Issue **#stroom#1143** : Added mechanism to inject statically mapped values so that dashboard parameters can be echoed by expressions to create dashboard links.
@@ -162,5 +164,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v2.0.7...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v2.0.8...HEAD
+[v2.0.8]: https://github.com/gchq/stroom-expression/compare/v2.0.7...v2.0.8
 [v2.0.7]: https://github.com/gchq/stroom-expression/compare/v2.0.6...v2.0.7
