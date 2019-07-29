@@ -108,13 +108,20 @@ public class FunctionFactory {
 
         add(Random.class, Random.NAME);
 
+        // Echo statically mapped values
+        add(QueryParam.class, QueryParam.NAME);
+        add(QueryParams.class, QueryParams.NAME);
+
+        // Logic
         add(If.class, If.NAME);
         add(Match.class, Match.NAME);
+        add(Not.class, Not.NAME);
+
+        // Static values
         add(True.class, True.NAME);
         add(False.class, False.NAME);
         add(Null.class, Null.NAME);
         add(Err.class, Err.NAME);
-        add(Not.class, Not.NAME);
 
         // Casting
         add(ToBoolean.class, ToBoolean.NAME);

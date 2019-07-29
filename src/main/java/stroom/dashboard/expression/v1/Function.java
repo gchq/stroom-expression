@@ -18,6 +18,7 @@ package stroom.dashboard.expression.v1;
 
 import java.io.Serializable;
 import java.text.ParseException;
+import java.util.Map;
 
 public interface Function extends Param, Serializable {
     /**
@@ -28,6 +29,13 @@ public interface Function extends Param, Serializable {
      *                        exception.
      */
     void setParams(Param[] params) throws ParseException;
+
+    /**
+     * Set some static mapped values that are used by the Param and Params functions.
+     *
+     * @param staticMappedValues The static mapped values for the Param and Params functions to use.
+     */
+    void setStaticMappedValues(Map<String, String> staticMappedValues);
 
     /**
      * Create a generator to generate a value for a cell based on the function

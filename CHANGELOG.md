@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1143** : Fix visibility of StaticValueFunction class.
+
+* Issue **#stroom#1143** : Added mechanism to inject statically mapped values so that dashboard parameters can be echoed by expressions to create dashboard links.
+
 ## [v2.0.7] - 2019-06-25
 
 * Issue **#26** : Added `dashboard` linking helper function.
