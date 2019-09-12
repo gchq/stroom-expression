@@ -6,14 +6,17 @@ import org.slf4j.LoggerFactory;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 class EncodingUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(EncodingUtil.class);
-    private static final String CHARSET = "UTF-8";
+    private static final String CHARSET = StandardCharsets.UTF_8.name();
 
     static String encodeUrl(final String string) {
         try {
+            // TODO : @66 After Java10 use of charset constants is supported.
             return URLEncoder.encode(string, CHARSET);
         } catch (final UnsupportedEncodingException e) {
             LOGGER.debug(e.getMessage(), e);
@@ -23,17 +26,9 @@ class EncodingUtil {
 
     static String decodeUrl(final String string) {
         try {
-            return URLEncoder.encode(string, CHARSET);
+            // TODO : @66 After Java10 use of charset constants is supported.
+            return URLDecoder.decode(string, CHARSET);
         } catch (final UnsupportedEncodingException e) {
-            LOGGER.debug(e.getMessage(), e);
-            return string;
-        }
-    }
-
-    static String encodeUri(final String string) {
-        try {
-            return new URI(string).getRawPath();
-        } catch (final URISyntaxException e) {
             LOGGER.debug(e.getMessage(), e);
             return string;
         }

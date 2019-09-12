@@ -24,7 +24,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -624,8 +623,8 @@ public class TestExpressionParser {
         final String text = str.substring(str.indexOf("[") + 1, str.indexOf("]"));
         final String url = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
 
-        Assert.assertEquals(expectedText, URLDecoder.decode(text, "UTF-8"));
-        Assert.assertEquals(expectedUrl, URLDecoder.decode(url, "UTF-8"));
+        Assert.assertEquals(expectedText, EncodingUtil.decodeUrl(text));
+        Assert.assertEquals(expectedUrl, EncodingUtil.decodeUrl(url));
     }
 
     @Test
@@ -646,9 +645,9 @@ public class TestExpressionParser {
         final String url = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
         final String type = str.substring(str.indexOf("{") + 1, str.indexOf("}"));
 
-        Assert.assertEquals(expectedText, URLDecoder.decode(text, "UTF-8"));
-        Assert.assertEquals(expectedUrl, URLDecoder.decode(url, "UTF-8"));
-        Assert.assertEquals(expectedType, URLDecoder.decode(type, "UTF-8"));
+        Assert.assertEquals(expectedText, EncodingUtil.decodeUrl(text));
+        Assert.assertEquals(expectedUrl, EncodingUtil.decodeUrl(url));
+        Assert.assertEquals(expectedType, EncodingUtil.decodeUrl(type));
     }
 
     @Test
@@ -669,9 +668,9 @@ public class TestExpressionParser {
         final String url = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
         final String type = str.substring(str.indexOf("{") + 1, str.indexOf("}"));
 
-        Assert.assertEquals(expectedText, URLDecoder.decode(text, "UTF-8"));
-        Assert.assertEquals(expectedUrl, URLDecoder.decode(url, "UTF-8"));
-        Assert.assertEquals(expectedType, URLDecoder.decode(type, "UTF-8"));
+        Assert.assertEquals(expectedText, EncodingUtil.decodeUrl(text));
+        Assert.assertEquals(expectedUrl, EncodingUtil.decodeUrl(url));
+        Assert.assertEquals(expectedType, EncodingUtil.decodeUrl(type));
     }
 
     @Test
@@ -980,6 +979,22 @@ public class TestExpressionParser {
         gen.set(getVal("other"));
         final Val out = gen.eval();
         Assert.assertEquals("other", out.toString());
+    }
+
+    @Test
+    public void testEncodeUrl() throws ParseException {
+        final Generator gen = createGenerator("encodeUrl('https://www.somesite.com:8080/this/path?query=string')");
+        gen.set(getVal(""));
+        final Val out = gen.eval();
+        Assert.assertEquals("https%3A%2F%2Fwww.somesite.com%3A8080%2Fthis%2Fpath%3Fquery%3Dstring", out.toString());
+    }
+
+    @Test
+    public void testDecodeUrl() throws ParseException {
+        final Generator gen = createGenerator("decodeUrl('https%3A%2F%2Fwww.somesite.com%3A8080%2Fthis%2Fpath%3Fquery%3Dstring')");
+        gen.set(getVal(""));
+        final Val out = gen.eval();
+        Assert.assertEquals("https://www.somesite.com:8080/this/path?query=string", out.toString());
     }
 
     @Test
