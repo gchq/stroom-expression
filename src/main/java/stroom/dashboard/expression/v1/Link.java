@@ -17,8 +17,6 @@
 package stroom.dashboard.expression.v1;
 
 class Link extends AbstractManyChildFunction {
-    private static final String UTF_8 = "UTF-8";
-
     static final String NAME = "link";
 
     public Link(final String name) {

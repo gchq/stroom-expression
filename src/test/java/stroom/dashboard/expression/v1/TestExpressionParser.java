@@ -674,6 +674,26 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testDashboard() throws ParseException {
+        final Generator gen = createGenerator("dashboard('blah', 'abcdefg', 'dt='+formatDate(roundDay(${val1}))+'+1h')");
+
+        final String expectedText = "blah";
+        final String expectedUrl = "?uuid=abcdefg&params=dt%3D2014-02-23T00%3A00%3A00.000Z%2B1h";
+
+        gen.set(getVal("2014-02-22T12:12:12.000Z"));
+
+        final Val out = gen.eval();
+        final String str = out.toString();
+        Assert.assertEquals("[blah](%3Fuuid%3Dabcdefg%26params%3Ddt%253D2014-02-23T00%253A00%253A00.000Z%252B1h){dashboard}", str);
+
+        final String text = str.substring(str.indexOf("[") + 1, str.indexOf("]"));
+        final String url = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+
+        Assert.assertEquals(expectedText, EncodingUtil.decodeUrl(text));
+        Assert.assertEquals(expectedUrl, EncodingUtil.decodeUrl(url));
+    }
+
+    @Test
     public void testStaticString() throws ParseException {
         final Generator gen = createGenerator("'hello'");
 

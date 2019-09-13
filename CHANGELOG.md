@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding with the `dashboard()` function.
+
 ## [v1.5.2] - 2019-09-12
 
 * Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding.
