@@ -63,24 +63,21 @@ class Add extends NumericFunction {
 
         @Override
         public Val eval() {
-            boolean hasStrings = false;
+            boolean concat = false;
             final Val[] vals = new Val[childGenerators.length];
             for (int i = 0; i < vals.length; i++) {
                 final Val val = childGenerators[i].eval();
-
-                if (!val.type().isValue()) {
+                if (val.type().isError()) {
                     return val;
                 } else if (val instanceof ValString) {
-                    hasStrings = true;
-                } else if (!val.type().isNumber()) {
-                    return ValErr.INSTANCE;
+                    concat = true;
                 }
 
                 vals[i] = val;
             }
 
             // If any of the input values are strings then concatenate them all.
-            if (hasStrings) {
+            if (concat) {
                 final StringBuilder sb = new StringBuilder();
                 for (final Val val : vals) {
                     if (val.type().isValue()) {
@@ -92,7 +89,9 @@ class Add extends NumericFunction {
 
             Val value = ValNull.INSTANCE;
             for (final Val val : vals) {
-                value = calculator.calc(value, val);
+                if (val.type().isValue()) {
+                    value = calculator.calc(value, val);
+                }
             }
             return value;
         }
