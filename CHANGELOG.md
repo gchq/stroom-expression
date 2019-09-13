@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding with the `dashboard()` function.
+
 * Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding.
 
 * Issue **#stroom#1262** : Improved behaviour of `+` when using for concatenation.
