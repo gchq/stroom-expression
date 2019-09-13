@@ -16,9 +16,6 @@
 
 package stroom.dashboard.expression.v1;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 class Dashboard extends AbstractManyChildFunction {
     private static final String UTF_8 = "UTF-8";
 
@@ -76,28 +73,24 @@ class Dashboard extends AbstractManyChildFunction {
                 return params;
             }
 
-            try {
-                final StringBuilder sb = new StringBuilder();
-                sb.append("[");
-                append(sb, text);
-                sb.append("](");
-                sb.append("?uuid=");
-                append(sb, uuid);
-                if (params.type().isValue()) {
-                    sb.append("&params=");
-                    append(sb, params);
-                }
-                sb.append("){dashboard}");
-
-                return ValString.create(sb.toString());
-            } catch (final UnsupportedEncodingException e) {
-                return ValErr.create(e.getMessage());
+            final StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            append(sb, text);
+            sb.append("](");
+            sb.append("?uuid=");
+            append(sb, uuid);
+            if (params.type().isValue()) {
+                sb.append("&params=");
+                append(sb, params);
             }
+            sb.append("){dashboard}");
+
+            return ValString.create(sb.toString());
         }
 
-        private void append(final StringBuilder sb, final Val val) throws UnsupportedEncodingException {
+        private void append(final StringBuilder sb, final Val val) {
             if (val.type().isValue()) {
-                sb.append(URLEncoder.encode(val.toString(), UTF_8));
+                sb.append(EncodingUtil.encodeUrl(val.toString()));
             }
         }
     }
