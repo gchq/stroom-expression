@@ -17,8 +17,6 @@
 package stroom.dashboard.expression.v1;
 
 class Dashboard extends AbstractManyChildFunction {
-    private static final String UTF_8 = "UTF-8";
-
     static final String NAME = "dashboard";
 
     public Dashboard(final String name) {
@@ -73,16 +71,19 @@ class Dashboard extends AbstractManyChildFunction {
                 return params;
             }
 
+            final StringBuilder url = new StringBuilder();
+            url.append("?uuid=");
+            append(url, uuid);
+            if (params.type().isValue()) {
+                url.append("&params=");
+                append(url, params);
+            }
+
             final StringBuilder sb = new StringBuilder();
             sb.append("[");
             append(sb, text);
             sb.append("](");
-            sb.append("?uuid=");
-            append(sb, uuid);
-            if (params.type().isValue()) {
-                sb.append("&params=");
-                append(sb, params);
-            }
+            sb.append(EncodingUtil.encodeUrl(url.toString()));
             sb.append("){dashboard}");
 
             return ValString.create(sb.toString());
