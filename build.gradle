@@ -1,4 +1,8 @@
+
+
 buildscript {
+    if(JavaVersion.current() != JavaVersion.VERSION_1_8)
+        throw new GradleException("This build requires Java 8. Current SDK version is "+JavaVersion.current())
     repositories {
         jcenter()
         maven { url "https://dl.bintray.com/stroom/stroom" }
@@ -42,8 +46,8 @@ ext.moduleName = 'stroom.expression'
 group = 'stroom'
 version = versions.stroomExpression
 
-sourceCompatibility = JavaVersion.VERSION_1_10
-targetCompatibility = JavaVersion.VERSION_1_10
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenLocal()
@@ -144,47 +148,47 @@ afterEvaluate {
         jcenter()
     }
 
-    compileJava {
-        inputs.property("moduleName", moduleName)
-        doFirst {
-            options.compilerArgs = [
-                    '--module-path', classpath.asPath,
-            ]
-            classpath = files()
-        }
-    }
-
-    compileTestJava {
-        inputs.property("moduleName", moduleName)
-        doFirst {
-            options.compilerArgs = [
-                    '--module-path', classpath.asPath,
-                    '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
-            ]
-            classpath = files()
-        }
-    }
-
-    test {
-        useJUnitPlatform()
-
-        inputs.property("moduleName", moduleName)
-        doFirst {
-            jvmArgs = [
-                    '--module-path', classpath.asPath,
-                    '--add-modules', 'ALL-MODULE-PATH',
-                    '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
-//                    '--add-opens', 'java.base/java.net=ALL-UNNAMED', // add the following VM parameters to the run configuration to avoid problems with the reflection restrictions in Java 9
-//                    '--add-opens', 'stroom.expression/stroom.dashboard.expression.v1=org.junit.platform.commons',
-            ]
-            classpath = files()
-        }
-    }
-
-    javadoc {
-        options.addStringOption('-module-path', classpath.asPath)
-        options.addStringOption('Xdoclint:all,-missing', '-html5')
-    }
+//    compileJava {
+//        inputs.property("moduleName", moduleName)
+//        doFirst {
+//            options.compilerArgs = [
+//                    '--module-path', classpath.asPath,
+//            ]
+//            classpath = files()
+//        }
+//    }
+//
+//    compileTestJava {
+//        inputs.property("moduleName", moduleName)
+//        doFirst {
+//            options.compilerArgs = [
+//                    '--module-path', classpath.asPath,
+//                    '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+//            ]
+//            classpath = files()
+//        }
+//    }
+//
+//    test {
+//        useJUnitPlatform()
+//
+//        inputs.property("moduleName", moduleName)
+//        doFirst {
+//            jvmArgs = [
+//                    '--module-path', classpath.asPath,
+//                    '--add-modules', 'ALL-MODULE-PATH',
+//                    '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+////                    '--add-opens', 'java.base/java.net=ALL-UNNAMED', // add the following VM parameters to the run configuration to avoid problems with the reflection restrictions in Java 9
+////                    '--add-opens', 'stroom.expression/stroom.dashboard.expression.v1=org.junit.platform.commons',
+//            ]
+//            classpath = files()
+//        }
+//    }
+//
+//    javadoc {
+//        options.addStringOption('-module-path', classpath.asPath)
+//        options.addStringOption('Xdoclint:all,-missing', '-html5')
+//    }
 
     jar {
         inputs.property("moduleName", moduleName)
