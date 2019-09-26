@@ -37,7 +37,7 @@ ext.getPropertyOrDefault = { propName, defaultValue ->
 }
 
 ext.versions = [
-        stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT'),
+        stroomExpression: getPropertyOrDefault('version', 'v3.0.0'),
         zzDUMMYzz       : 'makes sorting this list easier'
 ]
 
