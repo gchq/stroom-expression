@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+
+## [v3.0.0] - 2019-09-23
+
+* Downgrade to Java 8
+
 * Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding with the `dashboard()` function.
 
 * Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding.
@@ -170,6 +175,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v2.0.8...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.0...HEAD
+[v3.0.0]: https://github.com/gchq/stroom-expression/compare/v2.0.8...v3.0.0
 [v2.0.8]: https://github.com/gchq/stroom-expression/compare/v2.0.7...v2.0.8
 [v2.0.7]: https://github.com/gchq/stroom-expression/compare/v2.0.6...v2.0.7
