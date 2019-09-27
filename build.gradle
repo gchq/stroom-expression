@@ -58,14 +58,14 @@ repositories {
 }
 
 dependencies {
-    implementation "org.slf4j:slf4j-api:1.7.25"
+    implementation "org.slf4j:slf4j-api:1.7.26"
 
     testCompileOnly "org.junit.jupiter:junit-jupiter-api:5.3.2"
     testImplementation "org.assertj:assertj-core:3.10.0"
     testImplementation "com.caucho:hessian:4.0.51"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.2"
-    testRuntimeOnly "org.slf4j:slf4j-nop:1.7.25"
+    testRuntimeOnly "org.slf4j:slf4j-nop:1.7.26"
 }
 
 def pomConfig = {
@@ -148,6 +148,10 @@ afterEvaluate {
         jcenter()
     }
 
+    
+    //Following section commented out as it is not compatible with JDK v8
+    // reinclude for JDK 9+ Module style compilation (--module-path javac option, etc)
+    // also -html5 javadoc option which is only available in later versions of javadoc
 //    compileJava {
 //        inputs.property("moduleName", moduleName)
 //        doFirst {
@@ -175,7 +179,8 @@ afterEvaluate {
 //        inputs.property("moduleName", moduleName)
 //        doFirst {
 //            jvmArgs = [
-//                    '--module-path', classpath.asPath,
+//
+//                   '--module-path', classpath.asPath,
 //                    '--add-modules', 'ALL-MODULE-PATH',
 //                    '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
 ////                    '--add-opens', 'java.base/java.net=ALL-UNNAMED', // add the following VM parameters to the run configuration to avoid problems with the reflection restrictions in Java 9
@@ -184,11 +189,11 @@ afterEvaluate {
 //            classpath = files()
 //        }
 //    }
-//
+
 //    javadoc {
 //        options.addStringOption('-module-path', classpath.asPath)
-//        options.addStringOption('Xdoclint:all,-missing', '-html5')
-//    }
+//       options.addStringOption('Xdoclint:all,-missing', '-html5')
+//   }
 
     jar {
         inputs.property("moduleName", moduleName)
