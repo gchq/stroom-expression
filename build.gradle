@@ -58,6 +58,7 @@ repositories {
 }
 
 dependencies {
+    implementation "com.esotericsoftware:kryo-shaded:4.0.0"
     implementation "org.slf4j:slf4j-api:1.7.25"
 
     testCompileOnly "org.junit.jupiter:junit-jupiter-api:5.3.2"

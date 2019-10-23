@@ -16,6 +16,10 @@
 
 package stroom.dashboard.expression.v1;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
+
 import java.util.Map;
 
 public class StaticValueFunction implements Function, Appendable {
@@ -64,13 +68,10 @@ public class StaticValueFunction implements Function, Appendable {
         return false;
     }
 
-    private static class Gen extends AbstractNoChildGenerator {
+    private static final class Gen extends AbstractNoChildGenerator {
         private static final long serialVersionUID = -7551073465232523106L;
 
-        private Val value;
-
-        Gen() {
-        }
+        private final Val value;
 
         Gen(final Val value) {
             this.value = value;

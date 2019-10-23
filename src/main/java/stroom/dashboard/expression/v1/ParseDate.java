@@ -94,7 +94,7 @@ class ParseDate extends AbstractFunction implements Serializable {
         return false;
     }
 
-    private static class Gen extends AbstractSingleChildGenerator {
+    private static final class Gen extends AbstractSingleChildGenerator {
         private static final long serialVersionUID = 8153777070911899616L;
 
         private final String pattern;
