@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v4.0-beta.1] - 2019-10-23
+
+* Added support for Kryo serialisation.
 
 ## [v3.0.0] - 2019-09-23
 
@@ -175,7 +178,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v4.0-beta.1...HEAD
+[v4.0-beta.1]: https://github.com/gchq/stroom-expression/compare/v3.0.0...v4.0-beta.1
 [v3.0.0]: https://github.com/gchq/stroom-expression/compare/v2.0.8...v3.0.0
 [v2.0.8]: https://github.com/gchq/stroom-expression/compare/v2.0.7...v2.0.8
 [v2.0.7]: https://github.com/gchq/stroom-expression/compare/v2.0.6...v2.0.7
