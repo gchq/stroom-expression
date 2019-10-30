@@ -30,6 +30,7 @@ public class ExpressionParser {
             Type.ORDER,
             Type.DIVISION,
             Type.MULTIPLICATION,
+            Type.MODULUS,
             Type.ADDITION,
             Type.SUBTRACTION,
     };

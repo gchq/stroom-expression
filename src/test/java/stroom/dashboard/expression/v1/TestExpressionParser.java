@@ -2050,6 +2050,15 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testBODMAS5() throws ParseException {
+        final Generator gen = createGenerator("8%3");
+
+        final Val out = gen.eval();
+
+        Assert.assertEquals(2D, out.toDouble(), 0);
+    }
+
+    @Test
     public void testExtractAuthorityFromUri() throws ParseException {
         final Generator gen = createGenerator("extractAuthorityFromUri(${val1})");
 

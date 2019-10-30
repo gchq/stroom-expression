@@ -96,6 +96,7 @@ public class FunctionFactory {
         add(Power.class, Power.NAME, Power.ALIAS);
         add(Divide.class, Divide.NAME, Divide.ALIAS);
         add(Multiply.class, Multiply.NAME, Multiply.ALIAS);
+        add(Modulus.class, Modulus.NAME, Modulus.ALIAS1, Modulus.ALIAS2);
         add(Add.class, Add.NAME, Add.ALIAS);
         add(Subtract.class, Subtract.NAME, Subtract.ALIAS);
         add(Negate.class, Negate.NAME);
