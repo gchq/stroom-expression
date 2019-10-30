@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1300** : Added `annotation()` link creation function, `currentUser()` alias for `param('currentUser()')` and additional link creation functions for `data()` and `stepping()`.
+
 ## [v1.5.3] - 2019-09-13
 
 * Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding with the `dashboard()` function.

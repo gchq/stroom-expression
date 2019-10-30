@@ -71,6 +71,8 @@ public class FunctionFactory {
         add(Concat.class, Concat.NAME);
         add(Link.class, Link.NAME);
         add(Dashboard.class, Dashboard.NAME);
+        add(Annotation.class, Annotation.NAME);
+        add(Data.class, Data.NAME);
 
         add(StringLength.class, StringLength.NAME);
         add(UpperCase.class, UpperCase.NAME);
@@ -109,6 +111,7 @@ public class FunctionFactory {
         add(Random.class, Random.NAME);
 
         // Echo statically mapped values
+        add(CurrentUser.class, CurrentUser.NAME);
         add(QueryParam.class, QueryParam.NAME);
         add(QueryParams.class, QueryParams.NAME);
 
