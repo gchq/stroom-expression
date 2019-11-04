@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         // A fork of https://github.com/wfhartford/gradle-dependency-analyze that works with Java 10
-        classpath 'stroom:gradle-dependency-analyze:v2.2.5'
+        classpath 'stroom:gradle-dependency-analyze:v2.2.6'
 
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
