@@ -16,7 +16,7 @@
 
 package stroom.dashboard.expression.v1;
 
-class Dashboard extends AbstractManyChildFunction {
+class Dashboard extends AbstractLink {
     static final String NAME = "dashboard";
 
     public Dashboard(final String name) {
@@ -28,7 +28,7 @@ class Dashboard extends AbstractManyChildFunction {
         return new Gen(childGenerators);
     }
 
-    private static class Gen extends AbstractManyChildGenerator {
+    private static final class Gen extends AbstractLinkGen {
         private static final long serialVersionUID = 217968020285584214L;
 
         Gen(final Generator[] childGenerators) {
@@ -49,18 +49,18 @@ class Dashboard extends AbstractManyChildFunction {
             if (childGenerators.length == 2) {
                 final Val text = childGenerators[0].eval();
                 final Val uuid = childGenerators[1].eval();
-                link = makeLink(text, uuid, ValNull.INSTANCE);
+                link = makeDashboardLink(text, uuid, ValNull.INSTANCE);
             } else if (childGenerators.length == 3) {
                 final Val text = childGenerators[0].eval();
                 final Val uuid = childGenerators[1].eval();
                 final Val params = childGenerators[2].eval();
-                link = makeLink(text, uuid, params);
+                link = makeDashboardLink(text, uuid, params);
             }
 
             return link;
         }
 
-        private Val makeLink(final Val text, final Val uuid, final Val params) {
+        private Val makeDashboardLink(final Val text, final Val uuid, final Val params) {
             if (text.type().isError()) {
                 return text;
             }
@@ -73,26 +73,13 @@ class Dashboard extends AbstractManyChildFunction {
 
             final StringBuilder url = new StringBuilder();
             url.append("?uuid=");
-            append(url, uuid);
+            url.append(getEscapedString(uuid));
             if (params.type().isValue()) {
                 url.append("&params=");
-                append(url, params);
+                url.append(getEscapedString(params));
             }
 
-            final StringBuilder sb = new StringBuilder();
-            sb.append("[");
-            append(sb, text);
-            sb.append("](");
-            sb.append(EncodingUtil.encodeUrl(url.toString()));
-            sb.append("){dashboard}");
-
-            return ValString.create(sb.toString());
-        }
-
-        private void append(final StringBuilder sb, final Val val) {
-            if (val.type().isValue()) {
-                sb.append(EncodingUtil.encodeUrl(val.toString()));
-            }
+            return makeLink(getEscapedString(text), EncodingUtil.encodeUrl(url.toString()), "dashboard");
         }
     }
 }

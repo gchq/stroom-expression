@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1265** : Added `modulus()` function along with alias `mod()` and modulus operator `%`.
+
+* Issue **#stroom#1300** : Added `annotation()` link creation function, `currentUser()` alias for `param('currentUser()')` and additional link creation functions for `data()` and `stepping()`.
+
 * Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding with the `dashboard()` function.
 
 * Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding.
