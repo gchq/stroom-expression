@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v3.0.1] - 2019-11-04
+
 * Issue **#stroom#1265** : Added `modulus()` function along with alias `mod()` and modulus operator `%`.
 
 * Issue **#stroom#1300** : Added `annotation()` link creation function, `currentUser()` alias for `param('currentUser()')` and additional link creation functions for `data()` and `stepping()`.
@@ -174,7 +176,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.1...HEAD
+[v3.0.1]: https://github.com/gchq/stroom-expression/compare/v3.0.0...v3.0.1
 [v3.0.0]: https://github.com/gchq/stroom-expression/compare/v2.0.8...v3.0.0
 [v2.0.8]: https://github.com/gchq/stroom-expression/compare/v2.0.7...v2.0.8
 [v2.0.7]: https://github.com/gchq/stroom-expression/compare/v2.0.6...v2.0.7
