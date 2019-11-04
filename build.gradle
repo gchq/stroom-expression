@@ -42,8 +42,8 @@ ext.moduleName = 'stroom.expression'
 group = 'stroom'
 version = versions.stroomExpression
 
-sourceCompatibility = JavaVersion.VERSION_12
-targetCompatibility = JavaVersion.VERSION_12
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenLocal()
@@ -54,7 +54,7 @@ repositories {
 }
 
 dependencies {
-    implementation "org.slf4j:slf4j-api:1.7.25"
+    compile "org.slf4j:slf4j-api:1.7.25"
 
     testCompileOnly "org.junit.jupiter:junit-jupiter-api:5.3.2"
     testImplementation "org.assertj:assertj-core:3.10.0"
@@ -144,47 +144,47 @@ afterEvaluate {
         jcenter()
     }
 
-    compileJava {
-        inputs.property("moduleName", moduleName)
-        doFirst {
-            options.compilerArgs = [
-                    '--module-path', classpath.asPath,
-            ]
-            classpath = files()
-        }
-    }
-
-    compileTestJava {
-        inputs.property("moduleName", moduleName)
-        doFirst {
-            options.compilerArgs = [
-                    '--module-path', classpath.asPath,
-                    '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
-            ]
-            classpath = files()
-        }
-    }
-
-    test {
-        useJUnitPlatform()
-
-        inputs.property("moduleName", moduleName)
-        doFirst {
-            jvmArgs = [
-                    '--module-path', classpath.asPath,
-                    '--add-modules', 'ALL-MODULE-PATH',
-                    '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
-//                    '--add-opens', 'java.base/java.net=ALL-UNNAMED', // add the following VM parameters to the run configuration to avoid problems with the reflection restrictions in Java 9
-//                    '--add-opens', 'stroom.expression/stroom.dashboard.expression.v1=org.junit.platform.commons',
-            ]
-            classpath = files()
-        }
-    }
-
-    javadoc {
-        options.addStringOption('-module-path', classpath.asPath)
-        options.addStringOption('Xdoclint:all,-missing', '-html5')
-    }
+//    compileJava {
+//        inputs.property("moduleName", moduleName)
+//        doFirst {
+//            options.compilerArgs = [
+//                    '--module-path', classpath.asPath,
+//            ]
+//            classpath = files()
+//        }
+//    }
+//
+//    compileTestJava {
+//        inputs.property("moduleName", moduleName)
+//        doFirst {
+//            options.compilerArgs = [
+//                    '--module-path', classpath.asPath,
+//                    '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+//            ]
+//            classpath = files()
+//        }
+//    }
+//
+//    test {
+//        useJUnitPlatform()
+//
+//        inputs.property("moduleName", moduleName)
+//        doFirst {
+//            jvmArgs = [
+//                    '--module-path', classpath.asPath,
+//                    '--add-modules', 'ALL-MODULE-PATH',
+//                    '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+////                    '--add-opens', 'java.base/java.net=ALL-UNNAMED', // add the following VM parameters to the run configuration to avoid problems with the reflection restrictions in Java 9
+////                    '--add-opens', 'stroom.expression/stroom.dashboard.expression.v1=org.junit.platform.commons',
+//            ]
+//            classpath = files()
+//        }
+//    }
+//
+//    javadoc {
+//        options.addStringOption('-module-path', classpath.asPath)
+//        options.addStringOption('Xdoclint:all,-missing', '-html5')
+//    }
 
     jar {
         inputs.property("moduleName", moduleName)
