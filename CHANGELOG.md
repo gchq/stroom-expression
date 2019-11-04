@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v3.0.2] - 2019-11-04
+
+* Fix build.
+
 ## [v3.0.1] - 2019-11-04
 
 * Issue **#stroom#1265** : Added `modulus()` function along with alias `mod()` and modulus operator `%`.
@@ -176,7 +180,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.1...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.2...HEAD
+[v3.0.2]: https://github.com/gchq/stroom-expression/compare/v3.0.1...v3.0.2
 [v3.0.1]: https://github.com/gchq/stroom-expression/compare/v3.0.0...v3.0.1
 [v3.0.0]: https://github.com/gchq/stroom-expression/compare/v2.0.8...v3.0.0
 [v2.0.8]: https://github.com/gchq/stroom-expression/compare/v2.0.7...v2.0.8
