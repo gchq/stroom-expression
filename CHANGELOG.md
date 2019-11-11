@@ -6,17 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-* Added support for Kryo serialisation.
-
-## [v3.0.2] - 2019-11-04
-
-* Fix build.
-
-## [v3.0.1] - 2019-11-04
+## [v4.0-beta.2] - 2019-11-11
 
 * Issue **#stroom#1265** : Added `modulus()` function along with alias `mod()` and modulus operator `%`.
 
 * Issue **#stroom#1300** : Added `annotation()` link creation function, `currentUser()` alias for `param('currentUser()')` and additional link creation functions for `data()` and `stepping()`.
+
+## [v4.0-beta.1] - 2019-10-23
+
+* Added support for Kryo serialisation.
+
+## [v3.0.0] - 2019-09-23
+
+* Downgrade to Java 8
 
 * Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding with the `dashboard()` function.
 
@@ -182,9 +184,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.2...HEAD
-[v3.0.2]: https://github.com/gchq/stroom-expression/compare/v3.0.1...v3.0.2
-[v3.0.1]: https://github.com/gchq/stroom-expression/compare/v3.0.0...v3.0.1
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v4.0-beta.2...HEAD
+[v4.0-beta.2]: https://github.com/gchq/stroom-expression/compare/v4.0-beta.2...v4.0-beta.2
+[v4.0-beta.1]: https://github.com/gchq/stroom-expression/compare/v3.0.0...v4.0-beta.1
 [v3.0.0]: https://github.com/gchq/stroom-expression/compare/v2.0.8...v3.0.0
 [v2.0.8]: https://github.com/gchq/stroom-expression/compare/v2.0.7...v2.0.8
 [v2.0.7]: https://github.com/gchq/stroom-expression/compare/v2.0.6...v2.0.7
