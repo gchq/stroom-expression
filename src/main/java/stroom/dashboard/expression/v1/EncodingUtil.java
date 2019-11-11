@@ -9,16 +9,16 @@ class EncodingUtil {
     static String encodeUrl(final String string) {
         try {
             return URLEncoder.encode(string, StandardCharsets.UTF_8.name());
-        }catch (UnsupportedEncodingException ex){
-            throw new RuntimeException("Unable to find UTF8 Character encoding", ex);
+        } catch (final UnsupportedEncodingException ex) {
+            throw new RuntimeException("Unable to find UTF-8 Character encoding", ex);
         }
     }
 
     static String decodeUrl(final String string) {
-        try{
+        try {
             return URLDecoder.decode(string, StandardCharsets.UTF_8.name());
-        }catch (UnsupportedEncodingException ex){
-            throw new RuntimeException("Unable to find UTF8 Character encoding", ex);
+        } catch (final UnsupportedEncodingException ex) {
+            throw new RuntimeException("Unable to find UTF-8 Character encoding", ex);
         }
     }
 }

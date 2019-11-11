@@ -16,36 +16,31 @@
 
 package stroom.dashboard.expression.v1;
 
-import java.util.Collections;
+import java.text.ParseException;
 import java.util.Map;
-import java.util.Set;
 
-class QueryParams extends AbstractFunction {
-    private static final Set<String> INTERNAL_PARAMS = Collections.singleton(CurrentUser.KEY);
-
-    static final String NAME = "params";
+class CurrentUser extends AbstractFunction {
+    static final String KEY = "currentUser()";
+    static final String NAME = "currentUser";
 
     private static final Generator NULL_GEN = new StaticValueFunction(ValNull.INSTANCE).createGenerator();
 
     private Generator gen = NULL_GEN;
 
-    public QueryParams(final String name) {
+    public CurrentUser(final String name) {
         super(name, 0, 0);
     }
 
     @Override
+    public void setParams(final Param[] params) throws ParseException {
+        super.setParams(params);
+    }
+
+    @Override
     public void setStaticMappedValues(final Map<String, String> staticMappedValues) {
-        if (staticMappedValues != null) {
-            final StringBuilder sb = new StringBuilder();
-            staticMappedValues.forEach((k, v) -> {
-                if (!INTERNAL_PARAMS.contains(k)) {
-                    sb.append(k);
-                    sb.append("=\"");
-                    sb.append(v);
-                    sb.append("\" ");
-                }
-            });
-            gen = new StaticValueFunction(ValString.create(sb.toString().trim())).createGenerator();
+        final String v = staticMappedValues.get(KEY);
+        if (v != null) {
+            gen = new StaticValueFunction(ValString.create(v)).createGenerator();
         }
     }
 

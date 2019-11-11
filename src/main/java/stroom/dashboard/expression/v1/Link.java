@@ -16,7 +16,7 @@
 
 package stroom.dashboard.expression.v1;
 
-class Link extends AbstractManyChildFunction {
+class Link extends AbstractLink {
     static final String NAME = "link";
 
     public Link(final String name) {
@@ -25,13 +25,13 @@ class Link extends AbstractManyChildFunction {
 
     @Override
     protected Generator createGenerator(final Generator[] childGenerators) {
-        return new Gen(childGenerators);
+        return new LinkGen(childGenerators);
     }
 
-    private static final class Gen extends AbstractManyChildGenerator {
+    private static final class LinkGen extends AbstractLinkGen {
         private static final long serialVersionUID = 217968020285584214L;
 
-        Gen(final Generator[] childGenerators) {
+        LinkGen(final Generator[] childGenerators) {
             super(childGenerators);
         }
 
@@ -61,38 +61,6 @@ class Link extends AbstractManyChildFunction {
             }
 
             return link;
-        }
-
-        private Val makeLink(final Val text, final Val url, final Val type) {
-            if (text.type().isError()) {
-                return text;
-            }
-            if (url.type().isError()) {
-                return url;
-            }
-            if (type.type().isError()) {
-                return type;
-            }
-
-            final StringBuilder sb = new StringBuilder();
-            sb.append("[");
-            append(sb, text);
-            sb.append("](");
-            append(sb, url);
-            sb.append(")");
-            if (type.type().isValue()) {
-                sb.append("{");
-                append(sb, type);
-                sb.append("}");
-            }
-
-            return ValString.create(sb.toString());
-        }
-
-        private void append(final StringBuilder sb, final Val val) {
-            if (val.type().isValue()) {
-                sb.append(EncodingUtil.encodeUrl(val.toString()));
-            }
         }
     }
 }

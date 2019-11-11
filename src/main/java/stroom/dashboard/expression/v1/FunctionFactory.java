@@ -71,6 +71,8 @@ public class FunctionFactory {
         add(Concat.class, Concat.NAME);
         add(Link.class, Link.NAME);
         add(Dashboard.class, Dashboard.NAME);
+        add(Annotation.class, Annotation.NAME);
+        add(Data.class, Data.NAME);
 
         add(StringLength.class, StringLength.NAME);
         add(UpperCase.class, UpperCase.NAME);
@@ -94,6 +96,7 @@ public class FunctionFactory {
         add(Power.class, Power.NAME, Power.ALIAS);
         add(Divide.class, Divide.NAME, Divide.ALIAS);
         add(Multiply.class, Multiply.NAME, Multiply.ALIAS);
+        add(Modulus.class, Modulus.NAME, Modulus.ALIAS1, Modulus.ALIAS2);
         add(Add.class, Add.NAME, Add.ALIAS);
         add(Subtract.class, Subtract.NAME, Subtract.ALIAS);
         add(Negate.class, Negate.NAME);
@@ -109,6 +112,7 @@ public class FunctionFactory {
         add(Random.class, Random.NAME);
 
         // Echo statically mapped values
+        add(CurrentUser.class, CurrentUser.NAME);
         add(QueryParam.class, QueryParam.NAME);
         add(QueryParams.class, QueryParams.NAME);
 

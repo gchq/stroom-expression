@@ -2097,6 +2097,14 @@ class TestExpressionParser {
     }
 
     @Test
+    void testBODMAS5() {
+        createGenerator("8%3", gen -> {
+            final Val out = gen.eval();
+            assertThat(out.toDouble()).isEqualTo(2D, Offset.offset(0D));
+        });
+    }
+
+    @Test
     void testExtractAuthorityFromUri() {
         createGenerator("extractAuthorityFromUri(${val1})", gen -> {
             gen.set(getVal("http://www.example.com:1234/this/is/a/path"));
