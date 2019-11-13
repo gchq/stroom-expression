@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1328** : Fix so `stepping()` function is correctly registered.
+
 ## [v3.0.2] - 2019-11-04
 
 * Fix build.
