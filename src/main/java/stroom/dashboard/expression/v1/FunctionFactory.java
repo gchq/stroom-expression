@@ -73,6 +73,7 @@ public class FunctionFactory {
         add(Dashboard.class, Dashboard.NAME);
         add(Annotation.class, Annotation.NAME);
         add(Data.class, Data.NAME);
+        add(Stepping.class, Stepping.NAME);
 
         add(StringLength.class, StringLength.NAME);
         add(UpperCase.class, UpperCase.NAME);
