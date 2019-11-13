@@ -703,6 +703,52 @@ class TestExpressionParser {
     }
 
     @Test
+    void testLink4() throws ParseException {
+        createGenerator("link('blah', '?annotationId=1&streamId=2&eventId=3&title='+encodeUrl('this is a title')+'&subject='+encodeUrl('this is a subject')+'&status=New&assignedTo='+encodeUrl('test user')+'&comment='+encodeUrl('new comment'), 'annotation')", 2, gen -> {
+            final String expectedText = "blah";
+            final String expectedUrl = "?annotationId=1&streamId=2&eventId=3&title=this+is+a+title&subject=this+is+a+subject&status=New&assignedTo=test+user&comment=new+comment";
+            final String expectedType = "annotation";
+
+            gen.set(getVal(expectedText, expectedUrl));
+
+            final Val out = gen.eval();
+            final String str = out.toString();
+            assertThat(str).isEqualTo("[blah](%3FannotationId%3D1%26streamId%3D2%26eventId%3D3%26title%3Dthis%2Bis%2Ba%2Btitle%26subject%3Dthis%2Bis%2Ba%2Bsubject%26status%3DNew%26assignedTo%3Dtest%2Buser%26comment%3Dnew%2Bcomment){annotation}");
+
+            final String text = str.substring(str.indexOf("[") + 1, str.indexOf("]"));
+            final String url = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+            final String type = str.substring(str.indexOf("{") + 1, str.indexOf("}"));
+
+            assertThat(EncodingUtil.decodeUrl(text)).isEqualTo(expectedText);
+            assertThat(EncodingUtil.decodeUrl(url)).isEqualTo(expectedUrl);
+            assertThat(EncodingUtil.decodeUrl(type)).isEqualTo(expectedType);
+        });
+    }
+
+    @Test
+    void testAnnotation() throws ParseException {
+        createGenerator("annotation('blah', '1', '2', '3', 'this is a title', 'this is a subject', 'New', 'test user', 'new comment')", gen -> {
+            final String expectedText = "blah";
+            final String expectedUrl = "?annotationId=1&streamId=2&eventId=3&title=this+is+a+title&subject=this+is+a+subject&status=New&assignedTo=test+user&comment=new+comment";
+            final String expectedType = "annotation";
+
+            gen.set(getVal(expectedText, expectedUrl));
+
+            final Val out = gen.eval();
+            final String str = out.toString();
+            assertThat(str).isEqualTo("[blah](%3FannotationId%3D1%26streamId%3D2%26eventId%3D3%26title%3Dthis%2Bis%2Ba%2Btitle%26subject%3Dthis%2Bis%2Ba%2Bsubject%26status%3DNew%26assignedTo%3Dtest%2Buser%26comment%3Dnew%2Bcomment){annotation}");
+
+            final String text = str.substring(str.indexOf("[") + 1, str.indexOf("]"));
+            final String url = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+            final String type = str.substring(str.indexOf("{") + 1, str.indexOf("}"));
+
+            assertThat(EncodingUtil.decodeUrl(text)).isEqualTo(expectedText);
+            assertThat(EncodingUtil.decodeUrl(url)).isEqualTo(expectedUrl);
+            assertThat(EncodingUtil.decodeUrl(type)).isEqualTo(expectedType);
+        });
+    }
+
+    @Test
     void testStaticString1() {
         createGenerator("'hello'", gen -> {
             gen.set(getVal("this"));

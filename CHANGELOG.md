@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1328** : Fix so `stepping()` function is correctly registered.
+
 ## [v4.0-beta.2] - 2019-11-11
 
 * Issue **#stroom#1265** : Added `modulus()` function along with alias `mod()` and modulus operator `%`.
