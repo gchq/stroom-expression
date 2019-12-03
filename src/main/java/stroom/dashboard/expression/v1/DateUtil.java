@@ -57,7 +57,7 @@ public final class DateUtil {
      * @throws IllegalArgumentException if date does not parse
      */
     public static long parseNormalDateTimeString(final String date) {
-        if (date == null || date.length() != DATE_LENGTH || date.charAt(date.length() - 1) != 'Z') {
+        if (!looksLikeDate(date)) {
             throw new IllegalArgumentException("Unable to parse date: \"" + date + '"');
         }
 
@@ -107,5 +107,9 @@ public final class DateUtil {
             return ((LocalDateTime) temporalAccessor).atZone(zoneId);
         }
         return ((LocalDate) temporalAccessor).atStartOfDay(zoneId);
+    }
+
+    public static boolean looksLikeDate(final String date) {
+        return date != null && date.length() == DATE_LENGTH && date.charAt(date.length() - 1) == 'Z';
     }
 }
