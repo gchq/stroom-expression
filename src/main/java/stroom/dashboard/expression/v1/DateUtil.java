@@ -57,7 +57,7 @@ public final class DateUtil {
      * @throws IllegalArgumentException if date does not parse
      */
     public static long parseNormalDateTimeString(final String date) {
-        if (date == null || date.length() != DATE_LENGTH) {
+        if (date == null || date.length() != DATE_LENGTH || date.charAt(date.length() - 1) != 'Z') {
             throw new IllegalArgumentException("Unable to parse date: \"" + date + '"');
         }
 

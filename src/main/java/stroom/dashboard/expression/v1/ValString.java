@@ -54,10 +54,10 @@ public class ValString implements Val {
     public Long toLong() {
         if (optionalLong == null) {
             try {
-                optionalLong = Optional.of(Long.valueOf(value));
+                optionalLong = Optional.of(DateUtil.parseNormalDateTimeString(value));
             } catch (final RuntimeException e) {
                 try {
-                    optionalLong = Optional.of(DateUtil.parseNormalDateTimeString(value));
+                    optionalLong = Optional.of(Long.valueOf(value));
                 } catch (final RuntimeException e2) {
                     optionalLong = Optional.empty();
                 }
@@ -71,10 +71,10 @@ public class ValString implements Val {
     public Double toDouble() {
         if (optionalDouble == null) {
             try {
-                optionalDouble = Optional.of(new BigDecimal(value).doubleValue());
+                optionalDouble = Optional.of((double) DateUtil.parseNormalDateTimeString(value));
             } catch (final RuntimeException e) {
                 try {
-                    optionalDouble = Optional.of((double) DateUtil.parseNormalDateTimeString(value));
+                    optionalDouble = Optional.of(new BigDecimal(value).doubleValue());
                 } catch (final RuntimeException e2) {
                     optionalDouble = Optional.empty();
                 }
