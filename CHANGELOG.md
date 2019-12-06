@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v3.0.3] - 2019-12-06
+
 * Issue **#stroom#1328** : Fix so `stepping()` function is correctly registered.
 
 ## [v3.0.2] - 2019-11-04
@@ -182,7 +184,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.2...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.3...HEAD
+[v3.0.3]: https://github.com/gchq/stroom-expression/compare/v3.0.2...v3.0.3
 [v3.0.2]: https://github.com/gchq/stroom-expression/compare/v3.0.1...v3.0.2
 [v3.0.1]: https://github.com/gchq/stroom-expression/compare/v3.0.0...v3.0.1
 [v3.0.0]: https://github.com/gchq/stroom-expression/compare/v2.0.8...v3.0.0
