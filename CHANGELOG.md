@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.5.7] - 2020-09-04
+
+* Issue **#stroom#1837** : Added `joining()` function to concatenate supplied fields in child rows.
+
 ## [v1.5.6] - 2020-09-04
 
 * Issue **#stroom#1837** : Added `joining()` function to concatenate supplied fields in child rows.
@@ -170,7 +174,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.6...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.7...HEAD
+[v1.5.7]: https://github.com/gchq/stroom-expression/compare/v1.5.6...v1.5.7
 [v1.5.6]: https://github.com/gchq/stroom-expression/compare/v1.5.5...v1.5.6
 [v1.5.5]: https://github.com/gchq/stroom-expression/compare/v1.5.4...v1.5.5
 [v1.5.4]: https://github.com/gchq/stroom-expression/compare/v1.5.3...v1.5.4
