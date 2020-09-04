@@ -30,6 +30,7 @@ class FormatDate extends AbstractFunction implements Serializable {
 
     private Generator gen;
     private Function function;
+    private boolean hasAggregate;
 
     public FormatDate(final String name) {
         super(name, 1, 3);
@@ -54,9 +55,8 @@ class FormatDate extends AbstractFunction implements Serializable {
         final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
-            if (function.hasAggregate()) {
-                throw new ParseException("Non aggregate function expected as first argument of '" + name + "' function", 0);
-            }
+            hasAggregate = function.hasAggregate();
+
         } else {
             final Long millis = ((Val) param).toLong();
             if (millis == null) {
@@ -87,7 +87,7 @@ class FormatDate extends AbstractFunction implements Serializable {
 
     @Override
     public boolean hasAggregate() {
-        return false;
+        return hasAggregate;
     }
 
     private static class Gen extends AbstractSingleChildGenerator {
