@@ -178,7 +178,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.7...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.8...HEAD
+[v1.5.8]: https://github.com/gchq/stroom-expression/compare/v1.5.7...v1.5.8
 [v1.5.7]: https://github.com/gchq/stroom-expression/compare/v1.5.6...v1.5.7
 [v1.5.6]: https://github.com/gchq/stroom-expression/compare/v1.5.5...v1.5.6
 [v1.5.5]: https://github.com/gchq/stroom-expression/compare/v1.5.4...v1.5.5
