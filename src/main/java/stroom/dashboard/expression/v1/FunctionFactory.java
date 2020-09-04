@@ -75,6 +75,7 @@ public class FunctionFactory {
         add(Data.class, Data.NAME);
         add(Stepping.class, Stepping.NAME);
 
+        // String functions.
         add(StringLength.class, StringLength.NAME);
         add(UpperCase.class, UpperCase.NAME);
         add(LowerCase.class, LowerCase.NAME);
@@ -89,6 +90,9 @@ public class FunctionFactory {
         add(Include.class, Include.NAME);
         add(Exclude.class, Exclude.NAME);
         add(Hash.class, Hash.NAME);
+
+        // Aggregate string functions.
+        add(Joining.class, Joining.NAME);
 
         add(Count.class, Count.NAME);
         add(CountGroups.class, CountGroups.NAME);

@@ -1655,6 +1655,30 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testJoining1() throws ParseException {
+        final Generator gen = createGenerator("joining(${val1}, ',')");
+
+        gen.set(getVal("one"));
+        gen.set(getVal("two"));
+        gen.set(getVal("three"));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("one,two,three", out.toString());
+    }
+
+    @Test
+    public void testJoining2() throws ParseException {
+        final Generator gen = createGenerator("joining(${val1})");
+
+        gen.set(getVal("one"));
+        gen.set(getVal("two"));
+        gen.set(getVal("three"));
+
+        final Val out = gen.eval();
+        Assert.assertEquals("onetwothree", out.toString());
+    }
+
+    @Test
     public void testCount() throws ParseException {
         final Generator gen = createGenerator("count()");
 

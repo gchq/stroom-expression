@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1837** : Added `joining()` function to concatenate supplied fields in child rows.
+
 * Issue **#stroom#1784** : Several functions were previously prevented from working on results from aggregate functions but are now applied regardless.
 
 ## [v1.5.5] - 2019-11-13
