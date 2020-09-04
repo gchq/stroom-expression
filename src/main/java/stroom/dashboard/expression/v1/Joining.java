@@ -96,5 +96,18 @@ class Joining extends AbstractFunction {
         public Val eval() {
             return ValString.create(sb.toString());
         }
+
+        @Override
+        public void merge(final Generator generator) {
+            final Gen gen = (Gen) generator;
+            final String value = gen.sb.toString();
+            if (!value.isEmpty()) {
+                if (sb.length() > 0) {
+                    sb.append(delimiter);
+                }
+                sb.append(value);
+            }
+            super.merge(generator);
+        }
     }
 }
