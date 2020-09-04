@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.5.8] - 2020-09-04
+
+* Issue **#stroom#1837** : Added limit to the number of items added when using `joining()`.
+
 ## [v1.5.7] - 2020-09-04
 
 * Issue **#stroom#1837** : Added `joining()` function to concatenate supplied fields in child rows.

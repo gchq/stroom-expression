@@ -17,16 +17,19 @@
 package stroom.dashboard.expression.v1;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 class Joining extends AbstractFunction {
     static final String NAME = "joining";
 
     private String delimiter = "";
+    private int limit = 10;
 
     private Function function;
 
     public Joining(final String name) {
-        super(name, 1, 2);
+        super(name, 1, 3);
     }
 
     @Override
@@ -35,6 +38,20 @@ class Joining extends AbstractFunction {
 
         if (params.length >= 2) {
             delimiter = parseStringParam(params[1], "second");
+        }
+        if (params.length >= 3) {
+            if (params[2] instanceof Val) {
+                final Integer limit = ((Val) params[2]).toInteger();
+                if (limit != null) {
+                    this.limit = limit;
+                } else {
+                    throw new ParseException(
+                            "Limit argument of '" + name + "' must be positive number if specified", 0);
+                }
+            } else {
+                throw new ParseException(
+                        "Third argument of '" + name + "' is expected to be a numeric value", 0);
+            }
         }
 
         final Param param = params[0];
@@ -55,7 +72,7 @@ class Joining extends AbstractFunction {
     @Override
     public Generator createGenerator() {
         final Generator childGenerator = function.createGenerator();
-        return new Gen(childGenerator, delimiter);
+        return new Gen(childGenerator, delimiter, limit);
     }
 
     @Override
@@ -72,40 +89,40 @@ class Joining extends AbstractFunction {
         private static final long serialVersionUID = 8153777070911899616L;
 
         private final String delimiter;
-        private final StringBuilder sb = new StringBuilder();
+        private final int limit;
+        private final List<String> list = new ArrayList<>();
 
-        Gen(final Generator childGenerator, final String delimiter) {
+        Gen(final Generator childGenerator, final String delimiter, final int limit) {
             super(childGenerator);
             this.delimiter = delimiter;
+            this.limit = limit;
         }
 
         @Override
         public void set(final Val[] values) {
             childGenerator.set(values);
-            final Val val = childGenerator.eval();
-            final String value = val.toString();
-            if (value != null) {
-                if (sb.length() > 0) {
-                    sb.append(delimiter);
+
+            if (list.size() < limit) {
+                final Val val = childGenerator.eval();
+                final String value = val.toString();
+                if (value != null) {
+                    list.add(value);
                 }
-                sb.append(value);
             }
         }
 
         @Override
         public Val eval() {
-            return ValString.create(sb.toString());
+            return ValString.create(String.join(delimiter, list));
         }
 
         @Override
         public void merge(final Generator generator) {
             final Gen gen = (Gen) generator;
-            final String value = gen.sb.toString();
-            if (!value.isEmpty()) {
-                if (sb.length() > 0) {
-                    sb.append(delimiter);
+            for (final String value : gen.list) {
+                if (list.size() < limit) {
+                    list.add(value);
                 }
-                sb.append(value);
             }
             super.merge(generator);
         }
