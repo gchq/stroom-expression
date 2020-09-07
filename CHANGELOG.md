@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.5.9] - 2020-09-07
+
 * Issue **#stroom#1083** : Added `any()`, `first()`, `last()` and `nth()` selection functions to select child values of grouped items.
 
 ## [v1.5.8] - 2020-09-04
@@ -180,7 +182,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.8...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.9...HEAD
+[v1.5.9]: https://github.com/gchq/stroom-expression/compare/v1.5.8...v1.5.9
 [v1.5.8]: https://github.com/gchq/stroom-expression/compare/v1.5.7...v1.5.8
 [v1.5.7]: https://github.com/gchq/stroom-expression/compare/v1.5.6...v1.5.7
 [v1.5.6]: https://github.com/gchq/stroom-expression/compare/v1.5.5...v1.5.6
