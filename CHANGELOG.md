@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1083** : Added `any()`, `first()`, `last()` and `nth()` selection functions to select child values of grouped items.
+
 ## [v1.5.8] - 2020-09-04
 
 * Issue **#stroom#1837** : Added limit to the number of items added when using `joining()`.

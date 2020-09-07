@@ -44,11 +44,11 @@ class ParseDate extends AbstractFunction implements Serializable {
         ZoneId zoneId = ZoneOffset.UTC;
 
         if (params.length >= 2) {
-            pattern = parseStringParam(params[1], "second");
+            pattern = ParamParseUtil.parseStringParam(params, 1, name);
             formatter = FormatterCache.getFormatter(pattern);
         }
         if (params.length >= 3) {
-            timeZone = parseStringParam(params[2], "third");
+            timeZone = ParamParseUtil.parseStringParam(params, 2, name);
             zoneId = FormatterCache.getZoneId(timeZone);
         }
 
@@ -69,13 +69,6 @@ class ParseDate extends AbstractFunction implements Serializable {
             }
             gen = new StaticValueFunction(ValLong.create(millis)).createGenerator();
         }
-    }
-
-    private String parseStringParam(final Param param, final String paramPos) throws ParseException {
-        if (!(param instanceof ValString)) {
-            throw new ParseException("String expected as " + paramPos + " argument of '" + name + "' function", 0);
-        }
-        return param.toString();
     }
 
     @Override

@@ -2308,6 +2308,82 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testAny() throws ParseException {
+        final Generator gen = createGenerator("any(${val1})");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        Assert.assertEquals(300, out.toDouble(), 0);
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("any(${val1})");
+            child.set(getVal(300));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        Assert.assertEquals(300, selected.toDouble(), 0);
+    }
+
+    @Test
+    public void testFirst() throws ParseException {
+        final Generator gen = createGenerator("first(${val1})");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        Assert.assertEquals(300, out.toDouble(), 0);
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("first(${val1})");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        Assert.assertEquals(1, selected.toDouble(), 0);
+    }
+
+    @Test
+    public void testLast() throws ParseException {
+        final Generator gen = createGenerator("last(${val1})");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        Assert.assertEquals(300, out.toDouble(), 0);
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("last(${val1})");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        Assert.assertEquals(10, selected.toDouble(), 0);
+    }
+
+    @Test
+    public void testNth() throws ParseException {
+        final Generator gen = createGenerator("nth(${val1}, 7)");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        Assert.assertEquals(300, out.toDouble(), 0);
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("nth(${val1}, 7)");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        Assert.assertEquals(7, selected.toDouble(), 0);
+    }
+
+    @Test
     public void testToBoolean1() throws ParseException {
         final Generator gen = createGenerator("toBoolean('true')");
         Assert.assertEquals(ValBoolean.TRUE, gen.eval());

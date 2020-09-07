@@ -116,6 +116,12 @@ public class FunctionFactory {
 
         add(Random.class, Random.NAME);
 
+        // Child value selectors.
+        add(Any.class, Any.NAME);
+        add(First.class, First.NAME);
+        add(Last.class, Last.NAME);
+        add(Nth.class, Nth.NAME);
+
         // Echo statically mapped values
         add(CurrentUser.class, CurrentUser.NAME);
         add(QueryParam.class, QueryParam.NAME);

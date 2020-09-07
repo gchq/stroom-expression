@@ -55,10 +55,10 @@ class Hash extends AbstractFunction implements Serializable {
         super.setParams(params);
 
         if (params.length >= 2) {
-            algorithm = parseStringParam(params[1], "second");
+            algorithm = ParamParseUtil.parseStringParam(params, 1, name);
         }
         if (params.length >= 3) {
-            salt = parseStringParam(params[2], "third");
+            salt =ParamParseUtil.parseStringParam(params,2, name);
         }
 
         try {
@@ -80,13 +80,6 @@ class Hash extends AbstractFunction implements Serializable {
         } catch (final NoSuchAlgorithmException e) {
             throw new ParseException(e.getMessage(), 0);
         }
-    }
-
-    private String parseStringParam(final Param param, final String paramPos) throws ParseException {
-        if (!(param instanceof ValString)) {
-            throw new ParseException("String expected as " + paramPos + " argument of '" + name + "' function", 0);
-        }
-        return param.toString();
     }
 
     @Override

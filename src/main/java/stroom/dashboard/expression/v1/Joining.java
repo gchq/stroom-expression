@@ -37,21 +37,10 @@ class Joining extends AbstractFunction {
         super.setParams(params);
 
         if (params.length >= 2) {
-            delimiter = parseStringParam(params[1], "second");
+            delimiter = ParamParseUtil.parseStringParam(params, 1, name);
         }
         if (params.length >= 3) {
-            if (params[2] instanceof Val) {
-                final Integer limit = ((Val) params[2]).toInteger();
-                if (limit != null) {
-                    this.limit = limit;
-                } else {
-                    throw new ParseException(
-                            "Limit argument of '" + name + "' must be positive number if specified", 0);
-                }
-            } else {
-                throw new ParseException(
-                        "Third argument of '" + name + "' is expected to be a numeric value", 0);
-            }
+            this.limit = ParamParseUtil.parseIntegerParam(params, 2, name, true);
         }
 
         final Param param = params[0];
@@ -60,13 +49,6 @@ class Joining extends AbstractFunction {
         } else {
             function = new StaticValueFunction((Val) param);
         }
-    }
-
-    private String parseStringParam(final Param param, final String paramPos) throws ParseException {
-        if (!(param instanceof ValString)) {
-            throw new ParseException("String expected as " + paramPos + " argument of '" + name + "' function", 0);
-        }
-        return param.toString();
     }
 
     @Override
