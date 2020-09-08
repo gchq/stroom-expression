@@ -2384,6 +2384,82 @@ public class TestExpressionParser {
     }
 
     @Test
+    public void testTop() throws ParseException {
+        final Generator gen = createGenerator("top(${val1}, ',', 3)");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        Assert.assertEquals(300, out.toDouble(), 0);
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("top(${val1}, ',', 3)");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        Assert.assertEquals("1,2,3", selected.toString());
+    }
+
+    @Test
+    public void testTopSmall() throws ParseException {
+        final Generator gen = createGenerator("top(${val1}, ',', 3)");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        Assert.assertEquals(300, out.toDouble(), 0);
+
+        final Generator[] children = new Generator[2];
+        for (int i = 0; i < 2; i++) {
+            final Generator child = createGenerator("top(${val1}, ',', 3)");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        Assert.assertEquals("1,2", selected.toString());
+    }
+
+    @Test
+    public void testBottom() throws ParseException {
+        final Generator gen = createGenerator("bottom(${val1}, ',', 3)");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        Assert.assertEquals(300, out.toDouble(), 0);
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("bottom(${val1}, ',', 3)");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        Assert.assertEquals("8,9,10", selected.toString());
+    }
+
+    @Test
+    public void testBottomSmall() throws ParseException {
+        final Generator gen = createGenerator("bottom(${val1}, ',', 3)");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        Assert.assertEquals(300, out.toDouble(), 0);
+
+        final Generator[] children = new Generator[2];
+        for (int i = 0; i < 2; i++) {
+            final Generator child = createGenerator("bottom(${val1}, ',', 3)");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        Assert.assertEquals("1,2", selected.toString());
+    }
+
+    @Test
     public void testToBoolean1() throws ParseException {
         final Generator gen = createGenerator("toBoolean('true')");
         Assert.assertEquals(ValBoolean.TRUE, gen.eval());

@@ -40,7 +40,7 @@ class Joining extends AbstractFunction {
             delimiter = ParamParseUtil.parseStringParam(params, 1, name);
         }
         if (params.length >= 3) {
-            this.limit = ParamParseUtil.parseIntegerParam(params, 2, name, true);
+            limit = ParamParseUtil.parseIntParam(params, 2, name, true);
         }
 
         final Param param = params[0];

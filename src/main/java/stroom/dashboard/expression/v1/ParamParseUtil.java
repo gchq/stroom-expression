@@ -33,7 +33,7 @@ public class ParamParseUtil {
         return function;
     }
 
-    public static Integer parseIntegerParam(final Param[] params, final int pos, final String functionName, final boolean positive) throws ParseException {
+    public static int parseIntParam(final Param[] params, final int pos, final String functionName, final boolean positive) throws ParseException {
         if (params.length > pos) {
             if (params[pos] instanceof Val) {
                 final Param param = params[pos];
@@ -43,14 +43,10 @@ public class ParamParseUtil {
                         throw new ParseException("Positive number expected as " + getPos(pos) + " argument of '" + functionName + "' function", 0);
                     }
                     return num;
-                } else {
-                    throw new ParseException("Number expected as " + getPos(pos) + " argument of '" + functionName + "' function", 0);
                 }
-            } else {
-                throw new ParseException("Number expected as " + getPos(pos) + " argument of '" + functionName + "' function", 0);
             }
         }
-        return null;
+        throw new ParseException("Number expected as " + getPos(pos) + " argument of '" + functionName + "' function", 0);
     }
 
     private static String getPos(int pos) {

@@ -32,7 +32,7 @@ class Nth extends AbstractSelectorFunction implements Serializable {
     @Override
     public void setParams(final Param[] params) throws ParseException {
         if (params.length >= 2) {
-            pos = ParamParseUtil.parseIntegerParam(params, 1, name, true);
+            pos = ParamParseUtil.parseIntParam(params, 1, name, true);
             // Adjust for 0 based index.
             pos--;
         }

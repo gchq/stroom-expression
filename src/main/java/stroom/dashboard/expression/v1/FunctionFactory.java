@@ -121,6 +121,8 @@ public class FunctionFactory {
         add(First.class, First.NAME);
         add(Last.class, Last.NAME);
         add(Nth.class, Nth.NAME);
+        add(Top.class, Top.NAME);
+        add(Bottom.class, Bottom.NAME);
 
         // Echo statically mapped values
         add(CurrentUser.class, CurrentUser.NAME);
