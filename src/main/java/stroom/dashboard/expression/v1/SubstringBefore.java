@@ -36,7 +36,7 @@ class SubstringBefore extends AbstractFunction implements Serializable {
     public void setParams(final Param[] params) throws ParseException {
         super.setParams(params);
 
-        beforeFunction = parseParam(params[1], "second");
+        beforeFunction = ParamParseUtil.parseStringFunctionParam(params, 1, name);
 
         final Param param = params[0];
         if (param instanceof Function) {
@@ -45,7 +45,6 @@ class SubstringBefore extends AbstractFunction implements Serializable {
 
         } else {
             function = new StaticValueFunction((Val) param);
-            hasAggregate = false;
 
             // Optimise replacement of static input in case user does something stupid.
             if (beforeFunction instanceof StaticValueFunction) {
@@ -64,21 +63,6 @@ class SubstringBefore extends AbstractFunction implements Serializable {
                 }
             }
         }
-    }
-
-    private Function parseParam(final Param param, final String paramPos) throws ParseException {
-        Function function;
-        if (param instanceof Function) {
-            function = (Function) param;
-            if (function.hasAggregate()) {
-                throw new ParseException("Non aggregate function expected as " + paramPos + " argument of '" + name + "' function", 0);
-            }
-        } else if (!(param instanceof ValString)) {
-            throw new ParseException("String or function expected as " + paramPos + " argument of '" + name + "' function", 0);
-        } else {
-            function = new StaticValueFunction((Val) param);
-        }
-        return function;
     }
 
     @Override

@@ -30,6 +30,7 @@ class ParseDate extends AbstractFunction implements Serializable {
 
     private Generator gen;
     private Function function;
+    private boolean hasAggregate;
 
     public ParseDate(final String name) {
         super(name, 1, 3);
@@ -43,20 +44,18 @@ class ParseDate extends AbstractFunction implements Serializable {
         ZoneId zoneId = ZoneOffset.UTC;
 
         if (params.length >= 2) {
-            pattern = parseStringParam(params[1], "second");
+            pattern = ParamParseUtil.parseStringParam(params, 1, name);
             formatter = FormatterCache.getFormatter(pattern);
         }
         if (params.length >= 3) {
-            timeZone = parseStringParam(params[2], "third");
+            timeZone = ParamParseUtil.parseStringParam(params, 2, name);
             zoneId = FormatterCache.getZoneId(timeZone);
         }
 
         final Param param = params[0];
         if (param instanceof Function) {
             function = (Function) param;
-            if (function.hasAggregate()) {
-                throw new ParseException("Non aggregate function expected as first argument of '" + name + "' function", 0);
-            }
+            hasAggregate = function.hasAggregate();
 
         } else if (param instanceof ValString) {
             final String string = param.toString();
@@ -72,13 +71,6 @@ class ParseDate extends AbstractFunction implements Serializable {
         }
     }
 
-    private String parseStringParam(final Param param, final String paramPos) throws ParseException {
-        if (!(param instanceof ValString)) {
-            throw new ParseException("String expected as " + paramPos + " argument of '" + name + "' function", 0);
-        }
-        return param.toString();
-    }
-
     @Override
     public Generator createGenerator() {
         if (gen != null) {
@@ -91,7 +83,7 @@ class ParseDate extends AbstractFunction implements Serializable {
 
     @Override
     public boolean hasAggregate() {
-        return false;
+        return hasAggregate;
     }
 
     private static class Gen extends AbstractSingleChildGenerator {
