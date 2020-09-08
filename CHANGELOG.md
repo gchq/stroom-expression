@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Issue **#stroom#1083** : Added `top()` and `bottom()` selection functions to select child values of grouped items.
+
+* Issue **#stroom#1083** : Added `any()`, `first()`, `last()` and `nth()` selection functions to select child values of grouped items.
+
+* Issue **#stroom#1837** : Added limit to the number of items added when using `joining()`.
+
+* Issue **#stroom#1837** : Added `joining()` function to concatenate supplied fields in child rows.
+
+* Issue **#stroom#1837** : Added `joining()` function to concatenate supplied fields in child rows.
+
+* Issue **#stroom#1784** : Several functions were previously prevented from working on results from aggregate functions but are now applied regardless.
+
 ## [v3.0.3] - 2019-12-06
 
 * Issue **#stroom#1328** : Fix so `stepping()` function is correctly registered.

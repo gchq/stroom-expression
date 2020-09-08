@@ -32,6 +32,7 @@ class Hash extends AbstractFunction implements Serializable {
 
     private Generator gen;
     private Function function;
+    private boolean hasAggregate;
 
     public Hash(final String name) {
         super(name, 1, 3);
@@ -54,10 +55,10 @@ class Hash extends AbstractFunction implements Serializable {
         super.setParams(params);
 
         if (params.length >= 2) {
-            algorithm = parseStringParam(params[1], "second");
+            algorithm = ParamParseUtil.parseStringParam(params, 1, name);
         }
         if (params.length >= 3) {
-            salt = parseStringParam(params[2], "third");
+            salt =ParamParseUtil.parseStringParam(params,2, name);
         }
 
         try {
@@ -67,9 +68,8 @@ class Hash extends AbstractFunction implements Serializable {
             final Param param = params[0];
             if (param instanceof Function) {
                 function = (Function) param;
-                if (function.hasAggregate()) {
-                    throw new ParseException("Non aggregate function expected as first argument of '" + name + "' function", 0);
-                }
+                hasAggregate = function.hasAggregate();
+
             } else {
                 final String string = param.toString();
                 if (string == null) {
@@ -80,13 +80,6 @@ class Hash extends AbstractFunction implements Serializable {
         } catch (final NoSuchAlgorithmException e) {
             throw new ParseException(e.getMessage(), 0);
         }
-    }
-
-    private String parseStringParam(final Param param, final String paramPos) throws ParseException {
-        if (!(param instanceof ValString)) {
-            throw new ParseException("String expected as " + paramPos + " argument of '" + name + "' function", 0);
-        }
-        return param.toString();
     }
 
     @Override
@@ -101,7 +94,7 @@ class Hash extends AbstractFunction implements Serializable {
 
     @Override
     public boolean hasAggregate() {
-        return false;
+        return hasAggregate;
     }
 
     private static class Gen extends AbstractSingleChildGenerator {

@@ -1666,6 +1666,30 @@ class TestExpressionParser {
     }
 
     @Test
+    void testJoining1() throws ParseException {
+        final Generator gen = createGenerator("joining(${val1}, ',')");
+
+        gen.set(getVal("one"));
+        gen.set(getVal("two"));
+        gen.set(getVal("three"));
+
+        final Val out = gen.eval();
+        assertThat(out.toString()).isEqualTo("one,two,three");
+    }
+
+    @Test
+    void testJoining2() throws ParseException {
+        final Generator gen = createGenerator("joining(${val1})");
+
+        gen.set(getVal("one"));
+        gen.set(getVal("two"));
+        gen.set(getVal("three"));
+
+        final Val out = gen.eval();
+        assertThat(out.toString()).isEqualTo("onetwothree");
+    }
+
+    @Test
     void testCount() throws ParseException {
         final Generator gen = createGenerator("count()");
 
@@ -2292,6 +2316,158 @@ class TestExpressionParser {
 
         Val out = gen.eval();
         assertThat(out.toDouble()).isEqualTo(147, Offset.offset(0D));
+    }
+
+    @Test
+    void testAny() throws ParseException {
+        final Generator gen = createGenerator("any(${val1})");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("any(${val1})");
+            child.set(getVal(300));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        assertThat(selected.toDouble()).isEqualTo(300, Offset.offset(0D));
+    }
+
+    @Test
+    void testFirst() throws ParseException {
+        final Generator gen = createGenerator("first(${val1})");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("first(${val1})");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        assertThat(selected.toDouble()).isEqualTo(1, Offset.offset(0D));
+    }
+
+    @Test
+    void testLast() throws ParseException {
+        final Generator gen = createGenerator("last(${val1})");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("last(${val1})");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        assertThat(selected.toDouble()).isEqualTo(10, Offset.offset(0D));
+    }
+
+    @Test
+    void testNth() throws ParseException {
+        final Generator gen = createGenerator("nth(${val1}, 7)");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("nth(${val1}, 7)");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        assertThat(selected.toDouble()).isEqualTo(7, Offset.offset(0D));
+    }
+
+    @Test
+    void testTop() throws ParseException {
+        final Generator gen = createGenerator("top(${val1}, ',', 3)");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("top(${val1}, ',', 3)");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        assertThat(selected.toString()).isEqualTo("1,2,3");
+    }
+
+    @Test
+    void testTopSmall() throws ParseException {
+        final Generator gen = createGenerator("top(${val1}, ',', 3)");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+        final Generator[] children = new Generator[2];
+        for (int i = 0; i < 2; i++) {
+            final Generator child = createGenerator("top(${val1}, ',', 3)");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        assertThat(selected.toString()).isEqualTo("1,2");
+    }
+
+    @Test
+    void testBottom() throws ParseException {
+        final Generator gen = createGenerator("bottom(${val1}, ',', 3)");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+        final Generator[] children = new Generator[10];
+        for (int i = 0; i < 10; i++) {
+            final Generator child = createGenerator("bottom(${val1}, ',', 3)");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        assertThat(selected.toString()).isEqualTo("8,9,10");
+    }
+
+    @Test
+    void testBottomSmall() throws ParseException {
+        final Generator gen = createGenerator("bottom(${val1}, ',', 3)");
+        gen.set(getVal(300));
+        Val out = gen.eval();
+        assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+        final Generator[] children = new Generator[2];
+        for (int i = 0; i < 2; i++) {
+            final Generator child = createGenerator("bottom(${val1}, ',', 3)");
+            child.set(getVal(i + 1));
+            children[i] = child;
+        }
+
+        final Selector selector = (Selector) gen;
+        final Val selected = selector.select(children);
+        assertThat(selected.toString()).isEqualTo("1,2");
     }
 
     @Test

@@ -47,7 +47,6 @@ class Substring extends AbstractFunction implements Serializable {
 
         } else {
             function = new StaticValueFunction((Val) param);
-            hasAggregate = false;
 
             // Optimise replacement of static input in case user does something stupid.
             if (startFunction instanceof StaticValueFunction && endFunction instanceof StaticValueFunction) {
@@ -81,9 +80,6 @@ class Substring extends AbstractFunction implements Serializable {
         Function function;
         if (param instanceof Function) {
             function = (Function) param;
-            if (function.hasAggregate()) {
-                throw new ParseException("Non aggregate function expected as " + paramPos + " argument of '" + name + "' function", 0);
-            }
         } else {
             Integer pos = ((Val) param).toInteger();
             if (pos == null) {
