@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.5.10] - 2020-09-08
+
 * Issue **#stroom#1083** : Added `top()` and `bottom()` selection functions to select child values of grouped items.
 
 ## [v1.5.9] - 2020-09-07
@@ -184,7 +186,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.9...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.10...HEAD
+[v1.5.10]: https://github.com/gchq/stroom-expression/compare/v1.5.9...v1.5.10
 [v1.5.9]: https://github.com/gchq/stroom-expression/compare/v1.5.8...v1.5.9
 [v1.5.8]: https://github.com/gchq/stroom-expression/compare/v1.5.7...v1.5.8
 [v1.5.7]: https://github.com/gchq/stroom-expression/compare/v1.5.6...v1.5.7
