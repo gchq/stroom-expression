@@ -6,21 +6,36 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Added support for Kryo serialisation.
+
+
+## [v3.0.4] - 2020-09-08
+
+* Issue **#stroom#1083** : Added `top()` and `bottom()` selection functions to select child values of grouped items.
+
+* Issue **#stroom#1083** : Added `any()`, `first()`, `last()` and `nth()` selection functions to select child values of grouped items.
+
+* Issue **#stroom#1837** : Added limit to the number of items added when using `joining()`.
+
+* Issue **#stroom#1837** : Added `joining()` function to concatenate supplied fields in child rows.
+
+* Issue **#stroom#1837** : Added `joining()` function to concatenate supplied fields in child rows.
+
+* Issue **#stroom#1784** : Several functions were previously prevented from working on results from aggregate functions but are now applied regardless.
+
+## [v3.0.3] - 2019-12-06
+
 * Issue **#stroom#1328** : Fix so `stepping()` function is correctly registered.
 
-## [v4.0-beta.2] - 2019-11-11
+## [v3.0.2] - 2019-11-04
+
+* Fix build.
+
+## [v3.0.1] - 2019-11-04
 
 * Issue **#stroom#1265** : Added `modulus()` function along with alias `mod()` and modulus operator `%`.
 
 * Issue **#stroom#1300** : Added `annotation()` link creation function, `currentUser()` alias for `param('currentUser()')` and additional link creation functions for `data()` and `stepping()`.
-
-## [v4.0-beta.1] - 2019-10-23
-
-* Added support for Kryo serialisation.
-
-## [v3.0.0] - 2019-09-23
-
-* Downgrade to Java 8
 
 * Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding with the `dashboard()` function.
 
@@ -186,9 +201,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v4.0-beta.2...HEAD
-[v4.0-beta.2]: https://github.com/gchq/stroom-expression/compare/v4.0-beta.2...v4.0-beta.2
-[v4.0-beta.1]: https://github.com/gchq/stroom-expression/compare/v3.0.0...v4.0-beta.1
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.4...HEAD
+[v3.0.4]: https://github.com/gchq/stroom-expression/compare/v3.0.3...v3.0.4
+[v3.0.3]: https://github.com/gchq/stroom-expression/compare/v3.0.2...v3.0.3
+[v3.0.2]: https://github.com/gchq/stroom-expression/compare/v3.0.1...v3.0.2
+[v3.0.1]: https://github.com/gchq/stroom-expression/compare/v3.0.0...v3.0.1
 [v3.0.0]: https://github.com/gchq/stroom-expression/compare/v2.0.8...v3.0.0
 [v2.0.8]: https://github.com/gchq/stroom-expression/compare/v2.0.7...v2.0.8
 [v2.0.7]: https://github.com/gchq/stroom-expression/compare/v2.0.6...v2.0.7

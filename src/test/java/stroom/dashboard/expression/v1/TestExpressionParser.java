@@ -83,9 +83,8 @@ class TestExpressionParser {
     }
 
     private void test(final String expression) {
-        createExpression(expression, exp -> {
-            System.out.println(exp.toString());
-        });
+        createExpression(expression, exp ->
+                System.out.println(exp.toString()));
     }
 
     @Test
@@ -703,7 +702,7 @@ class TestExpressionParser {
     }
 
     @Test
-    void testLink4() throws ParseException {
+    void testLink4() {
         createGenerator("link('blah', '?annotationId=1&streamId=2&eventId=3&title='+encodeUrl('this is a title')+'&subject='+encodeUrl('this is a subject')+'&status=New&assignedTo='+encodeUrl('test user')+'&comment='+encodeUrl('new comment'), 'annotation')", 2, gen -> {
             final String expectedText = "blah";
             final String expectedUrl = "?annotationId=1&streamId=2&eventId=3&title=this+is+a+title&subject=this+is+a+subject&status=New&assignedTo=test+user&comment=new+comment";
@@ -726,7 +725,7 @@ class TestExpressionParser {
     }
 
     @Test
-    void testAnnotation() throws ParseException {
+    void testAnnotation() {
         createGenerator("annotation('blah', '1', '2', '3', 'this is a title', 'this is a subject', 'New', 'test user', 'new comment')", gen -> {
             final String expectedText = "blah";
             final String expectedUrl = "?annotationId=1&streamId=2&eventId=3&title=this+is+a+title&subject=this+is+a+subject&status=New&assignedTo=test+user&comment=new+comment";
@@ -1683,6 +1682,30 @@ class TestExpressionParser {
     }
 
     @Test
+    void testJoining1() {
+        createGenerator("joining(${val1}, ',')", gen -> {
+            gen.set(getVal("one"));
+            gen.set(getVal("two"));
+            gen.set(getVal("three"));
+
+            final Val out = gen.eval();
+            assertThat(out.toString()).isEqualTo("one,two,three");
+        });
+    }
+
+    @Test
+    void testJoining2() {
+        createGenerator("joining(${val1})", gen -> {
+            gen.set(getVal("one"));
+            gen.set(getVal("two"));
+            gen.set(getVal("three"));
+
+            final Val out = gen.eval();
+            assertThat(out.toString()).isEqualTo("onetwothree");
+        });
+    }
+
+    @Test
     void testCount() {
         createGenerator("count()", gen -> {
             gen.set(getVal(122D));
@@ -2330,10 +2353,185 @@ class TestExpressionParser {
     }
 
     @Test
-    void testToBoolean1() {
-        createGenerator("toBoolean('true')", gen -> {
-            assertThat(gen.eval()).isEqualTo(ValBoolean.TRUE);
+    void testAny() {
+        createGenerator("any(${val1})", gen -> {
+            gen.set(getVal(300));
+            Val out = gen.eval();
+            assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+            final Generator[] children = new Generator[10];
+            for (int i = 0; i < 10; i++) {
+                final int idx = i;
+                createGenerator("any(${val1})", child -> {
+                    child.set(getVal(300));
+                    children[idx] = child;
+                });
+            }
+
+            final Selector selector = (Selector) gen;
+            final Val selected = selector.select(children);
+            assertThat(selected.toDouble()).isEqualTo(300, Offset.offset(0D));
         });
+    }
+
+    @Test
+    void testFirst() {
+        createGenerator("first(${val1})", gen -> {
+            gen.set(getVal(300));
+            Val out = gen.eval();
+            assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+            final Generator[] children = new Generator[10];
+            for (int i = 0; i < 10; i++) {
+                final int idx = i;
+                createGenerator("first(${val1})", child -> {
+                    child.set(getVal(idx + 1));
+                    children[idx] = child;
+                });
+            }
+
+            final Selector selector = (Selector) gen;
+            final Val selected = selector.select(children);
+            assertThat(selected.toDouble()).isEqualTo(1, Offset.offset(0D));
+        });
+    }
+
+    @Test
+    void testLast() {
+        createGenerator("last(${val1})", gen -> {
+            gen.set(getVal(300));
+            Val out = gen.eval();
+            assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+            final Generator[] children = new Generator[10];
+            for (int i = 0; i < 10; i++) {
+                final int idx = i;
+                createGenerator("last(${val1})", child -> {
+                    child.set(getVal(idx + 1));
+                    children[idx] = child;
+                });
+            }
+
+            final Selector selector = (Selector) gen;
+            final Val selected = selector.select(children);
+            assertThat(selected.toDouble()).isEqualTo(10, Offset.offset(0D));
+        });
+    }
+
+    @Test
+    void testNth() {
+        createGenerator("nth(${val1}, 7)", gen -> {
+            gen.set(getVal(300));
+            Val out = gen.eval();
+            assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+            final Generator[] children = new Generator[10];
+            for (int i = 0; i < 10; i++) {
+                final int idx = i;
+                createGenerator("nth(${val1}, 7)", child -> {
+                    child.set(getVal(idx + 1));
+                    children[idx] = child;
+                });
+            }
+
+            final Selector selector = (Selector) gen;
+            final Val selected = selector.select(children);
+            assertThat(selected.toDouble()).isEqualTo(7, Offset.offset(0D));
+        });
+    }
+
+    @Test
+    void testTop() {
+        createGenerator("top(${val1}, ',', 3)", gen -> {
+            gen.set(getVal(300));
+            Val out = gen.eval();
+            assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+            final Generator[] children = new Generator[10];
+            for (int i = 0; i < 10; i++) {
+                final int idx = i;
+                createGenerator("top(${val1}, ',', 3)", child -> {
+                    child.set(getVal(idx + 1));
+                    children[idx] = child;
+                });
+            }
+
+            final Selector selector = (Selector) gen;
+            final Val selected = selector.select(children);
+            assertThat(selected.toString()).isEqualTo("1,2,3");
+        });
+    }
+
+    @Test
+    void testTopSmall() {
+        createGenerator("top(${val1}, ',', 3)", gen -> {
+            gen.set(getVal(300));
+            Val out = gen.eval();
+            assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+            final Generator[] children = new Generator[2];
+            for (int i = 0; i < 2; i++) {
+                final int idx = i;
+                createGenerator("top(${val1}, ',', 3)", child -> {
+                    child.set(getVal(idx + 1));
+                    children[idx] = child;
+                });
+            }
+
+            final Selector selector = (Selector) gen;
+            final Val selected = selector.select(children);
+            assertThat(selected.toString()).isEqualTo("1,2");
+        });
+    }
+
+    @Test
+    void testBottom() {
+        createGenerator("bottom(${val1}, ',', 3)", gen -> {
+            gen.set(getVal(300));
+            Val out = gen.eval();
+            assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+            final Generator[] children = new Generator[10];
+            for (int i = 0; i < 10; i++) {
+                final int idx = i;
+                createGenerator("bottom(${val1}, ',', 3)", child -> {
+                    child.set(getVal(idx + 1));
+                    children[idx] = child;
+                });
+            }
+
+            final Selector selector = (Selector) gen;
+            final Val selected = selector.select(children);
+            assertThat(selected.toString()).isEqualTo("8,9,10");
+        });
+    }
+
+    @Test
+    void testBottomSmall() {
+        createGenerator("bottom(${val1}, ',', 3)", gen -> {
+            gen.set(getVal(300));
+            Val out = gen.eval();
+            assertThat(out.toDouble()).isEqualTo(300, Offset.offset(0D));
+
+            final Generator[] children = new Generator[2];
+            for (int i = 0; i < 2; i++) {
+                final int idx = i;
+                createGenerator("bottom(${val1}, ',', 3)", child -> {
+                    child.set(getVal(idx + 1));
+                    children[idx] = child;
+                });
+            }
+
+            final Selector selector = (Selector) gen;
+            final Val selected = selector.select(children);
+            assertThat(selected.toString()).isEqualTo("1,2");
+        });
+    }
+
+    @Test
+    void testToBoolean1() {
+        createGenerator("toBoolean('true')", gen ->
+                assertThat(gen.eval()).isEqualTo(ValBoolean.TRUE));
     }
 
     @Test
@@ -2346,9 +2544,8 @@ class TestExpressionParser {
 
     @Test
     void testToDouble1() {
-        createGenerator("toDouble('100')", gen -> {
-            assertThat(gen.eval()).isEqualTo(ValDouble.create(100));
-        });
+        createGenerator("toDouble('100')", gen ->
+                assertThat(gen.eval()).isEqualTo(ValDouble.create(100)));
     }
 
     @Test
@@ -2361,9 +2558,8 @@ class TestExpressionParser {
 
     @Test
     void testToInteger1() {
-        createGenerator("toInteger('100')", gen -> {
-            assertThat(gen.eval()).isEqualTo(ValInteger.create(100));
-        });
+        createGenerator("toInteger('100')", gen ->
+                assertThat(gen.eval()).isEqualTo(ValInteger.create(100)));
     }
 
     @Test
@@ -2376,9 +2572,8 @@ class TestExpressionParser {
 
     @Test
     void testToLong1() {
-        createGenerator("toLong('100')", gen -> {
-            assertThat(gen.eval()).isEqualTo(ValLong.create(100));
-        });
+        createGenerator("toLong('100')", gen ->
+                assertThat(gen.eval()).isEqualTo(ValLong.create(100)));
     }
 
     @Test
@@ -2391,9 +2586,8 @@ class TestExpressionParser {
 
     @Test
     void testToString1() {
-        createGenerator("toString('100')", gen -> {
-            assertThat(gen.eval()).isEqualTo(ValString.create("100"));
-        });
+        createGenerator("toString('100')", gen ->
+                assertThat(gen.eval()).isEqualTo(ValString.create("100")));
     }
 
     @Test
@@ -2552,7 +2746,7 @@ class TestExpressionParser {
             fieldIndexMap.create("val" + i, true);
         }
 
-        Expression exp = null;
+        Expression exp;
         try {
             exp = parser.parse(fieldIndexMap, expression);
         } catch (final ParseException e) {
@@ -2589,12 +2783,12 @@ class TestExpressionParser {
             gen.set(new Val[]{val1, val2});
             Val out = gen.eval();
 
-            System.out.println(String.format("[%s: %s] %s [%s: %s] => [%s: %s%s]",
+            System.out.printf("[%s: %s] %s [%s: %s] => [%s: %s%s]%n",
                     val1.getClass().getSimpleName(), val1.toString(),
                     operator,
                     val2.getClass().getSimpleName(), val2.toString(),
                     out.getClass().getSimpleName(), out.toString(),
-                    (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
+                    (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : ""));
 
             if (!(expectedOutput instanceof ValErr)) {
                 assertThat(out).isEqualTo(expectedOutput);
@@ -2607,10 +2801,10 @@ class TestExpressionParser {
         createGenerator(expression, gen -> {
             Val out = gen.eval();
 
-            System.out.println(String.format("%s => [%s:%s%s]",
+            System.out.printf("%s => [%s:%s%s]%n",
                     expression,
                     out.getClass().getSimpleName(), out.toString(),
-                    (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
+                    (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : ""));
 
             // The output type is always wrapped in a ValString
             assertThat(out.type().toString()).isEqualTo("string");
@@ -2626,11 +2820,11 @@ class TestExpressionParser {
             gen.set(new Val[]{val1});
             Val out = gen.eval();
 
-            System.out.println(String.format("%s - [%s:%s] => [%s:%s%s]",
+            System.out.printf("%s - [%s:%s] => [%s:%s%s]%n",
                     expression,
                     val1.getClass().getSimpleName(), val1.toString(),
                     out.getClass().getSimpleName(), out.toString(),
-                    (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
+                    (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : ""));
 
             // The output type is always wrapped in a ValString
             assertThat(out.type().toString()).isEqualTo("string");
@@ -2646,11 +2840,11 @@ class TestExpressionParser {
             gen.set(new Val[]{val1});
             Val out = gen.eval();
 
-            System.out.println(String.format("%s([%s: %s]) => [%s: %s%s]",
+            System.out.printf("%s([%s: %s]) => [%s: %s%s]%n",
                     function,
                     val1.getClass().getSimpleName(), val1.toString(),
                     out.getClass().getSimpleName(), out.toString(),
-                    (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : "")));
+                    (out instanceof ValErr ? (" - " + ((ValErr) out).getMessage()) : ""));
 
             if (!(expectedOutput instanceof ValErr)) {
                 assertThat(out).isEqualTo(expectedOutput);
