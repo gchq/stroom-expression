@@ -59,9 +59,14 @@ ext.versions = [
 if (isReleaseBuild()) {
     println "This is a release build"
     // Ensure the various props are set for signing and publishing to sonatype
+
+    // The username for Sonatype OSSRH Jira account
     ensurePropertyIsSet("sonatypeUsername")
+    // The password for Sonatype OSSRH Jira account
     ensurePropertyIsSet("sonatypePassword")
+    // The GPG2 secret key in ascii armour format, base64 encoded
     ensurePropertyIsSet("signingKey")
+    // The password for the GPG2 secret key
     ensurePropertyIsSet("signingPassword")
 }
 
