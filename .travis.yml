@@ -9,7 +9,6 @@ script: ./travis.script.sh
 deploy:
   provider: releases
   api_key:
-
     # travis encrypt -r gchq/stroom-expression <github personal access token>
     secure: WMvw/EgltCm2o9YJUxrnHUpsBgoos5RiRuz0hKgOfAO+NBohH+HN4ewJJJyIpkGM2gCKGw0c2WrfTUC9uBhQqQ5sI7VZkS1AhjrO4V+OyrbtQr+2M6nVTOYvHnxrgud2G9IkxhdiQ26csc1kynRgaFONbNwIk1xZWqDzy6CFUSxplW9ynR+WguFx9sG14PCDOB2/+TpqiRRr0d3zz7cKIw+gT5s3NABGfEFYdUqmtzzQlAXa55ekL931Iv2Tv7G2TDsepo/ufd/1sjqpLkQtwfaWkN8/xuRJEdsLfY5EZ90j67ScyL6PzOM5fXtl8hG7dn+kwS4HVH2qDzSUVVKHr/zY87Jp/UJJ2M6ul6anQ1CGvDoFXUxx8v6l37nJgnXI52DWR8tPbjkmhJlEYwSZeIjb3bGX+L/TPwAjlNBAK4NjD54AEmlFxUQ0LM8g9QX1PAtuTuoIoshnRJ7ZOuKRQjRZ5VJ56K3Lj2XKT3mRARftpXSm4sU9f7YiM0WGSu4tUzA2qVI7VB+vkVUoHir63ttvTKeI1g2L4KPkavn4FDb5n0vSKWOJQ2a+H3plBIhDCsQztOGApbmfE2xV5CM3ojLq+ERVo7tvt7wm8y6+XN32DzK1FMTkgFuSwNWTMuKQ/KT5ILvAL/lstqwm98Q4G7Aej7Qakl5gIiNMphQVc5A=
   file_glob: true
@@ -18,7 +17,13 @@ deploy:
   on:
     tags: true
 
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   directories:
   - .autoconf
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
   - $HOME/.m2
