@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.5.14] - 2021-04-21
+
+* No changes, test deployment.
+
+
 ## [v1.5.13] - 2021-04-21
 
 * Update github release token in build script.
@@ -232,7 +237,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.13...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.14...HEAD
+[v1.5.14]: https://github.com/gchq/stroom-expression/compare/v1.5.13...v1.5.14
 [v1.5.13]: https://github.com/gchq/stroom-expression/compare/v1.5.12...v1.5.13
 [v1.5.12]: https://github.com/gchq/stroom-expression/compare/v1.5.11...v1.5.12
 [v1.5.11]: https://github.com/gchq/stroom-expression/compare/v1.5.10...v1.5.11
