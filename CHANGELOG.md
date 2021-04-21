@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Fix stripping v prefix in maven version number
+
+* No changes, test deployment.
+
 * Update github release token in build script.
 
 * No changes, failed build
