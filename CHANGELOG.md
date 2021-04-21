@@ -6,21 +6,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.5.11] - 2021-04-21
+
+* Change build to publish to nexus/mavenCentral.
+
+* Change maven coordinates to uk.gov.gchq.stroom.expression:stroom-expression
+
+
 ## [v1.5.10] - 2020-09-08
 
 * Issue **#stroom#1083** : Added `top()` and `bottom()` selection functions to select child values of grouped items.
+
 
 ## [v1.5.9] - 2020-09-07
 
 * Issue **#stroom#1083** : Added `any()`, `first()`, `last()` and `nth()` selection functions to select child values of grouped items.
 
+
 ## [v1.5.8] - 2020-09-04
 
 * Issue **#stroom#1837** : Added limit to the number of items added when using `joining()`.
 
+
 ## [v1.5.7] - 2020-09-04
 
 * Issue **#stroom#1837** : Added `joining()` function to concatenate supplied fields in child rows.
+
 
 ## [v1.5.6] - 2020-09-04
 
@@ -28,9 +39,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Issue **#stroom#1784** : Several functions were previously prevented from working on results from aggregate functions but are now applied regardless.
 
+
 ## [v1.5.5] - 2019-11-13
 
 * Issue **#stroom#1328** : Fix so `stepping()` function is correctly registered.
+
 
 ## [v1.5.4] - 2019-10-30
 
@@ -38,9 +51,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Issue **#stroom#1300** : Added `annotation()` link creation function, `currentUser()` alias for `param('currentUser()')` and additional link creation functions for `data()` and `stepping()`.
 
+
 ## [v1.5.3] - 2019-09-13
 
 * Issue **#stroom#1263** : Fixed issues related to URL encoding/decoding with the `dashboard()` function.
+
 
 ## [v1.5.2] - 2019-09-12
 
@@ -48,17 +63,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Issue **#stroom#1262** : Improved behaviour of `+` when using for concatenation.
 
+
 ## [v1.5.1] - 2019-07-19
 
 * Issue **#stroom#1143** : Fix visibility of StaticValueFunction class.
+
 
 ## [v1.5.0] - 2019-07-19
 
 * Issue **#stroom#1143** : Added mechanism to inject statically mapped values so that dashboard parameters can be echoed by expressions to create dashboard links.
 
+
 ## [v1.4.16] - 2019-05-28
 
 * Issue **#26** : Added `dashboard` linking helper function.
+
 
 ## [v1.4.15] - 2019-05-24
 
@@ -68,9 +87,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Issue **#27** : Strings can now be concatenated with the use of `+`.
 
+
 ## [v1.4.14] - 2018-12-13
 
 * Issue **#stroom#989** : Improved the `link` function to only use 3 parameters.
+
 
 ## [v1.4.13] - 2018-12-06
 
@@ -78,23 +99,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Issue **#stroom#991** : Concat now supports a single parameter.
 
+
 ## [v1.4.12] - 2018-11-20
 
 * Issue **#22** : Added additional type checking functions `isBoolean()`, `isDouble()`, `isError()`, `isInteger()`, `isLong()`, `isNull()`, `isNumber()`, `isString()`, `isValue()`. Testing equality of null with `x=null()` is no longer valid and must be replaced with `isNull(x)`.
 
 * Issue **#19** : Fix handling of `err()` in multi child generators
 
+
 ## [v1.4.3] - 2018-08-20
 
 * Released to fix CHANGELOG.
+
 
 ## [v1.4.2] - 2018-08-20
 
 * Issue **#24** : Fixed issue where comparison method was violating its general contract when sorting. Also added caching of some `toDouble` and `toString` conversions to improve sorting performance at the expense of greater memory usage.
 
+
 ## [v1.4.1] - 2018-05-22
 
 * Reverted to Java 8.
+
 
 ## [v1.4.0] - 2018-05-18
 
@@ -108,17 +134,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Issue **#20** : Fix parse errors when using `>=` and `<=`
 
+
 ## [v1.3.2] - 2018-05-10
 
 * Updated slf4j-api to 1.7.25 to keep inline with dropwizard version 1.2.5.
+
 
 ## [v1.3.1] - 2018-05-02
 
 * Simplified Key.
 
+
 ## [v1.3.0] - 2018-05-02
 
 * Added Key type for child grouping.
+
 
 ## [v1.2.0] - 2018-04-30
 
@@ -148,11 +178,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Issue **#7** : Added `countUnique` function.
 
+
 ## [v1.1.0] - 2018-04-10
 
 ### Added
 
 * Add FieldIndexMap.getMap()
+
 
 ## [v1.0.3] - 2018-01-26
 
@@ -160,9 +192,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Issue **#2** : The missing expression function `extractQueryFromUri` has been added.
 
+
 ## [v1.0.2] - 2018-01-14
 
 * Issue **#2** : Added expression functions to extract various URI components.
+
 
 ## [v1.0.1] - 2017-11-28
 
@@ -176,17 +210,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Fix invalid javadoc
 
+
 ## [v1.0.0] - 2017-08-11
 
 ### Changed
 
 * Added v1 to package names
 
+
 ## [v0.1.0] - 2017-05-02
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.10...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.11...HEAD
+[v1.5.11]: https://github.com/gchq/stroom-expression/compare/v1.5.10...v1.5.11
 [v1.5.10]: https://github.com/gchq/stroom-expression/compare/v1.5.9...v1.5.10
 [v1.5.9]: https://github.com/gchq/stroom-expression/compare/v1.5.8...v1.5.9
 [v1.5.8]: https://github.com/gchq/stroom-expression/compare/v1.5.7...v1.5.8
