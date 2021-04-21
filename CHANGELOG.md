@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## [v1.5.12] - 2021-04-21
+
+* No changes, failed build
+
+
 ## [v1.5.11] - 2021-04-21
 
 * Change build to publish to nexus/mavenCentral.
@@ -222,7 +227,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
-[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.11...HEAD
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.12...HEAD
+[v1.5.12]: https://github.com/gchq/stroom-expression/compare/v1.5.11...v1.5.12
+[v1.5.11]: https://github.com/gchq/stroom-expression/compare/v1.5.10...v1.5.11
 [v1.5.11]: https://github.com/gchq/stroom-expression/compare/v1.5.10...v1.5.11
 [v1.5.10]: https://github.com/gchq/stroom-expression/compare/v1.5.9...v1.5.10
 [v1.5.9]: https://github.com/gchq/stroom-expression/compare/v1.5.8...v1.5.9
