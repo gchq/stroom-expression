@@ -52,11 +52,9 @@ ext.versions = [
     stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT').replaceFirst(/^v/, "")
 ]
 
-ext.isReleaseBuild = { ->
-    return !versions.stroomExpression.endsWith('SNAPSHOT')
-}
+ext.isReleaseBuild = !versions.stroomExpression.endsWith('SNAPSHOT')
 
-if (isReleaseBuild()) {
+if (isReleaseBuild) {
     println "This is a release build for maven version [${versions.stroomExpression}]"
     // Ensure the various props are set for signing and publishing to sonatype
 
