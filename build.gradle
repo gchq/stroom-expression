@@ -48,13 +48,13 @@ ext.getPropertyOrDefault = { propName, defaultValue ->
     return val;
 }
 
-ext.isReleaseBuild = { ->
-    return !getPropertyOrDefault('version', 'SNAPSHOT').endsWith('SNAPSHOT')
-}
-
 ext.versions = [
     stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT').replace("^v", "")
 ]
+
+ext.isReleaseBuild = { ->
+    return !versions.stroomExpression.endsWith('SNAPSHOT')
+}
 
 if (isReleaseBuild()) {
     println "This is a release build"
