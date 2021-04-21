@@ -18,11 +18,27 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: 'io.github.gradle-nexus.publish-plugin'
 
+ext.isPropertySet = { propName ->
+    if (!project.hasProperty(propName)) {
+        return false
+    } else {
+        def prop = project.getProperty(propName)
+        return (prop != "unspecified" && (prop != "" || prop != null))
+    }
+}
+
+ext.ensurePropertyIsSet = { propName -> 
+    if (!isPropertySet(propName)) {
+        throw new GradleException(
+            "Expecting project property [${propName}] or env var [ORG_GRADLE_PROJECT_${propName}] to be set.")
+    }
+}
+
 //if the project has a value for the passed property (i.e from the cmd line via -PpropName=xxx)
 //use that, else use a default value
 ext.getPropertyOrDefault = { propName, defaultValue -> 
     def val;
-    if (project.hasProperty(propName) && project.getProperty(propName) != "unspecified" && project.getProperty(propName) != "") {
+    if (isPropertySet(propName)) {
         val = project.getProperty(propName)
         println "Using property [$propName] with value [$val]"
     } else {
@@ -32,9 +48,22 @@ ext.getPropertyOrDefault = { propName, defaultValue ->
     return val;
 }
 
+ext.isReleaseBuild = { ->
+    return !getPropertyOrDefault('version', 'SNAPSHOT').endsWith('SNAPSHOT')
+}
+
 ext.versions = [
     stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT').replace("^v", "")
 ]
+
+if (isReleaseBuild()) {
+    println "This is a release build"
+    // Ensure the various props are set for signing and publishing to sonatype
+    ensurePropertyIsSet("sonatypeUsername")
+    ensurePropertyIsSet("sonatypePassword")
+    ensurePropertyIsSet("signingKey")
+    ensurePropertyIsSet("signingPassword")
+}
 
 group = 'uk.gov.gchq.stroom.expression'
 version = versions.stroomExpression
@@ -45,9 +74,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
 repositories {
     mavenLocal()
     mavenCentral()
-    //maven {
-        //url  "https://dl.bintray.com/stroom/stroom"
-    //}
 }
 
 dependencies {
@@ -154,12 +180,13 @@ if(hasSigningKey) {
     configureSigning(project)
 }
 
-// Uses sonotypeUsername and sonotypePassword
 // See https://github.com/rwinch/gradle-publish-ossrh-sample
 // Also https://github.com/kit-data-manager/nexus-publish-example
 nexusPublishing {
     repositories {
-        sonatype()    //sonatypeUsername and sonatypePassword properties are used automatically
+        // Uses sonotypeUsername and sonotypePassword via ORG_GRADLE_PROJECT_sonatypeUsername
+        // and ORG_GRADLE_PROJECT_sonatypePassword
+        sonatype()
     }
     // these are not strictly required. The default timeouts are set to 1 minute. But Sonatype can be really slow.
     // If you get the error "java.net.SocketTimeoutException: timeout", these lines will help.
