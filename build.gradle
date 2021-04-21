@@ -40,7 +40,7 @@ ext.getPropertyOrDefault = { propName, defaultValue ->
     def val;
     if (isPropertySet(propName)) {
         val = project.getProperty(propName)
-        println "Using property [$propName] with value [$val]"
+        println "Getting property [$propName] with value [$val]"
     } else {
         val = defaultValue
         println "Property [$propName] has no value, using default value [$val]"
@@ -49,7 +49,7 @@ ext.getPropertyOrDefault = { propName, defaultValue ->
 }
 
 ext.versions = [
-    stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT').replace("^v", "")
+    stroomExpression: getPropertyOrDefault('version', 'SNAPSHOT').replaceFirst(/^v/, "")
 ]
 
 ext.isReleaseBuild = { ->
@@ -57,7 +57,7 @@ ext.isReleaseBuild = { ->
 }
 
 if (isReleaseBuild()) {
-    println "This is a release build"
+    println "This is a release build for maven version [${versions.stroomExpression}]"
     // Ensure the various props are set for signing and publishing to sonatype
 
     // The username for Sonatype OSSRH Jira account
