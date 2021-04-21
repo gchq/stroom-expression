@@ -6,10 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+* Update github release token in build script.
+
+* No changes, failed build
+
 * Change build to publish to nexus/mavenCentral.
 
 * Change maven coordinates to uk.gov.gchq.stroom.expression:stroom-expression
-
 
 
 ## [v3.0.4] - 2020-09-08
@@ -26,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Issue **#stroom#1784** : Several functions were previously prevented from working on results from aggregate functions but are now applied regardless.
 
+
 ## [v3.0.3] - 2019-12-06
 
 * Issue **#stroom#1328** : Fix so `stepping()` function is correctly registered.
@@ -37,7 +41,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## [v3.0.1] - 2019-11-04
-
 
 * Issue **#stroom#1265** : Added `modulus()` function along with alias `mod()` and modulus operator `%`.
 
@@ -56,6 +59,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Issue **#stroom#1143** : Added mechanism to inject statically mapped values so that dashboard parameters can be echoed by expressions to create dashboard links.
 
+
 ## [v2.0.7] - 2019-06-25
 
 * Issue **#26** : Added `dashboard` linking helper function.
@@ -68,6 +72,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [v2.0.6] - 2019-01-04
 
 * Migrated to `java-library` plugin.
+
 
 ## [v2.0.5] - 2019-01-04
 
@@ -85,6 +90,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Downgrade to Java 10.
 
+
 ## [v2.0.2] - 2018-11-20
 
 * Updated Gradle to 4.10.2.
@@ -93,6 +99,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [v2.0.1] - 2018-11-20
 
 * Updated to Java 11.
+
 
 ## [v2.0.0] - 2018-11-20
 
@@ -228,6 +235,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release
 
+<<<<<<< HEAD
 [Unreleased]: https://github.com/gchq/stroom-expression/compare/v3.0.4...HEAD
 [v3.0.4]: https://github.com/gchq/stroom-expression/compare/v3.0.3...v3.0.4
 [v3.0.3]: https://github.com/gchq/stroom-expression/compare/v3.0.2...v3.0.3
@@ -236,3 +244,48 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [v3.0.0]: https://github.com/gchq/stroom-expression/compare/v2.0.8...v3.0.0
 [v2.0.8]: https://github.com/gchq/stroom-expression/compare/v2.0.7...v2.0.8
 [v2.0.7]: https://github.com/gchq/stroom-expression/compare/v2.0.6...v2.0.7
+=======
+[Unreleased]: https://github.com/gchq/stroom-expression/compare/v1.5.13...HEAD
+[v1.5.13]: https://github.com/gchq/stroom-expression/compare/v1.5.12...v1.5.13
+[v1.5.12]: https://github.com/gchq/stroom-expression/compare/v1.5.11...v1.5.12
+[v1.5.11]: https://github.com/gchq/stroom-expression/compare/v1.5.10...v1.5.11
+[v1.5.11]: https://github.com/gchq/stroom-expression/compare/v1.5.10...v1.5.11
+[v1.5.10]: https://github.com/gchq/stroom-expression/compare/v1.5.9...v1.5.10
+[v1.5.9]: https://github.com/gchq/stroom-expression/compare/v1.5.8...v1.5.9
+[v1.5.8]: https://github.com/gchq/stroom-expression/compare/v1.5.7...v1.5.8
+[v1.5.7]: https://github.com/gchq/stroom-expression/compare/v1.5.6...v1.5.7
+[v1.5.6]: https://github.com/gchq/stroom-expression/compare/v1.5.5...v1.5.6
+[v1.5.5]: https://github.com/gchq/stroom-expression/compare/v1.5.4...v1.5.5
+[v1.5.4]: https://github.com/gchq/stroom-expression/compare/v1.5.3...v1.5.4
+[v1.5.3]: https://github.com/gchq/stroom-expression/compare/v1.5.2...v1.5.3
+[v1.5.2]: https://github.com/gchq/stroom-expression/compare/v1.5.1...v1.5.2
+[v1.5.1]: https://github.com/gchq/stroom-expression/compare/v1.5.0...v1.5.1
+[v1.5.0]: https://github.com/gchq/stroom-expression/compare/v1.4.16...v1.5.0
+[v1.4.16]: https://github.com/gchq/stroom-expression/compare/v1.4.15...v1.4.16
+[v1.4.15]: https://github.com/gchq/stroom-expression/compare/v1.4.14...v1.4.15
+[v1.4.14]: https://github.com/gchq/stroom-expression/compare/v1.4.13...v1.4.14
+[v1.4.13]: https://github.com/gchq/stroom-expression/compare/v1.4.12...v1.4.13
+[v1.4.12]: https://github.com/gchq/stroom-expression/compare/v1.4.11...v1.4.12
+[v1.4.11]: https://github.com/gchq/stroom-expression/compare/v1.4.10...v1.4.11
+[v1.4.10]: https://github.com/gchq/stroom-expression/compare/v1.4.9...v1.4.10
+[v1.4.9]: https://github.com/gchq/stroom-expression/compare/v1.4.8...v1.4.9
+[v1.4.8]: https://github.com/gchq/stroom-expression/compare/v1.4.7...v1.4.8
+[v1.4.7]: https://github.com/gchq/stroom-expression/compare/v1.4.6...v1.4.7
+[v1.4.6]: https://github.com/gchq/stroom-expression/compare/v1.4.5...v1.4.6
+[v1.4.5]: https://github.com/gchq/stroom-expression/compare/v1.4.4...v1.4.5
+[v1.4.4]: https://github.com/gchq/stroom-expression/compare/v1.4.3...v1.4.4
+[v1.4.3]: https://github.com/gchq/stroom-expression/compare/v1.4.2...v1.4.3
+[v1.4.2]: https://github.com/gchq/stroom-expression/compare/v1.4.1...v1.4.2
+[v1.4.1]: https://github.com/gchq/stroom-expression/compare/v1.4.0...v1.4.1
+[v1.4.0]: https://github.com/gchq/stroom-expression/compare/v1.3.2...v1.4.0
+[v1.3.2]: https://github.com/gchq/stroom-expression/compare/v1.3.1...v1.3.2
+[v1.3.1]: https://github.com/gchq/stroom-expression/compare/v1.3.0...v1.3.1
+[v1.3.0]: https://github.com/gchq/stroom-expression/compare/v1.2.0...v1.3.0
+[v1.2.0]: https://github.com/gchq/stroom-expression/compare/v1.1.0...v1.2.0
+[v1.1.0]: https://github.com/gchq/stroom-expression/compare/v1.0.3...v1.1.0
+[v1.0.3]: https://github.com/gchq/stroom-expression/compare/v1.0.2...v1.0.3
+[v1.0.2]: https://github.com/gchq/stroom-expression/compare/v1.0.1...v1.0.2
+[v1.0.1]: https://github.com/gchq/stroom-expression/compare/v1.0.0...v1.0.1
+[v1.0.0]: https://github.com/gchq/stroom-expression/compare/v0.1.0...v1.0.0
+[v0.1.0]: https://github.com/gchq/stroom-expression/releases/tag/v0.1.0
+>>>>>>> 1.5
