@@ -58,7 +58,6 @@ ext.isReleaseBuild = { ->
 
 ext.moduleName = 'stroom.expression'
 
-
 if (isReleaseBuild()) {
     println "This is a release build"
     // Ensure the various props are set for signing and publishing to sonatype
