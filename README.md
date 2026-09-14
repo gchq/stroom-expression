@@ -1,3 +1,8 @@
+**This repository is deprecated. The stroom-expression code is now part of the https://github.com/gchq/stroom repository.**
+
+---
+
+
 # stroom-expression
 
 [![Build Status](https://travis-ci.org/gchq/stroom-expression.svg?branch=master)](https://travis-ci.org/gchq/stroom-expression)
